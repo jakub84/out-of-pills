@@ -1,0 +1,72 @@
+# Local agent skills (not versioned)
+.claude/skills/
+.claude/settings.local.json
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+out/
+.next/
+.astro/
+.nuxt/
+.output/
+.vercel/
+.netlify/
+.wrangler/
+.svelte-kit/
+
+# Caches
+.cache/
+.turbo/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+.vite/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+blob-report/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Misc
+*.pem
+*.local
