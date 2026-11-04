@@ -399,17 +399,17 @@ None — no existing users or tables. No SQL migrations in this slice; the `supa
 
 #### Automated
 
-- [x] 3.1 Production build passes: `npm run build`
-- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.1 Production build passes: `npm run build` — 72faac3
+- [x] 3.2 Lint passes: `npm run lint` — 72faac3
 
 #### Manual
 
-- [x] 3.3 "Forgot password?" on `/sign-in` → enter email → neutral message; reset email arrives in Mailpit
-- [x] 3.4 Requesting a reset for an unknown email shows the same neutral message and sends nothing
-- [x] 3.5 Reset link opens `/reset-password`; setting a valid new password lands on `/` signed in
-- [x] 3.6 Signing out and signing in with the new password works; the old password is rejected
-- [x] 3.7 Mismatched confirmation or a weak new password shows a field error
-- [x] 3.8 Opening `/reset-password` while signed out redirects to `/sign-in`
+- [x] 3.3 "Forgot password?" on `/sign-in` → enter email → neutral message; reset email arrives in Mailpit — 72faac3
+- [x] 3.4 Requesting a reset for an unknown email shows the same neutral message and sends nothing — 72faac3
+- [x] 3.5 Reset link opens `/reset-password`; setting a valid new password lands on `/` signed in — 72faac3
+- [x] 3.6 Signing out and signing in with the new password works; the old password is rejected — 72faac3
+- [x] 3.7 Mismatched confirmation or a weak new password shows a field error — 72faac3
+- [x] 3.8 Opening `/reset-password` while signed out redirects to `/sign-in` — 72faac3
 
 ### Phase 4: Production auth configuration
 
