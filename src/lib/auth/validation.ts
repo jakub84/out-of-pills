@@ -39,3 +39,13 @@ export function validatePassword(password: string): string | undefined {
   }
   return undefined;
 }
+
+/** Returns an error message, or `undefined` when the confirmation matches the password. */
+export function validatePasswordConfirmation(
+  password: string,
+  confirmation: string,
+): string | undefined {
+  if (!confirmation) return "Confirm your new password";
+  if (confirmation !== password) return "Passwords do not match";
+  return undefined;
+}

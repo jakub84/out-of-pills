@@ -379,37 +379,37 @@ None — no existing users or tables. No SQL migrations in this slice; the `supa
 
 #### Automated
 
-- [x] 2.1 Production build passes: `npm run build`
-- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.1 Production build passes: `npm run build` — 6327d05
+- [x] 2.2 Lint passes: `npm run lint` — 6327d05
 
 #### Manual
 
-- [x] 2.3 Sign up with a new email → "Check your email" panel; the confirmation email arrives in Mailpit
-- [x] 2.4 Clicking the confirmation link lands on `/` signed in, showing the email and the empty state
-- [x] 2.5 Sign out returns to `/sign-in`; visiting `/` while signed out redirects to `/sign-in`
-- [x] 2.6 Sign in with wrong password → "Invalid email or password"
-- [x] 2.7 Sign in before confirming → "Confirm your email first" + Resend link; resent email arrives; a second resend within a minute shows the wait message
-- [x] 2.8 Signing up again with an already-registered email shows the same "Check your email" panel
-- [x] 2.9 Password `abcdefgh` or `12345678` is rejected with a clear message
-- [x] 2.10 Signed-in user visiting `/sign-in` or `/sign-up` is redirected to `/`
-- [x] 2.11 Opening an already-used confirmation link shows "This link is invalid or has expired"
-- [x] 2.12 Screens are usable at phone width (browser devtools, 375 px)
+- [x] 2.3 Sign up with a new email → "Check your email" panel; the confirmation email arrives in Mailpit — 6327d05
+- [x] 2.4 Clicking the confirmation link lands on `/` signed in, showing the email and the empty state — 6327d05
+- [x] 2.5 Sign out returns to `/sign-in`; visiting `/` while signed out redirects to `/sign-in` — 6327d05
+- [x] 2.6 Sign in with wrong password → "Invalid email or password" — 6327d05
+- [x] 2.7 Sign in before confirming → "Confirm your email first" + Resend link; resent email arrives; a second resend within a minute shows the wait message — 6327d05
+- [x] 2.8 Signing up again with an already-registered email shows the same "Check your email" panel — 6327d05
+- [x] 2.9 Password `abcdefgh` or `12345678` is rejected with a clear message — 6327d05
+- [x] 2.10 Signed-in user visiting `/sign-in` or `/sign-up` is redirected to `/` — 6327d05
+- [x] 2.11 Opening an already-used confirmation link shows "This link is invalid or has expired" — 6327d05
+- [x] 2.12 Screens are usable at phone width (browser devtools, 375 px) — 6327d05
 
 ### Phase 3: Password reset
 
 #### Automated
 
-- [ ] 3.1 Production build passes: `npm run build`
-- [ ] 3.2 Lint passes: `npm run lint`
+- [x] 3.1 Production build passes: `npm run build`
+- [x] 3.2 Lint passes: `npm run lint`
 
 #### Manual
 
-- [ ] 3.3 "Forgot password?" on `/sign-in` → enter email → neutral message; reset email arrives in Mailpit
-- [ ] 3.4 Requesting a reset for an unknown email shows the same neutral message and sends nothing
-- [ ] 3.5 Reset link opens `/reset-password`; setting a valid new password lands on `/` signed in
-- [ ] 3.6 Signing out and signing in with the new password works; the old password is rejected
-- [ ] 3.7 Mismatched confirmation or a weak new password shows a field error
-- [ ] 3.8 Opening `/reset-password` while signed out redirects to `/sign-in`
+- [x] 3.3 "Forgot password?" on `/sign-in` → enter email → neutral message; reset email arrives in Mailpit
+- [x] 3.4 Requesting a reset for an unknown email shows the same neutral message and sends nothing
+- [x] 3.5 Reset link opens `/reset-password`; setting a valid new password lands on `/` signed in
+- [x] 3.6 Signing out and signing in with the new password works; the old password is rejected
+- [x] 3.7 Mismatched confirmation or a weak new password shows a field error
+- [x] 3.8 Opening `/reset-password` while signed out redirects to `/sign-in`
 
 ### Phase 4: Production auth configuration
 

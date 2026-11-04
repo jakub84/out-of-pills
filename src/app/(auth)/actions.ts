@@ -2,12 +2,14 @@
 
 import { redirect } from "next/navigation";
 
+import { getCurrentUser } from "@/lib/auth/dal";
 import type { AuthFormState } from "@/lib/auth/form-state";
 import {
   readField,
   readPassword,
   validateEmail,
   validatePassword,
+  validatePasswordConfirmation,
 } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -125,6 +127,71 @@ export async function resendConfirmation(
     message: "If this email needs confirming, we sent a new link",
     email,
   };
+}
+
+export async function requestPasswordReset(
+  _prevState: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> {
+  const email = readField(formData, "email");
+
+  const emailError = validateEmail(email);
+  if (emailError) {
+    return { status: "error", fieldErrors: { email: emailError }, email };
+  }
+
+  const supabase = await createClient();
+  // No redirectTo: the recovery template builds its link from {{ .SiteURL }}
+  // and points at /auth/confirm (token_hash flow).
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+  if (error?.code === "over_email_send_rate_limit") {
+    return { status: "error", message: RATE_LIMITED, email };
+  }
+
+  // Neutral on success and on any other error: never reveal whether an account exists.
+  return {
+    status: "success",
+    message: "If an account exists for this email, we sent a reset link",
+    email,
+  };
+}
+
+export async function updatePassword(
+  _prevState: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState> {
+  // Requires the session created by the recovery link; redirects to /sign-in otherwise.
+  await getCurrentUser();
+
+  const password = readPassword(formData, "password");
+  const confirmPassword = readPassword(formData, "confirmPassword");
+
+  const fieldErrors: AuthFormState["fieldErrors"] = {
+    password: validatePassword(password),
+    confirmPassword: validatePasswordConfirmation(password, confirmPassword),
+  };
+  if (fieldErrors.password || fieldErrors.confirmPassword) {
+    return { status: "error", fieldErrors };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    if (error.code === "weak_password") {
+      return { status: "error", fieldErrors: { password: WEAK_PASSWORD } };
+    }
+    if (error.code === "same_password") {
+      return {
+        status: "error",
+        fieldErrors: { password: "Choose a password different from your current one" },
+      };
+    }
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  redirect("/");
 }
 
 export async function signOut(): Promise<void> {

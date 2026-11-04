@@ -2,7 +2,7 @@
 export type AuthFormState = {
   status: "idle" | "error" | "success";
   message?: string;
-  fieldErrors?: Partial<Record<"email" | "password", string>>;
+  fieldErrors?: Partial<Record<"email" | "password" | "confirmPassword", string>>;
   email?: string;
   /** Set when sign-in failed because the address is not confirmed yet. */
   reason?: "email_not_confirmed";
