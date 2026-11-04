@@ -364,36 +364,36 @@ None — no existing users or tables. No SQL migrations in this slice; the `supa
 
 #### Automated
 
-- [x] 1.1 Dependencies install cleanly: `npm install`
-- [x] 1.2 Local Supabase starts: `npx supabase start`
-- [x] 1.3 Production build passes: `npm run build`
-- [x] 1.4 Lint passes: `npm run lint`
+- [x] 1.1 Dependencies install cleanly: `npm install` — 5cdae7b
+- [x] 1.2 Local Supabase starts: `npx supabase start` — 5cdae7b
+- [x] 1.3 Production build passes: `npm run build` — 5cdae7b
+- [x] 1.4 Lint passes: `npm run lint` — 5cdae7b
 
 #### Manual
 
-- [x] 1.5 Mailpit inbox opens at http://127.0.0.1:54324
-- [x] 1.6 With the stack running, opening http://localhost:3000/ redirects to `/sign-in` (404 page is acceptable until Phase 2)
-- [x] 1.7 `.env.local` is not listed by `git status`; `.env.example` is
+- [x] 1.5 Mailpit inbox opens at http://127.0.0.1:54324 — 5cdae7b
+- [x] 1.6 With the stack running, opening http://localhost:3000/ redirects to `/sign-in` (404 page is acceptable until Phase 2) — 5cdae7b
+- [x] 1.7 `.env.local` is not listed by `git status`; `.env.example` is — 5cdae7b
 
 ### Phase 2: Sign up, confirm, sign in, sign out
 
 #### Automated
 
-- [ ] 2.1 Production build passes: `npm run build`
-- [ ] 2.2 Lint passes: `npm run lint`
+- [x] 2.1 Production build passes: `npm run build`
+- [x] 2.2 Lint passes: `npm run lint`
 
 #### Manual
 
-- [ ] 2.3 Sign up with a new email → "Check your email" panel; the confirmation email arrives in Mailpit
-- [ ] 2.4 Clicking the confirmation link lands on `/` signed in, showing the email and the empty state
-- [ ] 2.5 Sign out returns to `/sign-in`; visiting `/` while signed out redirects to `/sign-in`
-- [ ] 2.6 Sign in with wrong password → "Invalid email or password"
-- [ ] 2.7 Sign in before confirming → "Confirm your email first" + Resend link; resent email arrives; a second resend within a minute shows the wait message
-- [ ] 2.8 Signing up again with an already-registered email shows the same "Check your email" panel
-- [ ] 2.9 Password `abcdefgh` or `12345678` is rejected with a clear message
-- [ ] 2.10 Signed-in user visiting `/sign-in` or `/sign-up` is redirected to `/`
-- [ ] 2.11 Opening an already-used confirmation link shows "This link is invalid or has expired"
-- [ ] 2.12 Screens are usable at phone width (browser devtools, 375 px)
+- [x] 2.3 Sign up with a new email → "Check your email" panel; the confirmation email arrives in Mailpit
+- [x] 2.4 Clicking the confirmation link lands on `/` signed in, showing the email and the empty state
+- [x] 2.5 Sign out returns to `/sign-in`; visiting `/` while signed out redirects to `/sign-in`
+- [x] 2.6 Sign in with wrong password → "Invalid email or password"
+- [x] 2.7 Sign in before confirming → "Confirm your email first" + Resend link; resent email arrives; a second resend within a minute shows the wait message
+- [x] 2.8 Signing up again with an already-registered email shows the same "Check your email" panel
+- [x] 2.9 Password `abcdefgh` or `12345678` is rejected with a clear message
+- [x] 2.10 Signed-in user visiting `/sign-in` or `/sign-up` is redirected to `/`
+- [x] 2.11 Opening an already-used confirmation link shows "This link is invalid or has expired"
+- [x] 2.12 Screens are usable at phone width (browser devtools, 375 px)
 
 ### Phase 3: Password reset
 
