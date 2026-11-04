@@ -15,12 +15,18 @@ Out of Pills is a web app where caregivers track how many pills are left per pro
 ## Project Structure
 
 - `src/app/` — App Router routes, layouts, `globals.css`. Import via the `@/*` alias (maps to `src/*`).
+- `src/proxy.ts` — Next.js Proxy (formerly Middleware): refreshes the Supabase session and does optimistic auth redirects.
+- `src/lib/supabase/` — `@supabase/ssr` helpers: `server.ts` (Server Components, Server Actions, Route Handlers) and `proxy.ts` (session refresh); the browser helper is added when first needed.
+- `src/lib/auth/dal.ts` — `getCurrentUser()`, the authoritative signed-in check; call it inside `<Suspense>`, never in `use cache`.
+- `supabase/` — local Supabase project: `config.toml` (auth policy), `templates/` (auth emails), later `migrations/`.
 - `public/` — static assets.
 - `context/foundation/` — living product docs: `prd.md` (requirements, FR-xxx ids), `tech-stack.md`. Edit in place.
 - `context/changes/<change-id>/` — per-change research and plans. `context/archive/` is read-only.
 
 ## Commands
 
+- `cp .env.example .env.local` — then fill in the publishable key from `npx supabase status`.
+- `npx supabase start` / `npx supabase stop` — local Supabase stack (requires Docker Desktop running). API on http://127.0.0.1:55321, Studio on http://127.0.0.1:55323, Mailpit (auth emails) on http://127.0.0.1:55324.
 - `npm run dev` — dev server on http://localhost:3000.
 - `npm run build` — production build; must pass before a PR.
 - `npm run lint` — ESLint; must pass before a PR.
