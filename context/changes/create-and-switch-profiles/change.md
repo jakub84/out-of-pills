@@ -1,7 +1,7 @@
 ---
 change_id: create-and-switch-profiles
 title: Create and switch profiles
-status: implementing
+status: implemented
 created: 2026-11-16
 updated: 2026-11-16
 archived_at: null
