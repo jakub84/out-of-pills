@@ -273,17 +273,17 @@ Merge the pipeline PR, approve the first production deploy, protect `master`, po
 
 #### Automated
 
-- [x] 2.1 Lint passes: `npm run lint`
-- [x] 2.2 Production build passes: `npm run build`
-- [x] 2.3 On the PR, the `Lint and build` check is green: `gh pr checks`
-- [x] 2.4 On the PR, the `preview` job succeeds
+- [x] 2.1 Lint passes: `npm run lint` — e6d3dec
+- [x] 2.2 Production build passes: `npm run build` — e6d3dec
+- [x] 2.3 On the PR, the `Lint and build` check is green: `gh pr checks` — e6d3dec
+- [x] 2.4 On the PR, the `preview` job succeeds — e6d3dec
 
 #### Manual
 
-- [ ] 2.5 The PR has a comment with a preview URL; a second push updates that comment instead of adding a new one
-- [ ] 2.6 On the preview URL, sign-in with an existing production account works and lands on the main screen
-- [ ] 2.7 The preview URL opens on a phone without any Vercel login
-- [ ] 2.8 No deployment appears in the Vercel dashboard other than those made by the workflow
+- [x] 2.5 The PR has a comment with a preview URL; a second push updates that comment instead of adding a new one — e6d3dec
+- [x] 2.6 On the preview URL, sign-in with an existing production account works and lands on the main screen — e6d3dec
+- [x] 2.7 The preview URL opens on a phone without any Vercel login — e6d3dec
+- [x] 2.8 No deployment appears in the Vercel dashboard other than those made by the workflow — e6d3dec
 
 ### Phase 3: Production go-live
 
