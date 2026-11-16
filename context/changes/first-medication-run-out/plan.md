@@ -344,28 +344,28 @@ Replace the empty state with the summary, tiles and grouped cards from mock `176
 
 #### Automated
 
-- [x] 1.1 Unit tests pass: `npm test`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 Production build passes: `npm run build`
+- [x] 1.1 Unit tests pass: `npm test` — 252fce0
+- [x] 1.2 Lint passes: `npm run lint` — 252fce0
+- [x] 1.3 Production build passes: `npm run build` — 252fce0
 
 #### Manual
 
-- [x] 1.4 The worked examples in the test file match the decided rule (18 at 2/day on 5 Nov → 13 Nov; ran-out example → 9 Nov)
+- [x] 1.4 The worked examples in the test file match the decided rule (18 at 2/day on 5 Nov → 13 Nov; ran-out example → 9 Nov) — 252fce0
 
 ### Phase 2: Medications database
 
 #### Automated
 
-- [ ] 2.1 Migration applies on a clean database: `npx supabase db reset`
-- [ ] 2.2 RLS tests pass: `npx supabase test db`
-- [ ] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
-- [ ] 2.4 Unit tests pass: `npm test`
-- [ ] 2.5 Lint passes: `npm run lint`
-- [ ] 2.6 Production build passes: `npm run build`
+- [x] 2.1 Migration applies on a clean database: `npx supabase db reset`
+- [x] 2.2 RLS tests pass: `npx supabase test db`
+- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
+- [x] 2.4 Unit tests pass: `npm test`
+- [x] 2.5 Lint passes: `npm run lint`
+- [x] 2.6 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.7 In Studio (http://127.0.0.1:55323) `medications` shows RLS enabled with select and insert policies only
+- [x] 2.7 In Studio (http://127.0.0.1:55323) `medications` shows RLS enabled with select and insert policies only
 
 ### Phase 3: Add medication dialog
 
