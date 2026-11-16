@@ -103,6 +103,8 @@
   /* App header (mock 164:176): hairline border and a very soft, wide drop shadow. */
   --header-border: #d2d2d2;
   --header-shadow: 0 4px 231px 0 rgb(0 0 0 / 0.29);
+  /* App header height (60px row + 1px border); the desktop sidebar starts below it. */
+  --header-height: 61px;
 
   /* Profile avatar colours (stored as the colour name, e.g. `mint`). */
   --avatar-mint: #dceee9;

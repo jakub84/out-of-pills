@@ -2,6 +2,8 @@
 
 A web app where caregivers track how many pills are left per profile and when each medication runs out. Built with Next.js 16 and Supabase.
 
+After signing up, onboarding asks for your first name and a first profile (the person whose medications you look after). The main screen lists your profiles in a sidebar: switch between them or add more with "+ Add new".
+
 ## Local setup
 
 Requirements: Node.js and Docker Desktop (running) for the local Supabase stack.

@@ -28,7 +28,7 @@ type ProfileFormAction = (
 ) => Promise<ProfileFormState>;
 
 type ProfileFormProps = {
-  /** The caregiver's first name: default profile name for "For me" and its first chip. */
+  /** The caregiver's first name: the first name chip for "For me". */
   displayName: string;
   action: ProfileFormAction;
   /** Where the secondary button leads; omitted → no secondary button. */

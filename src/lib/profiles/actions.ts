@@ -79,5 +79,7 @@ export async function createProfile(
     return { status: "error", message: GENERIC_ERROR };
   }
 
+  // Refresh the app shell so the sidebar lists the new profile.
+  revalidatePath("/", "layout");
   redirect(`/?profile=${encodeURIComponent(profileId)}`);
 }

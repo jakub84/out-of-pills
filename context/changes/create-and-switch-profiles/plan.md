@@ -399,36 +399,36 @@ Replace the placeholder `/` with the app shell from mock `176:226` (only the par
 
 #### Automated
 
-- [x] 3.1 Lint passes: `npm run lint`
-- [x] 3.2 Production build passes: `npm run build`
-- [x] 3.3 RLS tests still pass: `npx supabase test db`
+- [x] 3.1 Lint passes: `npm run lint` — 4488c86
+- [x] 3.2 Production build passes: `npm run build` — 4488c86
+- [x] 3.3 RLS tests still pass: `npx supabase test db` — 4488c86
 
 #### Manual
 
-- [x] 3.4 A newly confirmed user signing in is sent to `/onboarding/name`; the screen matches Figma node `164:172` (translated copy)
-- [x] 3.5 Saving the name opens `/onboarding/profile`, matching node `162:73`; Back returns to the name step pre-filled
-- [x] 3.6 Type cards switch the chips; a chip fills the name; the heading updates as you type; the selected swatch shows the initial
-- [x] 3.7 An empty name or a 41-character name shows a field error; nothing is saved
-- [x] 3.8 Creating the profile lands on `/?profile=<id>`; revisiting `/onboarding/name` afterwards redirects to `/`
-- [x] 3.9 Both steps are usable at 375 px
+- [x] 3.4 A newly confirmed user signing in is sent to `/onboarding/name`; the screen matches Figma node `164:172` (translated copy) — 4488c86
+- [x] 3.5 Saving the name opens `/onboarding/profile`, matching node `162:73`; Back returns to the name step pre-filled — 4488c86
+- [x] 3.6 Type cards switch the chips; a chip fills the name; the heading updates as you type; the selected swatch shows the initial — 4488c86
+- [x] 3.7 An empty name or a 41-character name shows a field error; nothing is saved — 4488c86
+- [x] 3.8 Creating the profile lands on `/?profile=<id>`; revisiting `/onboarding/name` afterwards redirects to `/` — 4488c86
+- [x] 3.9 Both steps are usable at 375 px — 4488c86
 
 ### Phase 4: Main screen and switching
 
 #### Automated
 
-- [ ] 4.1 Lint passes: `npm run lint`
-- [ ] 4.2 Production build passes: `npm run build`
-- [ ] 4.3 RLS tests still pass: `npx supabase test db`
+- [x] 4.1 Lint passes: `npm run lint`
+- [x] 4.2 Production build passes: `npm run build`
+- [x] 4.3 RLS tests still pass: `npx supabase test db`
 - [ ] 4.4 On the PR, the `Lint and build` check is green and the `preview` job succeeds: `gh pr checks`
 
 #### Manual
 
-- [ ] 4.5 After onboarding, `/` matches the S-02 parts of Figma node `176:226`: header, sidebar with the profile and "+ Add new", "Hi / Profile" heading, empty medication state
-- [ ] 4.6 "+ Add new" → `/profiles/new` → creating "Mom" (parent, rose) lands on Mom, selected in the sidebar; the sidebar lists profiles oldest first
-- [ ] 4.7 Clicking a profile in the sidebar switches the main area and the URL; back/forward work
-- [ ] 4.8 With two accounts (A, B): pasting A's `/?profile=<id>` while signed in as B shows B's own oldest profile, and A's profile name appears nowhere
-- [ ] 4.9 `/` without a profile id opens the oldest profile; a malformed id does the same
-- [ ] 4.10 At 375 px the sidebar opens as a sheet from the header and closes after choosing a profile
-- [ ] 4.11 Avatar menu shows the name and email; Sign out returns to `/sign-in`
+- [x] 4.5 After onboarding, `/` matches the S-02 parts of Figma node `176:226`: header, sidebar with the profile and "+ Add new", "Hi / Profile" heading, empty medication state
+- [x] 4.6 "+ Add new" → `/profiles/new` → creating "Mom" (parent, rose) lands on Mom, selected in the sidebar; the sidebar lists profiles oldest first
+- [x] 4.7 Clicking a profile in the sidebar switches the main area and the URL; back/forward work
+- [x] 4.8 With two accounts (A, B): pasting A's `/?profile=<id>` while signed in as B shows B's own oldest profile, and A's profile name appears nowhere
+- [x] 4.9 `/` without a profile id opens the oldest profile; a malformed id does the same
+- [x] 4.10 At 375 px the sidebar opens as a sheet from the header and closes after choosing a profile
+- [x] 4.11 Avatar menu shows the name and email; Sign out returns to `/sign-in`
 - [ ] 4.12 Before the PR opened, `npx supabase db push` applied the migration to the cloud project (Supabase dashboard → Table Editor shows the three tables with RLS on)
 - [ ] 4.13 On the PR preview (production Supabase), a real account can complete onboarding and switch profiles
