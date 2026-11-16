@@ -415,6 +415,6 @@ None — no existing users or tables. No SQL migrations in this slice; the `supa
 
 #### Manual
 
-- [ ] 4.1 Cloud project auth settings match `supabase/config.toml` (confirmations, password policy, both templates)
-- [ ] 4.2 Resend shows the domain as verified; a Supabase test email (e.g. a password reset to your own address) is delivered from `no-reply@<your-domain>` and not to spam
-- [ ] 4.3 After F-01: on the production URL, the full Phase 2 + Phase 3 manual checklist passes with a real inbox
+- [x] 4.1 Cloud project auth settings match `supabase/config.toml` (confirmations, password policy, both templates)
+- [x] 4.2 Resend shows the domain as verified; a Supabase test email (e.g. a password reset to your own address) is delivered from `no-reply@<your-domain>` and not to spam
+- [x] 4.3 After F-01: on the production URL, the full Phase 2 + Phase 3 manual checklist passes with a real inbox

@@ -289,13 +289,13 @@ Merge the pipeline PR, approve the first production deploy, protect `master`, po
 
 #### Automated
 
-- [ ] 3.1 The push-to-`master` run shows `staging` and `production` succeeded: `gh run list --branch master`
-- [ ] 3.2 Production URL responds and redirects signed-out users to `/sign-in`: `curl -sI https://<project>.vercel.app/` shows a redirect to `/sign-in`
-- [ ] 3.3 Ruleset is active on `master`: `gh api repos/{owner}/{repo}/rulesets`
+- [x] 3.1 The push-to-`master` run shows `staging` and `production` succeeded: `gh run list --branch master`
+- [x] 3.2 Production URL responds and redirects signed-out users to `/sign-in`: `curl -sI https://<project>.vercel.app/` shows a redirect to `/sign-in`
+- [x] 3.3 Ruleset is active on `master`: `gh api repos/{owner}/{repo}/rulesets`
 
 #### Manual
 
-- [ ] 3.4 The production job waited for approval before deploying
-- [ ] 3.5 A direct `git push origin master` is rejected
-- [ ] 3.6 A sign-up on production delivers a confirmation email whose link opens the production URL and signs the user in
-- [ ] 3.7 S-01 Progress 4.1–4.3 are ticked in `context/changes/email-sign-in/plan.md`
+- [x] 3.4 The production job waited for approval before deploying
+- [x] 3.5 A direct `git push origin master` is rejected
+- [x] 3.6 A sign-up on production delivers a confirmation email whose link opens the production URL and signs the user in
+- [x] 3.7 S-01 Progress 4.1–4.3 are ticked in `context/changes/email-sign-in/plan.md`
