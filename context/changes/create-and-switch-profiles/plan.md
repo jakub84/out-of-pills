@@ -371,29 +371,29 @@ Replace the placeholder `/` with the app shell from mock `176:226` (only the par
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Production build passes: `npm run build`
-- [x] 1.3 No hardcoded zinc or dark-mode classes remain in app code: `grep -rE "zinc-|dark:" src/app` returns nothing
+- [x] 1.1 Lint passes: `npm run lint` — 328210d
+- [x] 1.2 Production build passes: `npm run build` — 328210d
+- [x] 1.3 No hardcoded zinc or dark-mode classes remain in app code: `grep -rE "zinc-|dark:" src/app` returns nothing — 328210d
 
 #### Manual
 
-- [x] 1.4 `/sign-in` visually matches Figma node `176:552` at desktop width (logo, mascot, field radii, teal button, links)
-- [x] 1.5 Sign-up, forgot-password and reset-password use the same shell and components and read well at 375 px
-- [x] 1.6 The S-01 flows still work: sign up, confirm via Mailpit, sign in, wrong password error, "Confirm your email first" + resend, password reset
+- [x] 1.4 `/sign-in` visually matches Figma node `176:552` at desktop width (logo, mascot, field radii, teal button, links) — 328210d
+- [x] 1.5 Sign-up, forgot-password and reset-password use the same shell and components and read well at 375 px — 328210d
+- [x] 1.6 The S-01 flows still work: sign up, confirm via Mailpit, sign in, wrong password error, "Confirm your email first" + resend, password reset — 328210d
 
 ### Phase 2: Database and privacy
 
 #### Automated
 
-- [ ] 2.1 Migration applies on a clean database: `npx supabase db reset`
-- [ ] 2.2 RLS tests pass: `npx supabase test db`
-- [ ] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
-- [ ] 2.4 Lint passes: `npm run lint`
-- [ ] 2.5 Production build passes: `npm run build`
+- [x] 2.1 Migration applies on a clean database: `npx supabase db reset`
+- [x] 2.2 RLS tests pass: `npx supabase test db`
+- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
+- [x] 2.4 Lint passes: `npm run lint`
+- [x] 2.5 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.6 In Studio (http://127.0.0.1:55323) the three tables show RLS enabled
+- [x] 2.6 In Studio (http://127.0.0.1:55323) the three tables show RLS enabled
 
 ### Phase 3: Onboarding
 

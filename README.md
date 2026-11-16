@@ -36,6 +36,28 @@ Requirements: Node.js and Docker Desktop (running) for the local Supabase stack.
 
 Stop the stack with `npx supabase stop`.
 
+## Database
+
+Schema changes live in `supabase/migrations/` as timestamped SQL files. Every table enables Row Level Security in the migration that creates it.
+
+```bash
+npx supabase migration new <name>   # create supabase/migrations/<timestamp>_<name>.sql
+npx supabase db reset               # rebuild the local database from all migrations
+npx supabase test db                # run the pgTAP tests in supabase/tests/database/
+npm run db:types                    # regenerate src/lib/supabase/database.types.ts
+```
+
+`npm run db:types` reads the local stack, so run `npx supabase start` first. With the stack down the CLI writes its error into the file instead, so check that the file starts with `export type`.
+
+Release order for a PR that adds a migration:
+
+1. Verify locally: `npx supabase db reset`, `npx supabase test db`, `npm run db:types`.
+2. Push it to the cloud project: `npx supabase db push` (previews and staging use the production database).
+3. Check the PR preview.
+4. Merge.
+
+Migrations must be additive (new tables, columns, policies): the production build keeps running against the new schema until the merge deploys. Never edit a migration that has been pushed; add a new one.
+
 ## Production (Supabase cloud)
 
 Auth in production mirrors `supabase/config.toml`. Set up once in the Supabase and Resend dashboards; no secrets live in this repo.
