@@ -1,10 +1,12 @@
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { Logo } from "@/components/brand/logo";
-import { getCurrentUser } from "@/lib/auth/dal";
+import { getCaregiver, listProfiles } from "@/lib/profiles/dal";
 import { SignOutButton } from "./_components/sign-out-button";
 
-export default function Home() {
+/** Interim main page: onboarding redirects plus the selected profile's name (Phase 4 adds the shell). */
+export default function Home({ searchParams }: PageProps<"/">) {
   return (
     <div className="flex flex-1 flex-col bg-background">
       <header className="border-b border-border bg-card">
@@ -14,31 +16,30 @@ export default function Home() {
       </header>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-8">
         <Suspense fallback={<p className="text-sm text-muted-foreground">Loading…</p>}>
-          <SignedInContent />
+          <SignedInContent searchParams={searchParams} />
         </Suspense>
       </main>
     </div>
   );
 }
 
-/** Reads the session, so it must stay inside the Suspense boundary above. */
-async function SignedInContent() {
-  const user = await getCurrentUser();
+/** Reads the session and searchParams, so it must stay inside the Suspense boundary above. */
+async function SignedInContent({ searchParams }: { searchParams: PageProps<"/">["searchParams"] }) {
+  const [caregiver, profiles] = await Promise.all([getCaregiver(), listProfiles()]);
+
+  if (!caregiver) redirect("/onboarding/name");
+  if (profiles.length === 0) redirect("/onboarding/profile");
+
+  // An unknown, malformed or foreign id falls back to the oldest profile.
+  const { profile: requested } = await searchParams;
+  const selected = profiles.find((profile) => profile.id === requested) ?? profiles[0];
 
   return (
-    <>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="min-w-0 break-all text-sm text-muted-foreground">
-          Signed in as <span className="font-medium text-foreground">{user.email}</span>
-        </p>
-        <SignOutButton />
-      </div>
-      <section className="rounded-2xl border border-dashed border-border bg-card p-8 text-center">
-        <h1 className="font-heading text-xl font-semibold text-foreground">No profiles yet</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Profiles for the people you care for will appear here.
-        </p>
-      </section>
-    </>
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <h1 className="min-w-0 font-heading text-3xl font-normal break-words text-foreground">
+        Profile: <span className="text-primary">{selected.name}</span>
+      </h1>
+      <SignOutButton />
+    </div>
   );
 }

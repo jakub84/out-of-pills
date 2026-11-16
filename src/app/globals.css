@@ -42,6 +42,9 @@
   --color-card: var(--card);
   --color-brand-ink: var(--brand-ink);
   --color-brand-subtle: var(--brand-subtle);
+  --color-primary-tint: var(--primary-tint);
+  --color-header-border: var(--header-border);
+  --shadow-header: var(--header-shadow);
   --color-avatar-mint: var(--avatar-mint);
   --color-avatar-slate: var(--avatar-slate);
   --color-avatar-sand: var(--avatar-sand);
@@ -95,6 +98,11 @@
   /* Brand extras */
   --brand-ink: #2a303c;
   --brand-subtle: #646873;
+  /* Selected-choice background from the mocks: 8% primary over the card colour. */
+  --primary-tint: color-mix(in srgb, var(--primary) 8%, var(--card));
+  /* App header (mock 164:176): hairline border and a very soft, wide drop shadow. */
+  --header-border: #d2d2d2;
+  --header-shadow: 0 4px 231px 0 rgb(0 0 0 / 0.29);
 
   /* Profile avatar colours (stored as the colour name, e.g. `mint`). */
   --avatar-mint: #dceee9;

@@ -385,32 +385,32 @@ Replace the placeholder `/` with the app shell from mock `176:226` (only the par
 
 #### Automated
 
-- [x] 2.1 Migration applies on a clean database: `npx supabase db reset`
-- [x] 2.2 RLS tests pass: `npx supabase test db`
-- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
-- [x] 2.4 Lint passes: `npm run lint`
-- [x] 2.5 Production build passes: `npm run build`
+- [x] 2.1 Migration applies on a clean database: `npx supabase db reset` — 0584ba9
+- [x] 2.2 RLS tests pass: `npx supabase test db` — 0584ba9
+- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean — 0584ba9
+- [x] 2.4 Lint passes: `npm run lint` — 0584ba9
+- [x] 2.5 Production build passes: `npm run build` — 0584ba9
 
 #### Manual
 
-- [x] 2.6 In Studio (http://127.0.0.1:55323) the three tables show RLS enabled
+- [x] 2.6 In Studio (http://127.0.0.1:55323) the three tables show RLS enabled — 0584ba9
 
 ### Phase 3: Onboarding
 
 #### Automated
 
-- [ ] 3.1 Lint passes: `npm run lint`
-- [ ] 3.2 Production build passes: `npm run build`
-- [ ] 3.3 RLS tests still pass: `npx supabase test db`
+- [x] 3.1 Lint passes: `npm run lint`
+- [x] 3.2 Production build passes: `npm run build`
+- [x] 3.3 RLS tests still pass: `npx supabase test db`
 
 #### Manual
 
-- [ ] 3.4 A newly confirmed user signing in is sent to `/onboarding/name`; the screen matches Figma node `164:172` (translated copy)
-- [ ] 3.5 Saving the name opens `/onboarding/profile`, matching node `162:73`; Back returns to the name step pre-filled
-- [ ] 3.6 Type cards switch the chips; a chip fills the name; the heading updates as you type; the selected swatch shows the initial
-- [ ] 3.7 An empty name or a 41-character name shows a field error; nothing is saved
-- [ ] 3.8 Creating the profile lands on `/?profile=<id>`; revisiting `/onboarding/name` afterwards redirects to `/`
-- [ ] 3.9 Both steps are usable at 375 px
+- [x] 3.4 A newly confirmed user signing in is sent to `/onboarding/name`; the screen matches Figma node `164:172` (translated copy)
+- [x] 3.5 Saving the name opens `/onboarding/profile`, matching node `162:73`; Back returns to the name step pre-filled
+- [x] 3.6 Type cards switch the chips; a chip fills the name; the heading updates as you type; the selected swatch shows the initial
+- [x] 3.7 An empty name or a 41-character name shows a field error; nothing is saved
+- [x] 3.8 Creating the profile lands on `/?profile=<id>`; revisiting `/onboarding/name` afterwards redirects to `/`
+- [x] 3.9 Both steps are usable at 375 px
 
 ### Phase 4: Main screen and switching
 
