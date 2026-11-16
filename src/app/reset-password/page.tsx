@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import { authHeadingClass } from "@/app/(auth)/_components/text-field";
 import { AuthCard } from "@/app/_components/auth-card";
 import { getCurrentUser } from "@/lib/auth/dal";
 import { ResetPasswordForm } from "./_components/reset-password-form";
@@ -14,11 +15,9 @@ export const metadata: Metadata = { title: "Choose a new password · Out of Pill
 export default function ResetPasswordPage() {
   return (
     <AuthCard>
-      <div className="flex flex-col gap-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Choose a new password
-        </h1>
-        <Suspense fallback={<p className="text-sm text-zinc-500">Loading…</p>}>
+      <div className="flex flex-col gap-4">
+        <h1 className={authHeadingClass}>Choose a new password</h1>
+        <Suspense fallback={<p className="text-sm text-muted-foreground">Loading…</p>}>
           <SignedInResetForm />
         </Suspense>
       </div>

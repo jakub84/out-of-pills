@@ -2,6 +2,8 @@
 
 A web app where caregivers track how many pills are left per profile and when each medication runs out. Built with Next.js 16 and Supabase.
 
+After signing up, onboarding asks for your first name and a first profile (the person whose medications you look after). The main screen lists your profiles in a sidebar: switch between them or add more with "+ Add new".
+
 ## Local setup
 
 Requirements: Node.js and Docker Desktop (running) for the local Supabase stack.
@@ -36,6 +38,28 @@ Requirements: Node.js and Docker Desktop (running) for the local Supabase stack.
 
 Stop the stack with `npx supabase stop`.
 
+## Database
+
+Schema changes live in `supabase/migrations/` as timestamped SQL files. Every table enables Row Level Security in the migration that creates it.
+
+```bash
+npx supabase migration new <name>   # create supabase/migrations/<timestamp>_<name>.sql
+npx supabase db reset               # rebuild the local database from all migrations
+npx supabase test db                # run the pgTAP tests in supabase/tests/database/
+npm run db:types                    # regenerate src/lib/supabase/database.types.ts
+```
+
+`npm run db:types` reads the local stack, so run `npx supabase start` first. With the stack down the CLI writes its error into the file instead, so check that the file starts with `export type`.
+
+Release order for a PR that adds a migration:
+
+1. Verify locally: `npx supabase db reset`, `npx supabase test db`, `npm run db:types`.
+2. Push it to the cloud project: `npx supabase db push --remote` (run it with `--dry-run` first; without `--remote` CLI 3 targets the local stack). Previews and staging use the production database.
+3. Check the PR preview.
+4. Merge.
+
+Migrations must be additive (new tables, columns, policies): the production build keeps running against the new schema until the merge deploys. Never edit a migration that has been pushed; add a new one.
+
 ## Production (Supabase cloud)
 
 Auth in production mirrors `supabase/config.toml`. Set up once in the Supabase and Resend dashboards; no secrets live in this repo.
@@ -43,7 +67,7 @@ Auth in production mirrors `supabase/config.toml`. Set up once in the Supabase a
 1. **Project** — free-plan project `out-of-pills` in an EU region. Link the CLI so migrations can be pushed later:
 
    ```bash
-   npx supabase link --project-ref <project-ref>
+   npx supabase link --project-ref <project-ref>   # the id in the dashboard URL: supabase.com/dashboard/project/<project-ref>
    ```
 
 2. **Authentication → Sign In / Providers → Email** — email provider on, *Confirm email* on, minimum password length `8`, password requirements *letters and digits*.

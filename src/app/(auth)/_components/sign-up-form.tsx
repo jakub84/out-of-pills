@@ -2,11 +2,13 @@
 
 import { useActionState } from "react";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { signUp } from "../actions";
 import { initialAuthFormState } from "@/lib/auth/form-state";
 import { PASSWORD_MIN_LENGTH } from "@/lib/auth/validation";
 import { ResendLinkForm } from "./resend-link-form";
-import { primaryButtonClass, TextField } from "./text-field";
+import { authHeadingClass, TextField } from "./text-field";
 
 export function SignUpForm() {
   const [state, formAction, isPending] = useActionState(signUp, initialAuthFormState);
@@ -14,12 +16,10 @@ export function SignUpForm() {
   if (state.status === "success" && state.email) {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Check your email
-        </h1>
-        <p className="text-base text-zinc-600 dark:text-zinc-400">
+        <h1 className={authHeadingClass}>Check your email</h1>
+        <p className="text-sm text-muted-foreground">
           {state.message}. We sent a link to{" "}
-          <span className="font-medium text-zinc-900 dark:text-zinc-50">{state.email}</span>.
+          <span className="font-medium text-foreground">{state.email}</span>.
         </p>
         <ResendLinkForm email={state.email} />
       </div>
@@ -27,16 +27,14 @@ export function SignUpForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Create your account
-        </h1>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h1 className={authHeadingClass}>Create your account</h1>
+        <p className="text-sm text-muted-foreground">
           Track how many pills are left and when each medication runs out.
         </p>
       </div>
-      <form action={formAction} className="flex flex-col gap-4">
+      <form action={formAction} className="flex flex-col gap-6">
         <TextField
           name="email"
           label="Email"
@@ -57,13 +55,13 @@ export function SignUpForm() {
           error={state.fieldErrors?.password}
         />
         {state.status === "error" && state.message ? (
-          <p role="alert" className="text-sm text-red-700 dark:text-red-400">
-            {state.message}
-          </p>
+          <Alert variant="destructive">
+            <AlertDescription>{state.message}</AlertDescription>
+          </Alert>
         ) : null}
-        <button type="submit" disabled={isPending} className={primaryButtonClass}>
+        <Button type="submit" size="lg" disabled={isPending} className="mt-2 w-full">
           {isPending ? "Creating account…" : "Create account"}
-        </button>
+        </Button>
       </form>
     </div>
   );

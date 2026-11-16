@@ -3,7 +3,9 @@
 import { useActionState } from "react";
 
 import { updatePassword } from "@/app/(auth)/actions";
-import { primaryButtonClass, TextField } from "@/app/(auth)/_components/text-field";
+import { TextField } from "@/app/(auth)/_components/text-field";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { initialAuthFormState } from "@/lib/auth/form-state";
 import { PASSWORD_MIN_LENGTH } from "@/lib/auth/validation";
 
@@ -11,9 +13,9 @@ export function ResetPasswordForm({ email }: { email: string }) {
   const [state, formAction, isPending] = useActionState(updatePassword, initialAuthFormState);
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
-      <p className="min-w-0 break-all text-sm text-zinc-600 dark:text-zinc-400">
-        For <span className="font-medium text-zinc-900 dark:text-zinc-50">{email}</span>
+    <form action={formAction} className="flex flex-col gap-6">
+      <p className="min-w-0 break-all text-sm text-muted-foreground">
+        For <span className="font-medium text-foreground">{email}</span>
       </p>
       {/* Lets password managers attach the new password to the right account. */}
       <input type="hidden" name="username" autoComplete="username" value={email} />
@@ -37,13 +39,13 @@ export function ResetPasswordForm({ email }: { email: string }) {
         error={state.fieldErrors?.confirmPassword}
       />
       {state.status === "error" && state.message ? (
-        <p role="alert" className="text-sm text-red-700 dark:text-red-400">
-          {state.message}
-        </p>
+        <Alert variant="destructive">
+          <AlertDescription>{state.message}</AlertDescription>
+        </Alert>
       ) : null}
-      <button type="submit" disabled={isPending} className={primaryButtonClass}>
+      <Button type="submit" size="lg" disabled={isPending} className="mt-2 w-full">
         {isPending ? "Saving…" : "Save new password"}
-      </button>
+      </Button>
     </form>
   );
 }

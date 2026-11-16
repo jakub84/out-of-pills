@@ -2,9 +2,11 @@
 
 import { useActionState } from "react";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { requestPasswordReset } from "../actions";
 import { initialAuthFormState } from "@/lib/auth/form-state";
-import { primaryButtonClass, TextField } from "./text-field";
+import { authHeadingClass, TextField } from "./text-field";
 
 export function ForgotPasswordForm() {
   const [state, formAction, isPending] = useActionState(
@@ -15,10 +17,8 @@ export function ForgotPasswordForm() {
   if (state.status === "success") {
     return (
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Check your email
-        </h1>
-        <p role="status" className="text-base text-zinc-600 dark:text-zinc-400">
+        <h1 className={authHeadingClass}>Check your email</h1>
+        <p role="status" className="text-sm text-muted-foreground">
           {state.message}.
         </p>
       </div>
@@ -26,16 +26,14 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-          Forgot your password?
-        </h1>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <h1 className={authHeadingClass}>Forgot your password?</h1>
+        <p className="text-sm text-muted-foreground">
           Enter your email and we will send you a link to choose a new password.
         </p>
       </div>
-      <form action={formAction} className="flex flex-col gap-4">
+      <form action={formAction} className="flex flex-col gap-6">
         <TextField
           name="email"
           label="Email"
@@ -46,13 +44,13 @@ export function ForgotPasswordForm() {
           error={state.fieldErrors?.email}
         />
         {state.status === "error" && state.message ? (
-          <p role="alert" className="text-sm text-red-700 dark:text-red-400">
-            {state.message}
-          </p>
+          <Alert variant="destructive">
+            <AlertDescription>{state.message}</AlertDescription>
+          </Alert>
         ) : null}
-        <button type="submit" disabled={isPending} className={primaryButtonClass}>
+        <Button type="submit" size="lg" disabled={isPending} className="mt-2 w-full">
           {isPending ? "Sending…" : "Send reset link"}
-        </button>
+        </Button>
       </form>
     </div>
   );
