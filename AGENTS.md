@@ -43,7 +43,7 @@ Out of Pills is a web app where caregivers track how many pills are left per pro
 - `npx supabase db reset` — rebuild the local database from all migrations.
 - `npx supabase test db` — run the pgTAP tests in `supabase/tests/database/`.
 - `npm run db:types` — regenerate `src/lib/supabase/database.types.ts` from the local database (stack must be running; check the file starts with `export type`).
-- Migration release order: verify locally (`db reset`, `test db`, `db:types`) → `npx supabase db push` → check the PR preview → merge. Additive migrations only.
+- Migration release order: verify locally (`db reset`, `test db`, `db:types`) → `npx supabase db push --remote` (CLI 3 targets the local stack without `--remote`; `--dry-run` first) → check the PR preview → merge. Additive migrations only.
 
 No JavaScript test runner exists yet; database tests run with `npx supabase test db`. CI is `.github/workflows/ci.yml`: every PR runs `Lint and build` and gets a Vercel preview (URL commented on the PR); a merge to `master` deploys staging automatically, then production after approval in the `production` environment. Vercel deploys only from Actions (`vercel.json` disables Git deploys); Node is pinned by `engines.node` in `package.json`.
 

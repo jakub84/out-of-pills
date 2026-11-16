@@ -54,7 +54,7 @@ npm run db:types                    # regenerate src/lib/supabase/database.types
 Release order for a PR that adds a migration:
 
 1. Verify locally: `npx supabase db reset`, `npx supabase test db`, `npm run db:types`.
-2. Push it to the cloud project: `npx supabase db push` (previews and staging use the production database).
+2. Push it to the cloud project: `npx supabase db push --remote` (run it with `--dry-run` first; without `--remote` CLI 3 targets the local stack). Previews and staging use the production database.
 3. Check the PR preview.
 4. Merge.
 
@@ -67,7 +67,7 @@ Auth in production mirrors `supabase/config.toml`. Set up once in the Supabase a
 1. **Project** — free-plan project `out-of-pills` in an EU region. Link the CLI so migrations can be pushed later:
 
    ```bash
-   npx supabase link --project-ref <project-ref>
+   npx supabase link --project-ref <project-ref>   # the id in the dashboard URL: supabase.com/dashboard/project/<project-ref>
    ```
 
 2. **Authentication → Sign In / Providers → Email** — email provider on, *Confirm email* on, minimum password length `8`, password requirements *letters and digits*.
