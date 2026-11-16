@@ -18,7 +18,6 @@ import {
   initialMedicationFormState,
   type MedicationFormState,
 } from "@/lib/medications/form-state";
-import { todayInWarsaw } from "@/lib/medications/stock";
 import {
   validateMedication,
   type MedicationField,
@@ -39,13 +38,19 @@ import { MedicationReviewStep } from "./medication-review-step";
 type AddMedicationDialogProps = {
   profileId: string;
   profileName: string;
+  /**
+   * Today in Warsaw (YYYY-MM-DD) from the server, like the database's `counted_on`.
+   * Never the browser clock: a fast device clock would push the previewed
+   * run-out date later than the real one.
+   */
+  today: string;
 };
 
 const STEPS = ["Medication details", "Review & confirm"] as const;
 const FIELD_ORDER: MedicationField[] = ["name", "packageSize", "pillsLeft", "dailyDose"];
 
 /** "Add medication" button and the two-step dialog (mocks 177:601, 182:300). */
-export function AddMedicationDialog({ profileId, profileName }: AddMedicationDialogProps) {
+export function AddMedicationDialog({ profileId, profileName, today }: AddMedicationDialogProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -67,6 +72,7 @@ export function AddMedicationDialog({ profileId, profileName }: AddMedicationDia
         <AddMedicationWizard
           profileId={profileId}
           profileName={profileName}
+          today={today}
           onSaved={() => setOpen(false)}
         />
       </DialogContent>
@@ -77,13 +83,12 @@ export function AddMedicationDialog({ profileId, profileName }: AddMedicationDia
 function AddMedicationWizard({
   profileId,
   profileName,
+  today,
   onSaved,
 }: AddMedicationDialogProps & { onSaved: () => void }) {
   const [step, setStep] = useState<1 | 2>(1);
   const [draft, setDraft] = useState<MedicationDraft>(initialDraft);
   const [errors, setErrors] = useState<MedicationFieldErrors>({});
-  // The preview counts from today (Warsaw), like the database's `counted_on`.
-  const [today] = useState(() => todayInWarsaw());
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const baseId = useId();

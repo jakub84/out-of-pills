@@ -46,6 +46,8 @@ export async function addMedication(
   });
 
   if (error) {
+    // Keep the failure visible in the server logs; the user only sees the generic message.
+    console.error("addMedication insert failed", error);
     return { status: "error", message: GENERIC_ERROR };
   }
 

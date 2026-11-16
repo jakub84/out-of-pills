@@ -74,7 +74,7 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
   const groups = groupByUrgency(items);
   const runningOut = groups.red.length;
 
-  const addButton = <AddMedicationDialog profileId={selected.id} profileName={selected.name} />;
+  const addButton = <AddMedicationDialog profileId={selected.id} profileName={selected.name} today={today} />;
 
   return (
     <div className="flex flex-col gap-12">
