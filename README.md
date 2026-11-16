@@ -49,9 +49,24 @@ Auth in production mirrors `supabase/config.toml`. Set up once in the Supabase a
 2. **Authentication → Sign In / Providers → Email** — email provider on, *Confirm email* on, minimum password length `8`, password requirements *letters and digits*.
 3. **Authentication → Emails → Templates** — paste `supabase/templates/confirmation.html` into *Confirm signup* and `supabase/templates/recovery.html` into *Reset password* (subjects as in `config.toml`). Both link to `/auth/confirm` with a `token_hash`.
 4. **SMTP via Resend** — verify your domain in Resend (SPF/DKIM DNS records) and create an API key. In **Authentication → Emails → SMTP Settings** enable custom SMTP: host `smtp.resend.com`, port `465`, username `resend`, password = the Resend API key, sender `no-reply@<your-domain>`, sender name `Out of Pills`. The API key stays in the Supabase dashboard only.
-5. **URLs (after the deploy pipeline exists)** — **Authentication → URL Configuration**: Site URL = production URL; Redirect URLs include `<production-url>/**`. In Vercel set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the cloud project (**Project Settings → API Keys**).
+5. **URLs** — **Authentication → URL Configuration**: Site URL = the production URL (`https://<project>.vercel.app`, see [Deploying](#deploying)); Redirect URLs include `<production-url>/**` (keep `http://localhost:3000/**`). The Vercel env vars come from this project too, see [Deploying](#deploying).
 
 Free-plan projects pause after about a week without activity. Resume from the project page in the Supabase dashboard (**Restore project**); the app returns errors until it is running again.
+
+## Deploying
+
+GitHub Actions (`.github/workflows/ci.yml`) is the only deployer; Vercel's Git integration is off (`vercel.json`).
+
+- **Pull request to `master`** — the `Lint and build` check runs, then a Vercel preview is deployed and its URL is posted as a PR comment (updated in place on every push). `master` only accepts PRs with a green check.
+- **Merge to `master`** — `Lint and build` runs again and staging (a Vercel preview build of `master`) deploys automatically; its URL is in the run summary.
+- **Production** — the `production` job waits for **Review deployments → Approve** on the run in the Actions tab, then deploys to `https://<project>.vercel.app`. Only the newest pending run can be approved.
+
+Setup (once):
+
+- GitHub secrets: `VERCEL_TOKEN` (Vercel personal token), `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (from `.vercel/project.json` after `vercel link`). GitHub Environment `production` with you as required reviewer, limited to `master`.
+- Vercel env vars for **Production** and **Preview**: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` from the Supabase cloud project (**Project Settings → API Keys**). Deployment protection for previews off, so previews open on a phone without a Vercel login.
+
+Previews and staging use the production Supabase project: you sign in with real accounts, and email links (confirm sign-up, reset password) always open the production URL.
 
 ## Checks
 
