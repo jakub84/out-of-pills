@@ -261,20 +261,20 @@ Merge the pipeline PR, approve the first production deploy, protect `master`, po
 
 #### Automated
 
-- [x] 1.1 Repo is public: `gh repo view --json visibility` returns `PUBLIC`
-- [x] 1.2 Default branch is `master` and no `main` branch exists: `gh repo view --json defaultBranchRef` returns `master`; `git ls-remote --heads origin main` is empty
-- [x] 1.3 `master` on GitHub contains S-01: `git merge-base --is-ancestor f43a10a origin/master`
+- [x] 1.1 Repo is public: `gh repo view --json visibility` returns `PUBLIC` — b3145fa
+- [x] 1.2 Default branch is `master` and no `main` branch exists: `gh repo view --json defaultBranchRef` returns `master`; `git ls-remote --heads origin main` is empty — b3145fa
+- [x] 1.3 `master` on GitHub contains S-01: `git merge-base --is-ancestor f43a10a origin/master` — b3145fa
 
 #### Manual
 
-- [x] 1.4 The S-01 PR shows as merged on GitHub and the repo page renders the README
+- [x] 1.4 The S-01 PR shows as merged on GitHub and the repo page renders the README — b3145fa
 
 ### Phase 2: Pipeline on a pull request
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `npm run lint`
-- [ ] 2.2 Production build passes: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint`
+- [x] 2.2 Production build passes: `npm run build`
 - [ ] 2.3 On the PR, the `Lint and build` check is green: `gh pr checks`
 - [ ] 2.4 On the PR, the `preview` job succeeds
 

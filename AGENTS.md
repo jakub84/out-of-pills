@@ -31,7 +31,7 @@ Out of Pills is a web app where caregivers track how many pills are left per pro
 - `npm run build` — production build; must pass before a PR.
 - `npm run lint` — ESLint; must pass before a PR.
 
-No test runner or CI workflow exists yet; GitHub Actions with auto-deploy to Vercel on merge to `main` is planned.
+No test runner exists yet. CI is `.github/workflows/ci.yml`: every PR runs `Lint and build` and gets a Vercel preview (URL commented on the PR); a merge to `master` deploys staging automatically, then production after approval in the `production` environment. Vercel deploys only from Actions (`vercel.json` disables Git deploys); Node is pinned by `engines.node` in `package.json`.
 
 ## Coding Style
 
@@ -43,4 +43,5 @@ No test runner or CI workflow exists yet; GitHub Actions with auto-deploy to Ver
 ## Commits & Pull Requests
 
 - Commit subjects: imperative, sentence case, no type prefix (e.g. `Add tech stack selection: Next.js + Supabase on Vercel`).
-- Branches: `<area>/<slug>` (e.g. `setup/init-app`); open PRs against `main`.
+- Branches: `<area>/<slug>` (e.g. `setup/init-app`); open PRs against `master`.
+- `master` accepts changes only through a PR with a green `Lint and build` check (don't rename that job). Production deploys need a manual approval in GitHub Actions.
