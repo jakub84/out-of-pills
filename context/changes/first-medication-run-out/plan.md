@@ -388,17 +388,17 @@ Replace the empty state with the summary, tiles and grouped cards from mock `176
 
 #### Automated
 
-- [x] 4.1 Unit tests pass: `npm test`
-- [x] 4.2 Lint passes: `npm run lint`
-- [x] 4.3 Production build passes: `npm run build`
-- [x] 4.4 RLS tests still pass: `npx supabase test db`
-- [ ] 4.5 On the PR, `Lint and build` (now including `npm test`) and `preview` succeed: `gh pr checks`
+- [x] 4.1 Unit tests pass: `npm test` — 9562751
+- [x] 4.2 Lint passes: `npm run lint` — 9562751
+- [x] 4.3 Production build passes: `npm run build` — 9562751
+- [x] 4.4 RLS tests still pass: `npx supabase test db` — 9562751
+- [x] 4.5 On the PR, `Lint and build` (now including `npm test`) and `preview` succeed: `gh pr checks` — 9562751
 
 #### Manual
 
-- [x] 4.6 With medications at 9, 14, 15, 30, 31 and 0 days left, groups, colours, tile counts and order match the rule; the ran-out card is first
-- [x] 4.7 The overview matches the S-03 parts of mock `176:226` (summary, tiles, grouped cards, bar) in English, without "+ Add package" and "⋯"
-- [x] 4.8 Adding a medication through the dialog shows it in the right group immediately; switching profiles shows each profile's own list
-- [x] 4.9 At 375 px tiles and cards stack and stay readable
-- [ ] 4.10 Before the PR opened, `npx supabase db push --remote` applied the migration (dashboard shows `medications` with RLS on)
-- [ ] 4.11 On the PR preview, a real account can add a medication and see its run-out date
+- [x] 4.6 With medications at 9, 14, 15, 30, 31 and 0 days left, groups, colours, tile counts and order match the rule; the ran-out card is first — 9562751
+- [x] 4.7 The overview matches the S-03 parts of mock `176:226` (summary, tiles, grouped cards, bar) in English, without "+ Add package" and "⋯" — 9562751
+- [x] 4.8 Adding a medication through the dialog shows it in the right group immediately; switching profiles shows each profile's own list — 9562751
+- [x] 4.9 At 375 px tiles and cards stack and stay readable — 9562751
+- [x] 4.10 Before the PR opened, `npx supabase db push --remote` applied the migration (dashboard shows `medications` with RLS on)
+- [x] 4.11 On the PR preview, a real account can add a medication and see its run-out date
