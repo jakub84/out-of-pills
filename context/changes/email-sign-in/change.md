@@ -1,9 +1,9 @@
 ---
 change_id: email-sign-in
 title: Sign up and sign in with email and password
-status: implementing
+status: implemented
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-16
 archived_at: null
 ---
 

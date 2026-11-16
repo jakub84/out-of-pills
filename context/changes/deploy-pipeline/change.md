@@ -1,7 +1,7 @@
 ---
 change_id: deploy-pipeline
 title: Deploy pipeline
-status: implementing
+status: implemented
 created: 2026-11-16
 updated: 2026-11-16
 archived_at: null
