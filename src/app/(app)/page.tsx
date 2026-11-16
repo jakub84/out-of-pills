@@ -1,34 +1,19 @@
-import { AlarmClockCheck, ClockAlert, MessageCircleWarning } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { AddMedicationDialog } from "@/components/medications/add-medication-dialog";
+import type { OverviewItem } from "@/components/medications/medication-card";
+import {
+  MedicationGroups,
+  NoMedications,
+  RunOutTiles,
+} from "@/components/medications/medication-overview";
 import { Skeleton } from "@/components/ui/skeleton";
+import { listMedications } from "@/lib/medications/dal";
+import { computeStock, groupByUrgency, todayInWarsaw } from "@/lib/medications/stock";
 import { getCaregiver, listProfiles, type Profile } from "@/lib/profiles/dal";
-
-/** "What's running out?" tiles (mock 176:460 / 176:456 / 176:464); thresholds per FR-015. */
-const RUN_OUT_TILES = [
-  {
-    label: "14 days or less",
-    count: 2,
-    Icon: MessageCircleWarning,
-    className: "border-urgency-red text-urgency-red",
-  },
-  {
-    label: "30 days or less",
-    count: 4,
-    Icon: ClockAlert,
-    className: "border-urgency-yellow text-urgency-yellow",
-  },
-  {
-    label: "More than 30 days",
-    count: 9,
-    Icon: AlarmClockCheck,
-    className: "border-urgency-green text-urgency-green",
-  },
-];
 
 /** An unknown, malformed or foreign id falls back to the oldest profile (RLS hides foreign rows). */
 function selectProfile(profiles: Profile[], requested: string | string[] | undefined) {
@@ -41,7 +26,7 @@ export async function generateMetadata({ searchParams }: PageProps<"/">): Promis
   return { title: selected ? `${selected.name} · Out of Pills` : "Out of Pills" };
 }
 
-/** Main screen (mock 176:226, S-02 parts): the selected profile and its medication stock. */
+/** Main screen (mock 176:226): the selected profile and its medication stock. */
 export default function Home({ searchParams }: PageProps<"/">) {
   return (
     <div className="relative w-full">
@@ -77,6 +62,20 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
   const { profile: requested } = await searchParams;
   const selected = selectProfile(profiles, requested);
 
+  const medications = await listMedications(selected.id);
+  const today = todayInWarsaw();
+  const items: OverviewItem[] = medications.map((medication) => ({
+    id: medication.id,
+    name: medication.name,
+    dailyDose: medication.dailyDose,
+    stock: computeStock(medication, today),
+  }));
+  // Each group comes back sorted by compareByRunOut, ran-out items first in red.
+  const groups = groupByUrgency(items);
+  const runningOut = groups.red.length;
+
+  const addButton = <AddMedicationDialog profileId={selected.id} profileName={selected.name} />;
+
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-3">
@@ -86,41 +85,17 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
         <h1 className="font-heading text-4xl font-normal break-words text-foreground sm:text-[54px]">
           Profile: <span className="text-primary">{selected.name}</span>
         </h1>
-        {/* Placeholder copy from mock 176:346; Phase 4 replaces it with real figures. */}
         <div className="flex flex-col gap-3 text-sm leading-[18px] text-brand-subtle">
           <p>
-            Last signed in: <span className="font-bold">24</span> days ago
+            Total medications: <span className="font-extrabold">{items.length}</span>
           </p>
-          <p>
-            Total medications: <span className="font-extrabold">12</span>
-          </p>
-          <p className="font-extrabold">2 are running out!</p>
+          {runningOut > 0 ? (
+            <p className="font-extrabold text-urgency-red">{runningOut} running out!</p>
+          ) : null}
         </div>
       </div>
 
-      <section aria-labelledby="running-out-heading" className="flex flex-col gap-5">
-        <h2
-          id="running-out-heading"
-          className="font-heading text-2xl font-normal text-foreground sm:text-[32px]"
-        >
-          What&apos;s running out?
-        </h2>
-        {/* Placeholder counts from mock 176:226; Phase 4 computes them from the medications. */}
-        <ul className="flex flex-wrap gap-4 sm:gap-[30px]">
-          {RUN_OUT_TILES.map(({ label, count, Icon, className }) => (
-            <li
-              key={label}
-              className={`flex w-[153px] flex-col items-center gap-[5px] rounded-[16px] border border-dashed bg-card pt-3 pb-2.5 ${className}`}
-            >
-              <Icon className="size-6" aria-hidden />
-              <span className="font-heading text-2xl leading-6 font-bold text-foreground">
-                {count}
-              </span>
-              <span className="text-sm leading-6 text-brand-subtle">{label}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {items.length > 0 ? <RunOutTiles groups={groups} /> : null}
 
       <section aria-labelledby="medication-stock-heading" className="flex flex-col gap-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -128,11 +103,16 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
             id="medication-stock-heading"
             className="font-heading text-2xl font-normal text-foreground sm:text-[32px]"
           >
-            Medication stock <span className="text-xl font-light text-brand-subtle">(0)</span>
+            Medication stock{" "}
+            <span className="text-xl font-light text-brand-subtle">({items.length})</span>
           </h2>
-          <AddMedicationDialog profileId={selected.id} profileName={selected.name} />
+          {items.length > 0 ? addButton : null}
         </div>
-        <p className="text-base text-brand-subtle">No medications yet.</p>
+        {items.length > 0 ? (
+          <MedicationGroups groups={groups} />
+        ) : (
+          <NoMedications action={addButton} />
+        )}
       </section>
     </div>
   );

@@ -371,34 +371,34 @@ Replace the empty state with the summary, tiles and grouped cards from mock `176
 
 #### Automated
 
-- [x] 3.1 Unit tests pass: `npm test`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Production build passes: `npm run build`
-- [x] 3.4 RLS tests still pass: `npx supabase test db`
+- [x] 3.1 Unit tests pass: `npm test` — c87feff
+- [x] 3.2 Lint passes: `npm run lint` — c87feff
+- [x] 3.3 Production build passes: `npm run build` — c87feff
+- [x] 3.4 RLS tests still pass: `npx supabase test db` — c87feff
 
 #### Manual
 
-- [x] 3.5 The dialog matches mocks `177:601` / `182:300` in English (minus form cards, schedule cards and slider)
-- [x] 3.6 Entering "Bisocard 5 mg", package 30, left 18, 2 per day previews "Lasts 9 days · until <today + 8>"; review shows the same; Save closes the dialog and a row appears in Studio under the selected profile with `counted_on` = today
-- [x] 3.7 Changing the package chip moves "left now" until it is edited by hand; "Full package" / "2 packages" chips fill it; "Change" on the review step returns to the right field
-- [x] 3.8 Empty name, package 0, dose 0 or 0.3 show field errors and nothing is saved
-- [x] 3.9 Usable at 375 px and with keyboard only
+- [x] 3.5 The dialog matches mocks `177:601` / `182:300` in English (minus form cards, schedule cards and slider) — c87feff
+- [x] 3.6 Entering "Bisocard 5 mg", package 30, left 18, 2 per day previews "Lasts 9 days · until <today + 8>"; review shows the same; Save closes the dialog and a row appears in Studio under the selected profile with `counted_on` = today — c87feff
+- [x] 3.7 Changing the package chip moves "left now" until it is edited by hand; "Full package" / "2 packages" chips fill it; "Change" on the review step returns to the right field — c87feff
+- [x] 3.8 Empty name, package 0, dose 0 or 0.3 show field errors and nothing is saved — c87feff
+- [x] 3.9 Usable at 375 px and with keyboard only — c87feff
 
 ### Phase 4: Medication overview and release
 
 #### Automated
 
-- [ ] 4.1 Unit tests pass: `npm test`
-- [ ] 4.2 Lint passes: `npm run lint`
-- [ ] 4.3 Production build passes: `npm run build`
-- [ ] 4.4 RLS tests still pass: `npx supabase test db`
+- [x] 4.1 Unit tests pass: `npm test`
+- [x] 4.2 Lint passes: `npm run lint`
+- [x] 4.3 Production build passes: `npm run build`
+- [x] 4.4 RLS tests still pass: `npx supabase test db`
 - [ ] 4.5 On the PR, `Lint and build` (now including `npm test`) and `preview` succeed: `gh pr checks`
 
 #### Manual
 
-- [ ] 4.6 With medications at 9, 14, 15, 30, 31 and 0 days left, groups, colours, tile counts and order match the rule; the ran-out card is first
-- [ ] 4.7 The overview matches the S-03 parts of mock `176:226` (summary, tiles, grouped cards, bar) in English, without "+ Add package" and "⋯"
-- [ ] 4.8 Adding a medication through the dialog shows it in the right group immediately; switching profiles shows each profile's own list
-- [ ] 4.9 At 375 px tiles and cards stack and stay readable
+- [x] 4.6 With medications at 9, 14, 15, 30, 31 and 0 days left, groups, colours, tile counts and order match the rule; the ran-out card is first
+- [x] 4.7 The overview matches the S-03 parts of mock `176:226` (summary, tiles, grouped cards, bar) in English, without "+ Add package" and "⋯"
+- [x] 4.8 Adding a medication through the dialog shows it in the right group immediately; switching profiles shows each profile's own list
+- [x] 4.9 At 375 px tiles and cards stack and stay readable
 - [ ] 4.10 Before the PR opened, `npx supabase db push --remote` applied the migration (dashboard shows `medications` with RLS on)
 - [ ] 4.11 On the PR preview, a real account can add a medication and see its run-out date

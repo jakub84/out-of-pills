@@ -2,10 +2,12 @@
 // `YYYY-MM-DD` Warsaw calendar days, formatted at UTC midnight so the viewer's
 // own time zone cannot shift the day.
 
-function dateParts(date: string, month: "short" | "long") {
+type DateStyle = "short" | "long";
+
+function dateParts(date: string, month: DateStyle, weekday: DateStyle = "short") {
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: "UTC",
-    weekday: "short",
+    weekday,
     day: "numeric",
     month,
   }).formatToParts(new Date(`${date}T00:00:00Z`));
@@ -24,6 +26,17 @@ export function formatShortDate(date: string): string {
 export function formatLongDate(date: string): string {
   const { weekday, day, month } = dateParts(date, "long");
   return `${weekday}, ${day} ${month}`;
+}
+
+/** "Friday, 13 November" */
+export function formatFullDate(date: string): string {
+  const { weekday, day, month } = dateParts(date, "long", "long");
+  return `${weekday}, ${day} ${month}`;
+}
+
+/** Parts of the card's date tile: { weekday: "Friday", day: "13", month: "November" }. */
+export function dateTileParts(date: string): { weekday: string; day: string; month: string } {
+  return dateParts(date, "long", "long");
 }
 
 /** Tablet count with halves as "1.5". */

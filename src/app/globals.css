@@ -55,6 +55,7 @@
   --color-urgency-yellow: var(--urgency-yellow);
   --color-urgency-green: var(--urgency-green);
   --color-urgency-track: var(--urgency-track);
+  --color-urgency-red-tint: var(--urgency-red-tint);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -123,6 +124,8 @@
   --urgency-yellow: #d39c37;
   --urgency-green: var(--primary);
   --urgency-track: #d9d9d9;
+  /* Ran-out card background: 8% red over the card colour. */
+  --urgency-red-tint: color-mix(in srgb, var(--urgency-red) 8%, var(--card));
 }
 
 @layer base {
