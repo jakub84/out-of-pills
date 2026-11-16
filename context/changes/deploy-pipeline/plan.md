@@ -275,8 +275,8 @@ Merge the pipeline PR, approve the first production deploy, protect `master`, po
 
 - [x] 2.1 Lint passes: `npm run lint`
 - [x] 2.2 Production build passes: `npm run build`
-- [ ] 2.3 On the PR, the `Lint and build` check is green: `gh pr checks`
-- [ ] 2.4 On the PR, the `preview` job succeeds
+- [x] 2.3 On the PR, the `Lint and build` check is green: `gh pr checks`
+- [x] 2.4 On the PR, the `preview` job succeeds
 
 #### Manual
 
