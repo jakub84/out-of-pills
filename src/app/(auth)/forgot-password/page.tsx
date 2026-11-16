@@ -10,10 +10,10 @@ export default function ForgotPasswordPage() {
   return (
     <div className="flex flex-col gap-6">
       <ForgotPasswordForm />
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted-foreground">
         Remembered it?{" "}
         <Link href="/sign-in" className={linkClass}>
-          Back to sign in
+          Back to log in
         </Link>
       </p>
     </div>

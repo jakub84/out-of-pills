@@ -10,10 +10,10 @@ export default function SignUpPage() {
   return (
     <div className="flex flex-col gap-6">
       <SignUpForm />
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
         <Link href="/sign-in" className={linkClass}>
-          Sign in
+          Log in
         </Link>
       </p>
     </div>

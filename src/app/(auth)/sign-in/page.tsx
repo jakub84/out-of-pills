@@ -2,26 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SignInForm } from "../_components/sign-in-form";
-import { linkClass } from "../_components/text-field";
+import { authHeadingClass, linkClass } from "../_components/text-field";
 
-export const metadata: Metadata = { title: "Sign in · Out of Pills" };
+export const metadata: Metadata = { title: "Log in · Out of Pills" };
 
 export default function SignInPage({ searchParams }: PageProps<"/sign-in">) {
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
-        Sign in
-      </h1>
+    <div className="flex flex-col gap-4">
+      <h1 className={authHeadingClass}>Log in to your account</h1>
       {/* searchParams is request data: keep it behind Suspense so the page shell stays static. */}
       <Suspense fallback={null}>
         <LinkErrorNotice searchParams={searchParams} />
       </Suspense>
       <SignInForm />
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        New to Out of Pills?{" "}
+      <p className="mt-2 text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{" "}
         <Link href="/sign-up" className={linkClass}>
-          Create an account
+          Sign up
         </Link>
       </p>
     </div>
@@ -37,14 +36,11 @@ async function LinkErrorNotice({
   if (error !== "link-invalid") return null;
 
   return (
-    <div
-      role="alert"
-      className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-900 dark:border-red-900 dark:bg-red-950 dark:text-red-100"
-    >
-      <p className="font-medium">This link is invalid or has expired.</p>
-      <p className="mt-1">
-        Sign in below — if your email is not confirmed yet, you can request a new link.
-      </p>
-    </div>
+    <Alert variant="destructive">
+      <AlertTitle>This link is invalid or has expired.</AlertTitle>
+      <AlertDescription>
+        Log in below — if your email is not confirmed yet, you can request a new link.
+      </AlertDescription>
+    </Alert>
   );
 }
