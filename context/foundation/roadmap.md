@@ -43,7 +43,7 @@ People taking many medications only notice they are running out when a medicatio
 | ---- | -------------------------- | ------------------------------------------------------------------------------------ | --------------------------------- | ------------------------------ | -------- |
 | F-01 | deploy-pipeline            | (foundation) every merge to `master` is linted, built and deployed to a public URL      | —                                 | NFRs (browsers), Access Control | done |
 | S-01 | email-sign-in              | sign up and sign in with email + password and land on an empty main screen           | —                                 | FR-001                         | done |
-| S-02 | create-and-switch-profiles | create profiles ("Mom", "Me") and switch between them on the main screen             | S-01                              | FR-003, FR-006                 | in-progress |
+| S-02 | create-and-switch-profiles | create profiles ("Mom", "Me") and switch between them on the main screen             | S-01                              | FR-003, FR-006                 | done |
 | S-03 | first-medication-run-out   | add a medication with a daily dosage and see pills left, run-out date, days left and urgency colour, sorted | S-02                  | US-01, FR-007, FR-014, FR-015  | proposed |
 | S-04 | google-sign-in             | sign in with a Google account                                                        | S-01, F-01                        | FR-002                         | proposed |
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
@@ -116,7 +116,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** First table holding user data — establishes the per-caregiver privacy rule (row-level security scoped to the signed-in user) that every later slice copies; getting it wrong here leaks health data.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-03: Caregiver adds a medication and sees when it runs out
 
@@ -253,3 +253,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 ## Done
 - **F-01: (foundation) every merge to `master` runs lint + build and deploys to a public URL; pull requests get a preview deployment.** — Archived 2026-11-16 → `context/archive/2026-11-16-deploy-pipeline/`. Lesson: —.
 - **S-01: user can sign up and sign in with email + password, sign out, and land on an empty main screen that only signed-in users can reach.** — Archived 2026-11-16 → `context/archive/2026-11-04-email-sign-in/`. Lesson: —.
+- **S-02: user can create several profiles (e.g. "Mom", "Dad", "Me") and switch between them using the profile list on the main screen.** — Archived 2026-11-16 → `context/archive/2026-11-16-create-and-switch-profiles/`. Lesson: —.
