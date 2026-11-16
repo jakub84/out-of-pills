@@ -356,33 +356,33 @@ Replace the empty state with the summary, tiles and grouped cards from mock `176
 
 #### Automated
 
-- [x] 2.1 Migration applies on a clean database: `npx supabase db reset`
-- [x] 2.2 RLS tests pass: `npx supabase test db`
-- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean
-- [x] 2.4 Unit tests pass: `npm test`
-- [x] 2.5 Lint passes: `npm run lint`
-- [x] 2.6 Production build passes: `npm run build`
+- [x] 2.1 Migration applies on a clean database: `npx supabase db reset` — fe5b583
+- [x] 2.2 RLS tests pass: `npx supabase test db` — fe5b583
+- [x] 2.3 Generated types are current: `npm run db:types` leaves `git status` clean — fe5b583
+- [x] 2.4 Unit tests pass: `npm test` — fe5b583
+- [x] 2.5 Lint passes: `npm run lint` — fe5b583
+- [x] 2.6 Production build passes: `npm run build` — fe5b583
 
 #### Manual
 
-- [x] 2.7 In Studio (http://127.0.0.1:55323) `medications` shows RLS enabled with select and insert policies only
+- [x] 2.7 In Studio (http://127.0.0.1:55323) `medications` shows RLS enabled with select and insert policies only — fe5b583
 
 ### Phase 3: Add medication dialog
 
 #### Automated
 
-- [ ] 3.1 Unit tests pass: `npm test`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Production build passes: `npm run build`
-- [ ] 3.4 RLS tests still pass: `npx supabase test db`
+- [x] 3.1 Unit tests pass: `npm test`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Production build passes: `npm run build`
+- [x] 3.4 RLS tests still pass: `npx supabase test db`
 
 #### Manual
 
-- [ ] 3.5 The dialog matches mocks `177:601` / `182:300` in English (minus form cards, schedule cards and slider)
-- [ ] 3.6 Entering "Bisocard 5 mg", package 30, left 18, 2 per day previews "Lasts 9 days · until <today + 8>"; review shows the same; Save closes the dialog and a row appears in Studio under the selected profile with `counted_on` = today
-- [ ] 3.7 Changing the package chip moves "left now" until it is edited by hand; "Full package" / "2 packages" chips fill it; "Change" on the review step returns to the right field
-- [ ] 3.8 Empty name, package 0, dose 0 or 0.3 show field errors and nothing is saved
-- [ ] 3.9 Usable at 375 px and with keyboard only
+- [x] 3.5 The dialog matches mocks `177:601` / `182:300` in English (minus form cards, schedule cards and slider)
+- [x] 3.6 Entering "Bisocard 5 mg", package 30, left 18, 2 per day previews "Lasts 9 days · until <today + 8>"; review shows the same; Save closes the dialog and a row appears in Studio under the selected profile with `counted_on` = today
+- [x] 3.7 Changing the package chip moves "left now" until it is edited by hand; "Full package" / "2 packages" chips fill it; "Change" on the review step returns to the right field
+- [x] 3.8 Empty name, package 0, dose 0 or 0.3 show field errors and nothing is saved
+- [x] 3.9 Usable at 375 px and with keyboard only
 
 ### Phase 4: Medication overview and release
 

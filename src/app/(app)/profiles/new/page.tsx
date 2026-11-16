@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Add a profile · Out of Pills" };
 /** Further profiles, opened from "+ Add new" in the sidebar; lands on the new profile. */
 export default function NewProfilePage() {
   return (
-    <div className="w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
+    <div className="mx-auto w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
       <div className="flex max-w-[760px] flex-col gap-8">
         <h1 className="font-heading text-4xl font-normal text-foreground sm:text-[54px]">
           Add a profile
