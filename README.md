@@ -4,6 +4,8 @@ A web app where caregivers track how many pills are left per profile and when ea
 
 After signing up, onboarding asks for your first name and a first profile (the person whose medications you look after). The main screen lists your profiles in a sidebar: switch between them or add more with "+ Add new".
 
+For each profile you add medications ("Add medication": name, package size, tablets left now, daily dose). The overview shows how many run out within 14 days (red), 30 days (yellow) or later (green), and lists the medications soonest-first with the date each one runs out. The date is counted in Europe/Warsaw days and always rounded to the earlier side; the calculation lives in `src/lib/medications/stock.ts` and is covered by unit tests.
+
 ## Local setup
 
 Requirements: Node.js and Docker Desktop (running) for the local Supabase stack.
@@ -96,5 +98,6 @@ Previews and staging use the production Supabase project: you sign in with real 
 
 ```bash
 npm run lint
+npm test        # Vitest unit tests (run-out calculation, validation)
 npm run build
 ```

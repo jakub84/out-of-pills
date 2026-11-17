@@ -44,7 +44,7 @@ People taking many medications only notice they are running out when a medicatio
 | F-01 | deploy-pipeline            | (foundation) every merge to `master` is linted, built and deployed to a public URL      | —                                 | NFRs (browsers), Access Control | done |
 | S-01 | email-sign-in              | sign up and sign in with email + password and land on an empty main screen           | —                                 | FR-001                         | done |
 | S-02 | create-and-switch-profiles | create profiles ("Mom", "Me") and switch between them on the main screen             | S-01                              | FR-003, FR-006                 | done |
-| S-03 | first-medication-run-out   | add a medication with a daily dosage and see pills left, run-out date, days left and urgency colour, sorted | S-02                  | US-01, FR-007, FR-014, FR-015  | proposed |
+| S-03 | first-medication-run-out   | add a medication with a daily dosage and see pills left, run-out date, days left and urgency colour, sorted | S-02                  | US-01, FR-007, FR-014, FR-015  | in-progress |
 | S-04 | google-sign-in             | sign in with a Google account                                                        | S-01, F-01                        | FR-002                         | proposed |
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
 | S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | proposed |
@@ -129,7 +129,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - Does the dose on the day the stock is entered count as already taken? The answer shifts the run-out date by one day; the PRD rule says to err on the early side. — Owner: user. Block: no.
 - **Risk:** Holds the core calculation the whole product depends on; it must always round toward the earlier date, so it gets the deepest verification of any slice.
-- **Status:** proposed
+- **Status:** in-progress
 
 ### S-04: Sign in with Google
 

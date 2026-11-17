@@ -37,6 +37,26 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"medications": {
+                  Row: {
+                    "counted_on": string,"created_at": string,"daily_dose": number,"id": string,"name": string,"package_size": number,"pills_counted": number,"profile_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "counted_on"?: string,"created_at"?: string,"daily_dose": number,"id"?: string,"name": string,"package_size": number,"pills_counted": number,"profile_id": string
+                  }
+                  Update: {
+                    "counted_on"?: string,"created_at"?: string,"daily_dose"?: number,"id"?: string,"name"?: string,"package_size"?: number,"pills_counted"?: number,"profile_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "medications_profile_id_fkey"
+      columns: ["profile_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profile_caregivers": {
                   Row: {
                     "created_at": string,"profile_id": string,"user_id": string
