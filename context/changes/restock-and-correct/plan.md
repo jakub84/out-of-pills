@@ -283,26 +283,26 @@ Two server actions in the existing form-state pattern, sharing one guarded updat
 
 #### Automated
 
-- [x] 1.1 Unit tests pass: `npm test`
-- [x] 1.2 Migration applies on a clean database: `npx supabase db reset`
-- [x] 1.3 RLS tests pass: `npx supabase test db`
-- [x] 1.4 Generated types are current: `npm run db:types` leaves `git status` clean
-- [x] 1.5 Lint passes: `npm run lint`
-- [x] 1.6 Production build passes: `npm run build`
+- [x] 1.1 Unit tests pass: `npm test` — 10a20fd
+- [x] 1.2 Migration applies on a clean database: `npx supabase db reset` — 10a20fd
+- [x] 1.3 RLS tests pass: `npx supabase test db` — 10a20fd
+- [x] 1.4 Generated types are current: `npm run db:types` leaves `git status` clean — 10a20fd
+- [x] 1.5 Lint passes: `npm run lint` — 10a20fd
+- [x] 1.6 Production build passes: `npm run build` — 10a20fd
 
 #### Manual
 
-- [x] 1.7 The worked examples in `stock.test.ts` match the decided rule (12 + 30 on 8 Nov → 28 Nov; correct to 7 → 10 Nov; ran out + 30 → 30)
-- [x] 1.8 In Studio (http://127.0.0.1:55323) `medications` shows select, insert and update policies
+- [x] 1.7 The worked examples in `stock.test.ts` match the decided rule (12 + 30 on 8 Nov → 28 Nov; correct to 7 → 10 Nov; ran out + 30 → 30) — 10a20fd
+- [x] 1.8 In Studio (http://127.0.0.1:55323) `medications` shows select, insert and update policies — 10a20fd
 
 ### Phase 2: Server actions
 
 #### Automated
 
-- [ ] 2.1 Unit tests pass: `npm test`
-- [ ] 2.2 RLS tests still pass: `npx supabase test db`
-- [ ] 2.3 Lint passes: `npm run lint`
-- [ ] 2.4 Production build passes: `npm run build`
+- [x] 2.1 Unit tests pass: `npm test`
+- [x] 2.2 RLS tests still pass: `npx supabase test db`
+- [x] 2.3 Lint passes: `npm run lint`
+- [x] 2.4 Production build passes: `npm run build`
 
 #### Manual
 

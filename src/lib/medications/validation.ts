@@ -1,6 +1,6 @@
 /**
- * Pure validation helpers for medications, shared by the add-medication wizard
- * (client) and the `addMedication` server action. Limits mirror the checks in
+ * Pure validation helpers for medications, shared by the client forms and the
+ * medication server actions. Limits mirror the checks in
  * `supabase/migrations/*_medications.sql`; safe to import from client components.
  */
 
@@ -10,6 +10,8 @@ export const PACKAGE_SIZE_MAX = 1000;
 export const PILLS_LEFT_MAX = 9999;
 export const DAILY_DOSE_MIN = 0.5;
 export const DAILY_DOSE_MAX = 50;
+export const PACKAGE_AMOUNT_MIN = 0.5;
+export const PACKAGE_AMOUNT_MAX = 1000;
 
 export type MedicationField = "name" | "packageSize" | "pillsLeft" | "dailyDose";
 export type MedicationFieldErrors = Partial<Record<MedicationField, string>>;
@@ -85,6 +87,25 @@ export function validateDailyDose(value: string): string | undefined {
     return `Use a number from ${DAILY_DOSE_MIN} to ${DAILY_DOSE_MAX}`;
   }
   if (!isHalfMultiple(amount)) return "Use whole or half tablets, e.g. 1 or 1.5";
+  return undefined;
+}
+
+/** Tablets added from a package: 0.5 to 1000, whole or half tablets. */
+export function validatePackageAmount(value: string): string | undefined {
+  if (!value.trim()) return "Enter how many tablets you added";
+  const amount = parseAmount(value);
+  if (amount === null || amount < PACKAGE_AMOUNT_MIN || amount > PACKAGE_AMOUNT_MAX) {
+    return `Use a number from ${PACKAGE_AMOUNT_MIN} to ${PACKAGE_AMOUNT_MAX}`;
+  }
+  if (!isHalfMultiple(amount)) return "Use whole or half tablets, e.g. 30 or 30.5";
+  return undefined;
+}
+
+/** The stock a restock would produce must still fit the 9999-tablet limit. */
+export function validateResultingCount(pillsCounted: number): string | undefined {
+  if (pillsCounted > PILLS_LEFT_MAX) {
+    return `That would be more than ${PILLS_LEFT_MAX} tablets`;
+  }
   return undefined;
 }
 
