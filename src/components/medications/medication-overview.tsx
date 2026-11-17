@@ -39,7 +39,7 @@ export function RunOutTiles({ groups }: { groups: UrgencyGroups }) {
 }
 
 /** Cards grouped red → yellow → green; empty groups are left out. */
-export function MedicationGroups({ groups }: { groups: UrgencyGroups }) {
+export function MedicationGroups({ groups, today }: { groups: UrgencyGroups; today: string }) {
   return (
     <div className="flex flex-col gap-10">
       {URGENCY_GROUPS.filter(({ key }) => groups[key].length > 0).map(
@@ -56,7 +56,7 @@ export function MedicationGroups({ groups }: { groups: UrgencyGroups }) {
             <ul className="flex flex-col gap-4">
               {groups[key].map((item) => (
                 <li key={item.id}>
-                  <MedicationCard item={item} />
+                  <MedicationCard item={item} today={today} />
                 </li>
               ))}
             </ul>

@@ -299,10 +299,10 @@ Two server actions in the existing form-state pattern, sharing one guarded updat
 
 #### Automated
 
-- [x] 2.1 Unit tests pass: `npm test`
-- [x] 2.2 RLS tests still pass: `npx supabase test db`
-- [x] 2.3 Lint passes: `npm run lint`
-- [x] 2.4 Production build passes: `npm run build`
+- [x] 2.1 Unit tests pass: `npm test` — 15ce7e9
+- [x] 2.2 RLS tests still pass: `npx supabase test db` — 15ce7e9
+- [x] 2.3 Lint passes: `npm run lint` — 15ce7e9
+- [x] 2.4 Production build passes: `npm run build` — 15ce7e9
 
 #### Manual
 
@@ -312,10 +312,10 @@ Two server actions in the existing form-state pattern, sharing one guarded updat
 
 #### Automated
 
-- [ ] 3.1 Unit tests pass: `npm test`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Production build passes: `npm run build`
-- [ ] 3.4 RLS tests still pass: `npx supabase test db`
+- [x] 3.1 Unit tests pass: `npm test`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Production build passes: `npm run build`
+- [x] 3.4 RLS tests still pass: `npx supabase test db`
 - [ ] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
 
 #### Manual
