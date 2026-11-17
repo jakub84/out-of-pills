@@ -126,6 +126,37 @@ export function computeStock(
   };
 }
 
+function toTabletHalves(tablets: number): number {
+  const halves = toHalves(tablets);
+  if (halves < 0) throw new RangeError("tablets must not be negative");
+  return halves;
+}
+
+/**
+ * New baseline after adding a package: today's tablets left plus `tablets`,
+ * counted today. Today's dose still comes out of the new count (today is day
+ * 1), so the date never moves later than the real one. A deficit from having
+ * run out is not carried over — pills left never go below zero.
+ */
+export function addPackage(input: StockInput, today: string, tablets: number): StockInput {
+  const addedHalves = toTabletHalves(tablets);
+  const leftHalves = toHalves(computeStock(input, today).pillsLeft);
+  return {
+    pillsCounted: (leftHalves + addedHalves) / 2,
+    countedOn: today,
+    dailyDose: input.dailyDose,
+  };
+}
+
+/** New baseline after a recount: exactly `tablets`, counted today. */
+export function correctCount(input: StockInput, today: string, tablets: number): StockInput {
+  return {
+    pillsCounted: toTabletHalves(tablets) / 2,
+    countedOn: today,
+    dailyDose: input.dailyDose,
+  };
+}
+
 function compareText(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }
