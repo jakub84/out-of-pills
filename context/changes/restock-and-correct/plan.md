@@ -306,7 +306,7 @@ Two server actions in the existing form-state pattern, sharing one guarded updat
 
 #### Manual
 
-- [ ] 2.5 Calling each action twice with the same expected baseline changes the stock once and returns the stale error the second time
+- [x] 2.5 Calling each action twice with the same expected baseline changes the stock once and returns the stale error the second time
 
 ### Phase 3: Card dialogs and release
 
@@ -316,16 +316,16 @@ Two server actions in the existing form-state pattern, sharing one guarded updat
 - [x] 3.2 Lint passes: `npm run lint`
 - [x] 3.3 Production build passes: `npm run build`
 - [x] 3.4 RLS tests still pass: `npx supabase test db`
-- [ ] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
+- [x] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
 
 #### Manual
 
-- [ ] 3.6 The add-package dialog matches mock `182:304` in English; for 18 tablets at 2/day counted today it shows "Now: 18 tabl. · 9 days", "+30", "extends by 15 days", "After adding: 48 tabl. · 24 days", and confirming moves the card to the right group
-- [ ] 3.7 Editing the amount to 28 adds 28 and the next "+ Add package" pre-fills 30 again
-- [ ] 3.8 "Correct count" to 7 on a 2/day medication shows 3 days; correcting to 0 shows "Ran out" and "No tablets left" at the top
-- [ ] 3.9 A ran-out medication + one package shows the package size as tablets left
-- [ ] 3.10 A double click adds the package once; submitting from a second, stale tab shows "The stock just changed…" and fresh numbers
-- [ ] 3.11 Invalid amounts (0, 0.3, 1001, a result above 9999) show field errors and nothing is saved
-- [ ] 3.12 Usable at 375 px and with keyboard only
-- [ ] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration (dashboard shows the update policy)
-- [ ] 3.14 On the PR preview, a real account can add a package and correct a count
+- [x] 3.6 The add-package dialog matches mock `182:304` in English; for 18 tablets at 2/day counted today it shows "Now: 18 tabl. · 9 days", "+30", "extends by 15 days", "After adding: 48 tabl. · 24 days", and confirming moves the card to the right group
+- [x] 3.7 Editing the amount to 28 adds 28 and the next "+ Add package" pre-fills 30 again
+- [x] 3.8 "Correct count" to 7 on a 2/day medication shows 3 days; correcting to 0 shows "Ran out" and "No tablets left" at the top
+- [x] 3.9 A ran-out medication + one package shows the package size as tablets left
+- [x] 3.10 A double click adds the package once; submitting from a second, stale tab shows "The stock just changed…" and fresh numbers
+- [x] 3.11 Invalid amounts (0, 0.3, 1001, a result above 9999) show field errors and nothing is saved
+- [x] 3.12 Usable at 375 px and with keyboard only
+- [x] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration (dashboard shows the update policy)
+- [x] 3.14 On the PR preview, a real account can add a package and correct a count
