@@ -219,19 +219,19 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Backlog Handoff
 
-| Roadmap ID | Change ID                  | Suggested issue title                                   | Ready for `/10x-plan` | Notes |
-| ---------- | -------------------------- | ------------------------------------------------------- | --------------------- | ----- |
-| F-01       | deploy-pipeline            | Set up CI and auto-deploy to a public URL               | yes                   | Run `/10x-plan deploy-pipeline` |
-| S-01       | email-sign-in              | Sign up and sign in with email and password             | yes                   | Run `/10x-plan email-sign-in` |
-| S-02       | create-and-switch-profiles | Create profiles and switch between them                 | no                    | Needs S-01 |
-| S-03       | first-medication-run-out   | Add a medication and show its run-out date and urgency  | no                    | North star; needs S-02 |
-| S-04       | google-sign-in             | Sign in with Google                                     | no                    | Needs S-01, F-01 |
-| S-05       | irregular-dosage           | Support irregular dosage schedules                      | no                    | Needs S-03 |
-| S-06       | restock-and-correct        | Add a package in one action and correct pill count      | no                    | Needs S-03 |
-| S-07       | edit-and-pause-medication  | Edit dosage and pause / resume a medication             | no                    | Needs S-03 |
-| S-08       | rename-and-delete          | Rename and delete profiles, delete medications          | no                    | Needs S-02, S-03 |
-| S-09       | profile-urgency-marker     | Show each profile's urgency on the profile list         | no                    | Needs S-02, S-03 |
-| S-10       | demo-mode                  | Demo mode without signing in                            | no                    | Needs S-05–S-09 |
+| Roadmap ID | Change ID                  | Suggested issue title                                   | Ready for `/10x-plan` | Notes | Issue |
+| ---------- | -------------------------- | ------------------------------------------------------- | --------------------- | ----- | ----- |
+| F-01       | deploy-pipeline            | Set up CI and auto-deploy to a public URL               | yes                   | Run `/10x-plan deploy-pipeline` | #8 |
+| S-01       | email-sign-in              | Sign up and sign in with email and password             | yes                   | Run `/10x-plan email-sign-in` | #9 |
+| S-02       | create-and-switch-profiles | Create profiles and switch between them                 | no                    | Needs S-01 | #10 |
+| S-03       | first-medication-run-out   | Add a medication and show its run-out date and urgency  | no                    | North star; needs S-02 | #11 |
+| S-04       | google-sign-in             | Sign in with Google                                     | no                    | Needs S-01, F-01 | #12 |
+| S-05       | irregular-dosage           | Support irregular dosage schedules                      | no                    | Needs S-03 | #13 |
+| S-06       | restock-and-correct        | Add a package in one action and correct pill count      | no                    | Needs S-03 | #14 |
+| S-07       | edit-and-pause-medication  | Edit dosage and pause / resume a medication             | no                    | Needs S-03 | #15 |
+| S-08       | rename-and-delete          | Rename and delete profiles, delete medications          | no                    | Needs S-02, S-03 | #16 |
+| S-09       | profile-urgency-marker     | Show each profile's urgency on the profile list         | no                    | Needs S-02, S-03 | #17 |
+| S-10       | demo-mode                  | Demo mode without signing in                            | no                    | Needs S-05–S-09 | #18 |
 
 ## Open Roadmap Questions
 
