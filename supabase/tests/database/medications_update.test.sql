@@ -1,9 +1,9 @@
 -- Restock and correction: only the profile's caregiver rewrites the stock
--- baseline, only pills_counted / counted_on, and only as of today.
+-- baseline (pills_counted / counted_on, only as of today) and package size.
 -- Run with: npx supabase test db
 begin;
 
-select plan(19);
+select plan(22);
 
 -- ---------------------------------------------------------------------------
 -- Fixtures: user A and B, each with a profile and one medication.
@@ -67,9 +67,18 @@ select throws_ok(
   $$update public.medications set daily_dose = 1 where id = current_setting('test.med_a')::uuid$$,
   '42501', null, 'A cannot update daily_dose'
 );
-select throws_ok(
+-- The remembered package size is writable (saved with a restock), within 1–1000.
+select lives_ok(
   $$update public.medications set package_size = 60 where id = current_setting('test.med_a')::uuid$$,
-  '42501', null, 'A cannot update package_size'
+  'A can update package_size'
+);
+select throws_ok(
+  $$update public.medications set package_size = 0 where id = current_setting('test.med_a')::uuid$$,
+  '23514', null, 'A package size of 0 is rejected on update'
+);
+select throws_ok(
+  $$update public.medications set package_size = 1001 where id = current_setting('test.med_a')::uuid$$,
+  '23514', null, 'A package size of 1001 is rejected on update'
 );
 select throws_ok(
   $$update public.medications set profile_id = current_setting('test.profile_b')::uuid
@@ -135,6 +144,10 @@ select lives_ok(
   'B''s update of A''s medication runs without error (matches no rows)'
 );
 select lives_ok(
+  $$update public.medications set package_size = 500 where id = current_setting('test.med_a')::uuid$$,
+  'B''s package size update of A''s medication runs without error (matches no rows)'
+);
+select lives_ok(
   $$update public.medications
     set pills_counted = 999, counted_on = current_setting('test.today')::date
     where profile_id = current_setting('test.profile_b')::uuid$$,
@@ -159,9 +172,9 @@ select throws_ok(
 reset role;
 
 select results_eq(
-  $$select pills_counted, counted_on from public.medications where id = current_setting('test.med_a')::uuid$$,
-  $$select 18::numeric, current_setting('test.today')::date - 1$$,
-  'B''s update and the rejected updates left A''s medication unchanged'
+  $$select pills_counted, counted_on, package_size from public.medications where id = current_setting('test.med_a')::uuid$$,
+  $$select 18::numeric, current_setting('test.today')::date - 1, 60$$,
+  'B''s updates and the rejected updates left A''s medication unchanged'
 );
 select results_eq(
   $$select pills_counted from public.medications where profile_id = current_setting('test.profile_b')::uuid$$,

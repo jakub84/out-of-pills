@@ -10,7 +10,7 @@ import { initialStockFormState, type StockFormState } from "@/lib/medications/fo
 import type { Stock } from "@/lib/medications/stock";
 import { parseAmount } from "@/lib/medications/validation";
 import { cn } from "@/lib/utils";
-import { urgencyBgClass } from "./urgency";
+import { urgencyBgClass, urgencyTextClass, urgencyTintClass } from "./urgency";
 
 /** What the restock and correction dialogs need about one medication, from the server. */
 export type StockDialogMedication = {
@@ -144,6 +144,61 @@ export function StockLine({
         )}
       </span>
     </p>
+  );
+}
+
+/**
+ * One side of a before/after comparison: label, tablets, days left (urgency colour) and the
+ * run-out date on their own lines. `highlight` tints it by urgency; `stock` null shows a dash.
+ */
+export function StockSnapshot({
+  label,
+  stock,
+  highlight = false,
+}: {
+  label: string;
+  stock: Stock | null;
+  highlight?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex min-w-0 flex-col gap-1 rounded-lg border px-3 py-2.5",
+        highlight && stock ? urgencyTintClass[stock.urgency] : "bg-card",
+      )}
+    >
+      <span className="text-xs font-medium tracking-wide text-brand-subtle uppercase">{label}</span>
+      {stock ? (
+        <>
+          <span className="font-heading text-2xl leading-7 font-bold text-foreground">
+            {formatTablets(stock.pillsLeft)} <span className="text-sm font-semibold">tabl.</span>
+          </span>
+          {stock.runOutDate ? (
+            <>
+              <span
+                className={cn(
+                  "flex items-center gap-1.5 text-sm font-semibold",
+                  urgencyTextClass[stock.urgency],
+                )}
+              >
+                <span
+                  aria-hidden
+                  className={cn("size-2 shrink-0 rounded-full", urgencyBgClass[stock.urgency])}
+                />
+                {formatDays(stock.daysLeft)}
+              </span>
+              <span className="text-xs text-brand-subtle">
+                until {formatShortDate(stock.runOutDate)}
+              </span>
+            </>
+          ) : (
+            <span className="text-sm font-semibold text-urgency-red">Ran out</span>
+          )}
+        </>
+      ) : (
+        <span className="font-heading text-2xl leading-7 font-bold text-brand-subtle">–</span>
+      )}
+    </div>
   );
 }
 

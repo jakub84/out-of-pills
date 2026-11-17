@@ -16,6 +16,7 @@ import {
   parseAmount,
   validateMedication,
   validatePackageAmount,
+  validatePackageSize,
   validatePillsLeft,
   validateResultingCount,
 } from "./validation";
@@ -82,6 +83,8 @@ type StockUpdate = {
   rebase: (input: StockInput, today: string, tablets: number) => StockInput;
   /** Optional check of the resulting count; an error is shown on the `tablets` field. */
   validateResult?: (pillsCounted: number) => string | undefined;
+  /** New remembered package size, saved in the same guarded update. */
+  packageSize?: number;
 };
 
 /**
@@ -128,10 +131,7 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
   if (!row) {
     return { status: "error", message: GENERIC_ERROR };
   }
-  if (
-    Number(row.pills_counted) !== expectedPillsCounted ||
-    row.counted_on !== expectedCountedOn
-  ) {
+  if (Number(row.pills_counted) !== expectedPillsCounted || row.counted_on !== expectedCountedOn) {
     revalidatePath("/", "layout");
     return { status: "error", message: STALE_ERROR };
   }
@@ -152,7 +152,11 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
 
   const { data: updated, error: updateError } = await supabase
     .from("medications")
-    .update({ pills_counted: next.pillsCounted, counted_on: next.countedOn })
+    .update({
+      pills_counted: next.pillsCounted,
+      counted_on: next.countedOn,
+      ...(update.packageSize === undefined ? {} : { package_size: update.packageSize }),
+    })
     .eq("id", medicationId)
     .eq("pills_counted", expectedPillsCounted)
     .eq("counted_on", expectedCountedOn)
@@ -178,16 +182,27 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
   return { status: "success" };
 }
 
-/** Adds a package: today's tablets left plus `tablets`, counted today. */
+/**
+ * Adds a package: today's tablets left plus `tablets`, counted today. An optional
+ * `packageSize` (picked in the dialog's dropdown) becomes the new remembered package size.
+ */
 export async function addPackage(
   _prevState: StockFormState,
   formData: FormData,
 ): Promise<StockFormState> {
+  const packageSizeInput = readField(formData, "packageSize");
+  // The dropdown only offers valid sizes, so a bad value is a tampered request: generic error.
+  if (packageSizeInput && validatePackageSize(packageSizeInput)) {
+    await getCurrentUser();
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
   return updateStock(formData, {
     action: "addPackage",
     validateTablets: validatePackageAmount,
     rebase: addPackageToStock,
     validateResult: validateResultingCount,
+    packageSize: packageSizeInput ? (parseAmount(packageSizeInput) as number) : undefined,
   });
 }
 
