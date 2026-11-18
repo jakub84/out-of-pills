@@ -3,7 +3,7 @@ project: Out of Pills
 version: 1
 status: draft
 created: 2026-11-04
-updated: 2026-11-17
+updated: 2026-11-18
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -47,7 +47,7 @@ People taking many medications only notice they are running out when a medicatio
 | S-03 | first-medication-run-out   | add a medication with a daily dosage and see pills left, run-out date, days left and urgency colour, sorted | S-02                  | US-01, FR-007, FR-014, FR-015  | done |
 | S-04 | google-sign-in             | sign in with a Google account                                                        | S-01, F-01                        | FR-002                         | proposed |
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
-| S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | in-progress |
+| S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | done |
 | S-07 | edit-and-pause-medication  | edit a medication's dosage and pause / resume it, with the calculation following from that moment | S-03                 | FR-010, FR-012                 | proposed |
 | S-08 | rename-and-delete          | rename and delete profiles and delete medications, after a confirmation              | S-02, S-03                        | FR-004, FR-005, FR-013         | proposed |
 | S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
@@ -166,7 +166,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** The fast "+ package" action is the PRD's main UX guardrail for repeat use; both actions reset the stock baseline the calculation runs from.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-07: Edit dosage and pause a medication
 
@@ -255,3 +255,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **S-01: user can sign up and sign in with email + password, sign out, and land on an empty main screen that only signed-in users can reach.** — Archived 2026-11-16 → `context/archive/2026-11-04-email-sign-in/`. Lesson: —.
 - **S-02: user can create several profiles (e.g. "Mom", "Dad", "Me") and switch between them using the profile list on the main screen.** — Archived 2026-11-16 → `context/archive/2026-11-16-create-and-switch-profiles/`. Lesson: —.
 - **S-03: user can add a medication to a profile (name + strength, pills per package, pills left, daily dosage) and see, for every medication of the profile, pills left, run-out date, days left and an urgency colour (red ≤ 14 days, yellow ≤ 30, green above), sorted from the one running out soonest.** — Archived 2026-11-17 → `context/archive/2026-11-16-first-medication-run-out/`. Lesson: —.
+- **S-06: user can add a new package of a tracked medication in one action (pill count pre-filled, editable before confirming) and correct the current number of pills left.** — Archived 2026-11-18 → `context/archive/2026-11-17-restock-and-correct/`. Lesson: —.
