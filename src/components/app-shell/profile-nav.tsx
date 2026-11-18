@@ -67,12 +67,15 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
                     <span
                       aria-hidden
                       data-slot="profile-urgency-dot"
-                      className="absolute top-px right-px size-[7px] rounded-full bg-urgency-red"
+                      className="absolute top-px right-px size-[7px] rounded-full bg-urgency-red ring-1 ring-sidebar"
                     />
                   ) : null}
                 </span>
-                <span className="group-data-[collapsible=icon]:sr-only">{profile.name}</span>
-                {profile.runningOut ? <span className="sr-only">, running out</span> : null}
+                {/* Stays the button's last child: only that span gets the ellipsis. */}
+                <span className="group-data-[collapsible=icon]:sr-only">
+                  {profile.name}
+                  {profile.runningOut ? <span className="sr-only">, running out</span> : null}
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

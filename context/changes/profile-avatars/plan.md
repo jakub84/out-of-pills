@@ -288,7 +288,7 @@ Additive: one nullable column, one constraint and one function overload. Existin
 - [x] 3.2 Database tests pass: `npx supabase test db` — 547f105
 - [x] 3.3 Lint passes: `npm run lint` — 547f105
 - [x] 3.4 Production build passes: `npm run build` — 547f105
-- [ ] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
+- [x] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks` — 0ff8b84
 
 #### Manual
 
@@ -300,4 +300,4 @@ Additive: one nullable column, one constraint and one function overload. Existin
 - [x] 3.11 The picker works at 375 px and with keyboard only — 547f105
 - [x] 3.12 The picker works in onboarding and on `/profiles/new` — 547f105
 - [x] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration — 547f105
-- [ ] 3.14 On the PR preview, a real account can create a profile with an avatar
+- [x] 3.14 On the PR preview, a real account can create a profile with an avatar — 6cafc2c

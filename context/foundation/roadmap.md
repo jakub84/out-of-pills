@@ -202,7 +202,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Parallel with:** S-04, S-05, S-06, S-07, S-08
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Small slice reusing S-03's urgency logic; must stay consistent with the per-medication colours.
+- **Risk:** Small slice reusing S-03's urgency logic; must stay consistent with the per-medication colours. S-11 (PR #23) already shows a red dot for profiles with a red or ran-out medication; a yellow dot was tried and removed at the user's request. Still open: whether this slice needs more than the red dot, and the dot lagging past midnight in a long-open tab.
 - **Status:** proposed
 
 ### S-10: Try without signing in (demo mode)
