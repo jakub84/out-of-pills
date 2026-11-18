@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+import { PageLoader } from "@/components/navigation/page-loader";
 import { ProfileForm } from "@/components/profiles/profile-form";
 import { createProfile } from "@/lib/profiles/actions";
 import { getCaregiver, listProfiles } from "@/lib/profiles/dal";
@@ -14,7 +15,7 @@ export default function OnboardingProfilePage() {
   return (
     <div className="flex flex-col gap-8">
       <Stepper current="profile" />
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageLoader />}>
         <ProfileStep />
       </Suspense>
     </div>

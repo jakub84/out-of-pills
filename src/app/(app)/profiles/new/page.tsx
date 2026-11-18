@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+import { PageLoader } from "@/components/navigation/page-loader";
 import { ProfileForm } from "@/components/profiles/profile-form";
 import { createProfile } from "@/lib/profiles/actions";
 import { getCaregiver } from "@/lib/profiles/dal";
@@ -16,7 +17,7 @@ export default function NewProfilePage() {
         <h1 className="font-heading text-4xl font-normal text-foreground sm:text-[54px]">
           Add a profile
         </h1>
-        <Suspense fallback={null}>
+        <Suspense fallback={<PageLoader />}>
           <NewProfileForm />
         </Suspense>
       </div>

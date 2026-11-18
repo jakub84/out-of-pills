@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { Check } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
@@ -67,14 +67,33 @@ export function MedicationGroups({ groups, today }: { groups: UrgencyGroups; tod
   );
 }
 
-/** Empty profile: illustration card with the add button. */
+const EMPTY_STATE_BENEFITS = [
+  "See how many tablets are left, without opening the box.",
+  "Know the day each medication runs out.",
+  "Spot what needs a refill: anything with 14 days or less turns red.",
+];
+
+/** Empty profile: what tracking gives you, then the add button. Sits directly on the page. */
 export function NoMedications({ action }: { action: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-5 rounded-[16px] border bg-card px-6 py-8 text-center">
-      <div className="relative h-[160px] w-[136px] shrink-0 overflow-hidden">
-        <Image src="/brand/mascot.png" alt="" fill sizes="286px" className="object-cover" />
+    <div className="flex max-w-lg flex-col items-start gap-5">
+      <div className="flex flex-col gap-2">
+        <h3 className="font-heading text-xl font-medium text-foreground">
+          This shelf is empty. For now.
+        </h3>
+        <p className="text-base text-brand-ink">
+          Add the first medication and we&apos;ll do the counting, so a refill never catches you
+          on the last pill.
+        </p>
       </div>
-      <p className="text-base text-brand-subtle">No medications yet.</p>
+      <ul className="flex flex-col gap-2 text-sm text-brand-ink">
+        {EMPTY_STATE_BENEFITS.map((benefit) => (
+          <li key={benefit} className="flex items-start gap-2">
+            <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+            {benefit}
+          </li>
+        ))}
+      </ul>
       {action}
     </div>
   );

@@ -1,16 +1,52 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { toast } from "sonner";
 
 import { updatePassword } from "@/app/(auth)/actions";
 import { TextField } from "@/app/(auth)/_components/text-field";
+import {
+  useNavigationPending,
+  useSavedFormReset,
+} from "@/components/navigation/navigation-pending";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { initialAuthFormState } from "@/lib/auth/form-state";
+import { initialAuthFormState, type AuthFormState } from "@/lib/auth/form-state";
 import { PASSWORD_MIN_LENGTH } from "@/lib/auth/validation";
+import { passwordChangedMessage } from "@/lib/feedback/messages";
+import { runSaveAction } from "@/lib/feedback/run-save-action";
 
+/** New-password form that confirms the change, returns to the app and clears itself. */
 export function ResetPasswordForm({ email }: { email: string }) {
-  const [state, formAction, isPending] = useActionState(updatePassword, initialAuthFormState);
+  const { formKey, markSaved } = useSavedFormReset();
+
+  return <ResetPasswordFields key={formKey} email={email} onSaved={markSaved} />;
+}
+
+function ResetPasswordFields({ email, onSaved }: { email: string; onSaved: () => void }) {
+  const { navigate } = useNavigationPending();
+  // Controlled: React clears uncontrolled fields after a form action, and a failed request
+  // must leave what was typed.
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [state, formAction, isPending] = useActionState(
+    async (prev: AuthFormState, formData: FormData) => {
+      const result = await runSaveAction(
+        () => updatePassword(prev, formData),
+        initialAuthFormState,
+      );
+      if (result.status === "success") {
+        onSaved();
+        toast.success(passwordChangedMessage());
+        navigate("/");
+      }
+      return result;
+    },
+    initialAuthFormState,
+  );
+  // Stays on after a success, until the app has opened.
+  const isSubmitting = isPending || state.status === "success";
 
   return (
     <form action={formAction} className="flex flex-col gap-6">
@@ -26,6 +62,8 @@ export function ResetPasswordForm({ email }: { email: string }) {
         autoComplete="new-password"
         required
         minLength={PASSWORD_MIN_LENGTH}
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
         hint={`At least ${PASSWORD_MIN_LENGTH} characters, with letters and digits`}
         error={state.fieldErrors?.password}
       />
@@ -36,6 +74,8 @@ export function ResetPasswordForm({ email }: { email: string }) {
         autoComplete="new-password"
         required
         minLength={PASSWORD_MIN_LENGTH}
+        value={confirmPassword}
+        onChange={(event) => setConfirmPassword(event.target.value)}
         error={state.fieldErrors?.confirmPassword}
       />
       {state.status === "error" && state.message ? (
@@ -43,8 +83,8 @@ export function ResetPasswordForm({ email }: { email: string }) {
           <AlertDescription>{state.message}</AlertDescription>
         </Alert>
       ) : null}
-      <Button type="submit" size="lg" disabled={isPending} className="mt-2 w-full">
-        {isPending ? "Saving…" : "Save new password"}
+      <Button type="submit" size="lg" disabled={isSubmitting} className="mt-2 w-full">
+        {isSubmitting ? "Saving…" : "Save new password"}
       </Button>
     </form>
   );

@@ -7,7 +7,7 @@ import type { Database } from "./database.types";
 const PUBLIC_AUTH_PATHS = ["/sign-in", "/sign-up", "/forgot-password"];
 
 /** Paths that always pass through, regardless of session. */
-const PASS_THROUGH_PATHS = ["/auth/confirm"];
+const PASS_THROUGH_PATHS = ["/auth/confirm", "/auth/sign-out"];
 
 function matches(pathname: string, paths: string[]) {
   return paths.some((path) => pathname === path || pathname.startsWith(`${path}/`));

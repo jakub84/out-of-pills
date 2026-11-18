@@ -65,6 +65,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-loader-fade-in: loader-fade-in 200ms ease-out 150ms backwards;
+  --animate-loader-bar: loader-bar 8s cubic-bezier(0.1, 0.6, 0.2, 1) 150ms both;
+  --animate-loader-ring-a: loader-ring-a 2s linear infinite;
+  --animate-loader-ring-b: loader-ring-b 2s linear infinite;
+  --animate-loader-ring-c: loader-ring-c 2s linear infinite;
+  --animate-loader-ring-d: loader-ring-d 2s linear infinite;
 }
 
 /* Semantic tokens mapped from the Figma variables (file jThXxph37aBIqtM28HkonX). Light theme only. */
@@ -141,5 +147,226 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Toasts. Unlayered and more specific than Sonner's own unlayered CSS, whatever the load order. */
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+  /* Room for the close button, so long medication names don't run under it. */
+  padding-right: 44px;
+}
+
+/* Starts higher, so the drop has room to bounce. Translate only: Sonner measures the toast's
+   height in this state, and a scale here would make it shrink on hover. */
+[data-sonner-toaster] [data-sonner-toast][data-y-position="top"][data-front="true"]:not([data-mounted="true"]) {
+  --y: translateY(-180%);
+}
+
+/* Spring on arrival only: dismissing and swiping keep Sonner's own motion. Sonner turns
+   transitions off under prefers-reduced-motion. */
+[data-sonner-toaster] [data-sonner-toast][data-mounted="true"]:not([data-removed="true"]):not([data-swiping="true"]) {
+  transition-duration: 800ms, 400ms, 400ms, 200ms;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1), ease, ease, ease;
+  transition-timing-function:
+    linear(0, 0.092, 0.31, 0.572, 0.818, 1.012, 1.138, 1.197, 1.202, 1.17, 1.12, 1.066, 1.019, 0.985, 0.965, 0.958, 0.96, 0.969, 0.98, 0.991, 0.999, 1.005, 1.008, 1.009, 1),
+    ease, ease, ease;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-close-button] {
+  top: 50%;
+  right: 8px;
+  left: auto;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--muted-foreground);
+  transform: translateY(-50%);
+  transition: color 200ms;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"]:hover [data-close-button]:hover {
+  background: transparent;
+  color: var(--foreground);
+}
+
+@keyframes loader-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Header progress bar: grows from the left and stops short of the end until the page is ready. */
+@keyframes loader-bar {
+  from {
+    width: 0;
+  }
+  to {
+    width: 90%;
+  }
+}
+
+/* Page loader rings. Adapted from Uiverse.io by Nawsome (MIT). */
+@keyframes loader-ring-a {
+  from,
+  4% {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -330;
+  }
+  12% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -335;
+  }
+  32% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -595;
+  }
+  40%,
+  54% {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -660;
+  }
+  62% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -665;
+  }
+  82% {
+    stroke-dasharray: 60 600;
+    stroke-width: 30;
+    stroke-dashoffset: -925;
+  }
+  90%,
+  to {
+    stroke-dasharray: 0 660;
+    stroke-width: 20;
+    stroke-dashoffset: -990;
+  }
+}
+
+@keyframes loader-ring-b {
+  from,
+  12% {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -110;
+  }
+  20% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -115;
+  }
+  40% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -195;
+  }
+  48%,
+  62% {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+  70% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+  90% {
+    stroke-dasharray: 20 200;
+    stroke-width: 30;
+    stroke-dashoffset: -305;
+  }
+  98%,
+  to {
+    stroke-dasharray: 0 220;
+    stroke-width: 20;
+    stroke-dashoffset: -330;
+  }
+}
+
+@keyframes loader-ring-c {
+  from {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: 0;
+  }
+  8% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -5;
+  }
+  28% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -175;
+  }
+  36%,
+  58% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+  66% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+  86% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -395;
+  }
+  94%,
+  to {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -440;
+  }
+}
+
+@keyframes loader-ring-d {
+  from,
+  8% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: 0;
+  }
+  16% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -5;
+  }
+  36% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -175;
+  }
+  44%,
+  50% {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -220;
+  }
+  58% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -225;
+  }
+  78% {
+    stroke-dasharray: 40 400;
+    stroke-width: 30;
+    stroke-dashoffset: -395;
+  }
+  86%,
+  to {
+    stroke-dasharray: 0 440;
+    stroke-width: 20;
+    stroke-dashoffset: -440;
   }
 }

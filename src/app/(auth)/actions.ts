@@ -191,11 +191,6 @@ export async function updatePassword(
     return { status: "error", message: GENERIC_ERROR };
   }
 
-  redirect("/");
-}
-
-export async function signOut(): Promise<void> {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/sign-in");
+  // The form confirms the change, then returns to the app.
+  return { status: "success" };
 }

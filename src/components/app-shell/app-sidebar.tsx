@@ -1,21 +1,22 @@
 import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listAllMedications } from "@/lib/medications/dal";
 import { computeStock, overallUrgency, todayInWarsaw } from "@/lib/medications/stock";
 import { listProfiles } from "@/lib/profiles/dal";
 import { initialOf } from "@/lib/profiles/validation";
 import { ProfileNav } from "./profile-nav";
+import { SidebarAccount } from "./sidebar-account";
 import { SidebarEdgeToggle } from "./sidebar-edge-toggle";
 
 const HEADING_ID = "sidebar-profiles-heading";
 
 /**
  * Left sidebar (mock 176:226): the caregiver's profiles, oldest first, a red dot on those
- * with a medication running out, and "+ Add new". Below `md` the shadcn Sidebar renders
- * itself as a Sheet.
+ * with a medication running out, and "+ Add new", with the signed-in account at the bottom.
+ * Below `md` the shadcn Sidebar renders itself as a Sheet.
  */
 export function AppSidebar() {
   return (
@@ -41,6 +42,12 @@ export function AppSidebar() {
           </Suspense>
         </nav>
       </SidebarContent>
+      <SidebarFooter className="gap-0 border-t border-sidebar-border px-7 py-5 group-data-[collapsible=icon]:px-0">
+        {/* Reads the session: keep it behind Suspense. */}
+        <Suspense fallback={<SidebarAccountSkeleton />}>
+          <SidebarAccount />
+        </Suspense>
+      </SidebarFooter>
     </Sidebar>
   );
 }
@@ -80,6 +87,18 @@ async function SidebarProfiles() {
         runningOut: runningOutProfileIds.has(profile.id),
       }))}
     />
+  );
+}
+
+function SidebarAccountSkeleton() {
+  return (
+    <div aria-hidden className="flex flex-col gap-3 group-data-[collapsible=icon]:items-center">
+      <div className="flex flex-col gap-1.5 group-data-[collapsible=icon]:hidden">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-3 w-36" />
+      </div>
+      <Skeleton className="h-[37px] w-24 group-data-[collapsible=icon]:size-9" />
+    </div>
   );
 }
 

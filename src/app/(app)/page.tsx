@@ -10,8 +10,8 @@ import {
   RunOutTiles,
 } from "@/components/medications/medication-overview";
 import { StockIllustration } from "@/components/medications/stock-illustration";
+import { PageLoader } from "@/components/navigation/page-loader";
 import { ProfileAvatar } from "@/components/profiles/profile-avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { listMedications } from "@/lib/medications/dal";
 import {
   computeStock,
@@ -39,7 +39,7 @@ export default function Home({ searchParams }: PageProps<"/">) {
     // `relative isolate` anchors the header illustration and keeps it behind the content, above the page.
     <div className="relative isolate w-full">
       <div className="mx-auto w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
-        <Suspense fallback={<SelectedProfileSkeleton />}>
+        <Suspense fallback={<PageLoader />}>
           <SelectedProfile searchParams={searchParams} />
         </Suspense>
       </div>
@@ -77,11 +77,9 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
   return (
     <div className="flex flex-col gap-12">
       <StockIllustration urgency={overallUrgency(items)} />
-      <div className="flex flex-col gap-3">
-        <p className="font-heading text-2xl font-light text-brand-ink">
-          <span className="font-medium">Hi:</span> {caregiver.displayName}
-        </p>
-        <div className="flex items-center gap-3 sm:gap-4">
+      {/* Long names wrap within the header illustration's faded left edge, before the solid part. */}
+      <div className="flex flex-col gap-3 lg:max-w-[60%]">
+        <div className="flex items-start gap-3 sm:gap-4">
           <ProfileAvatar
             initial={initialOf(selected.name)}
             avatarColor={selected.avatarColor}
@@ -90,7 +88,10 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
           />
           {/* min-w-0 lets a long name wrap instead of pushing past the screen edge. */}
           <h1 className="min-w-0 font-heading text-4xl font-normal break-words text-foreground sm:text-[54px]">
-            Profile: <span className="text-primary">{selected.name}</span>
+            <span className="block text-lg sm:text-xl">Profile:</span>{" "}
+            <span title={selected.name} className="line-clamp-2 text-primary">
+              {selected.name}
+            </span>
           </h1>
         </div>
         <div className="flex flex-col gap-3 text-sm leading-[18px] text-brand-subtle">
@@ -122,18 +123,6 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
           <NoMedications action={addButton} />
         )}
       </section>
-    </div>
-  );
-}
-
-function SelectedProfileSkeleton() {
-  return (
-    <div aria-hidden className="flex flex-col gap-3">
-      <Skeleton className="h-7 w-40" />
-      <div className="flex items-center gap-3 sm:gap-4">
-        <Skeleton className="size-16 shrink-0 rounded-2xl sm:size-20" />
-        <Skeleton className="h-12 w-full max-w-72" />
-      </div>
     </div>
   );
 }

@@ -44,7 +44,7 @@ export async function saveDisplayName(
   redirect("/onboarding/profile");
 }
 
-/** Creates a profile linked to the caller (`create_profile` RPC) and opens it. */
+/** Creates a profile linked to the caller (`create_profile` RPC); the form then confirms and opens it. */
 export async function createProfile(
   _prevState: ProfileFormState,
   formData: FormData,
@@ -88,5 +88,5 @@ export async function createProfile(
 
   // Refresh the app shell so the sidebar lists the new profile.
   revalidatePath("/", "layout");
-  redirect(`/?profile=${encodeURIComponent(profileId)}`);
+  return { status: "success", profileId };
 }

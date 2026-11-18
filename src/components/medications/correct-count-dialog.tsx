@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { countCorrectedMessage } from "@/lib/feedback/messages";
 import { correctPillCount } from "@/lib/medications/actions";
 import { formatTablets } from "@/lib/medications/format";
 import { computeStock, correctCount } from "@/lib/medications/stock";
@@ -26,6 +27,7 @@ import {
   useStockForm,
   type StockDialogProps,
 } from "./stock-dialog-parts";
+import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 /**
  * "Correct the count" dialog (FR-011): set the tablets left after a recount. Controlled — the
@@ -40,13 +42,16 @@ export function CorrectCountDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const guard = useSaveGuard(onOpenChange);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={guard.onOpenChange}>
       <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening pre-fills today's expected count. */}
         <CorrectCountForm
           medication={medication}
           today={today}
+          guardSave={guard.guardSave}
           onSaved={() => onOpenChange(false)}
         />
       </DialogContent>
@@ -57,8 +62,9 @@ export function CorrectCountDialog({
 function CorrectCountForm({
   medication,
   today,
+  guardSave,
   onSaved,
-}: StockDialogProps & { onSaved: () => void }) {
+}: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
   const expected = computeStock(medication, today).pillsLeft;
 
@@ -66,6 +72,8 @@ function CorrectCountForm({
     action: correctPillCount,
     initialAmount: String(expected),
     validate: validatePillsLeft,
+    successMessage: (counted) => countCorrectedMessage(medication.name, counted),
+    guardSave,
     onSaved,
   });
 
@@ -134,7 +142,13 @@ function CorrectCountForm({
 
       <div className="flex flex-wrap gap-3 sm:justify-end">
         <DialogClose asChild>
-          <Button type="button" variant="outline" size="lg" className="flex-1 sm:flex-none">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            disabled={form.isPending}
+            className="flex-1 sm:flex-none"
+          >
             Cancel
           </Button>
         </DialogClose>

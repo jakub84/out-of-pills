@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
+import { PageLoader } from "@/components/navigation/page-loader";
 import { getCaregiver, listProfiles } from "@/lib/profiles/dal";
 import { DisplayNameForm } from "../_components/display-name-form";
 import { Stepper } from "../_components/stepper";
@@ -24,7 +25,7 @@ export default function OnboardingNamePage() {
           This is how we&apos;ll greet you in the app.
         </p>
       </div>
-      <Suspense fallback={null}>
+      <Suspense fallback={<PageLoader />}>
         <NameStep />
       </Suspense>
     </div>

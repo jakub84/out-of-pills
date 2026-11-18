@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { packageAddedMessage } from "@/lib/feedback/messages";
 import { addPackage } from "@/lib/medications/actions";
 import { formatDays, formatTablets } from "@/lib/medications/format";
 import { addPackage as addPackageToStock, computeStock } from "@/lib/medications/stock";
@@ -42,6 +43,7 @@ import {
   type StockDialogProps,
 } from "./stock-dialog-parts";
 import { ChipGroup } from "./chip-group";
+import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 const PACKAGE_COUNTS = [1, 2, 3] as const;
 /** Pack sizes offered in the dropdown; the remembered size is always added. */
@@ -60,9 +62,10 @@ function packageCountOptions(size: number) {
 /** "+ Add package" button and dialog (mock 182:304): restock with the effect shown first. */
 export function AddPackageDialog({ medication, today }: StockDialogProps) {
   const [open, setOpen] = useState(false);
+  const { onOpenChange, guardSave } = useSaveGuard(setOpen);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline" size="md" className="w-full @3xl:w-auto @3xl:min-w-[148px]">
           <Plus data-icon="inline-start" className="size-3" aria-hidden />
@@ -71,7 +74,12 @@ export function AddPackageDialog({ medication, today }: StockDialogProps) {
       </DialogTrigger>
       <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening pre-fills the package size again. */}
-        <AddPackageForm medication={medication} today={today} onSaved={() => setOpen(false)} />
+        <AddPackageForm
+          medication={medication}
+          today={today}
+          guardSave={guardSave}
+          onSaved={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );
@@ -80,8 +88,9 @@ export function AddPackageDialog({ medication, today }: StockDialogProps) {
 function AddPackageForm({
   medication,
   today,
+  guardSave,
   onSaved,
-}: StockDialogProps & { onSaved: () => void }) {
+}: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
   const now = computeStock(medication, today);
   const [packageSize, setPackageSize] = useState(medication.packageSize);
@@ -98,6 +107,8 @@ function AddPackageForm({
     action: addPackage,
     initialAmount: String(medication.packageSize),
     validate,
+    successMessage: (added) => packageAddedMessage(medication.name, added),
+    guardSave,
     onSaved,
   });
 
@@ -228,7 +239,13 @@ function AddPackageForm({
 
       <div className="flex flex-wrap gap-3 sm:justify-end">
         <DialogClose asChild>
-          <Button type="button" variant="outline" size="lg" className="flex-1 sm:flex-none">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            disabled={form.isPending}
+            className="flex-1 sm:flex-none"
+          >
             Cancel
           </Button>
         </DialogClose>

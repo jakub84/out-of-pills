@@ -3,7 +3,8 @@ import { Suspense, type ReactNode } from "react";
 import { AppHeader } from "@/components/app-shell/app-header";
 import { AppSidebar } from "@/components/app-shell/app-sidebar";
 import { HeaderSidebarTrigger } from "@/components/app-shell/header-sidebar-trigger";
-import { UserMenu } from "@/components/app-shell/user-menu";
+import { UserGreeting, UserMenu } from "@/components/app-shell/user-menu";
+import { PendingRegion } from "@/components/navigation/navigation-pending";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,13 +21,16 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <SidebarProvider defaultOpen className="flex-col">
         <AppHeader className="sticky top-0 z-20" leading={<HeaderSidebarTrigger />}>
           {/* Reads the session: keep it behind Suspense so the shell stays static. */}
-          <Suspense fallback={<Skeleton className="size-8 rounded-full" />}>
+          <Suspense fallback={<Skeleton className="hidden size-8 rounded-full sm:block" />}>
+            <UserGreeting />
             <UserMenu />
           </Suspense>
         </AppHeader>
         <div className="flex flex-1">
           <AppSidebar />
-          <SidebarInset>{children}</SidebarInset>
+          <SidebarInset>
+            <PendingRegion>{children}</PendingRegion>
+          </SidebarInset>
         </div>
       </SidebarProvider>
     </TooltipProvider>
