@@ -17,6 +17,47 @@ export type Medication = {
   countedOn: string;
 };
 
+export type ProfileMedication = Medication & { profileId: string };
+
+type MedicationRow = {
+  id: string;
+  name: string;
+  package_size: number;
+  pills_counted: number;
+  daily_dose: number;
+  counted_on: string;
+};
+
+// PostgREST may return numeric columns as strings; normalise to numbers.
+function toMedication(row: MedicationRow): Medication {
+  return {
+    id: row.id,
+    name: row.name,
+    packageSize: Number(row.package_size),
+    pillsCounted: Number(row.pills_counted),
+    dailyDose: Number(row.daily_dose),
+    countedOn: row.counted_on,
+  };
+}
+
+/**
+ * Every medication the caller can see, across all their profiles, in one query.
+ * RLS limits the rows to profiles the caller belongs to; no extra user filter here.
+ * Reads the session: call it inside `<Suspense>`, never inside `use cache`.
+ */
+export const listAllMedications = cache(async (): Promise<ProfileMedication[]> => {
+  await getCurrentUser();
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("medications")
+    .select("id, profile_id, name, package_size, pills_counted, daily_dose, counted_on");
+
+  if (error) throw new Error(`Failed to load medications: ${error.message}`);
+
+  return data.map((row) => ({ ...toMedication(row), profileId: row.profile_id }));
+});
+
 /**
  * The medications of one profile, oldest first; run-out ordering is up to the caller.
  * RLS limits the rows to profiles the caller belongs to; no extra user filter here.
@@ -36,14 +77,6 @@ export const listMedications = cache(
 
     if (error) throw new Error(`Failed to load medications: ${error.message}`);
 
-    // PostgREST may return numeric columns as strings; normalise to numbers.
-    return data.map((row) => ({
-      id: row.id,
-      name: row.name,
-      packageSize: Number(row.package_size),
-      pillsCounted: Number(row.pills_counted),
-      dailyDose: Number(row.daily_dose),
-      countedOn: row.counted_on,
-    }));
+    return data.map(toMedication);
   },
 );

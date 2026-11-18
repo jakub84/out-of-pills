@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
@@ -10,10 +9,16 @@ import {
   NoMedications,
   RunOutTiles,
 } from "@/components/medications/medication-overview";
+import { StockIllustration } from "@/components/medications/stock-illustration";
 import { ProfileAvatar } from "@/components/profiles/profile-avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listMedications } from "@/lib/medications/dal";
-import { computeStock, groupByUrgency, todayInWarsaw } from "@/lib/medications/stock";
+import {
+  computeStock,
+  groupByUrgency,
+  overallUrgency,
+  todayInWarsaw,
+} from "@/lib/medications/stock";
 import { getCaregiver, listProfiles, type Profile } from "@/lib/profiles/dal";
 import { initialOf } from "@/lib/profiles/validation";
 
@@ -31,21 +36,9 @@ export async function generateMetadata({ searchParams }: PageProps<"/">): Promis
 /** Main screen (mock 176:226): the selected profile and its medication stock. */
 export default function Home({ searchParams }: PageProps<"/">) {
   return (
-    <div className="relative w-full">
-      {/* Header illustration (mock 176:228): flush top-right, left and bottom edges fade into the page. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-0 right-0 hidden w-[min(806px,50%)] [mask-image:linear-gradient(to_right,transparent,black_30%),linear-gradient(to_top,transparent,black_25%)] [mask-composite:intersect] lg:block"
-      >
-        <Image
-          src="/brand/stock-illustration.png"
-          alt=""
-          width={1024}
-          height={572}
-          className="h-auto w-full"
-        />
-      </div>
-      <div className="relative z-10 mx-auto w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
+    // `relative isolate` anchors the header illustration and keeps it behind the content, above the page.
+    <div className="relative isolate w-full">
+      <div className="mx-auto w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
         <Suspense fallback={<SelectedProfileSkeleton />}>
           <SelectedProfile searchParams={searchParams} />
         </Suspense>
@@ -83,6 +76,7 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
 
   return (
     <div className="flex flex-col gap-12">
+      <StockIllustration urgency={overallUrgency(items)} />
       <div className="flex flex-col gap-3">
         <p className="font-heading text-2xl font-light text-brand-ink">
           <span className="font-medium">Hi:</span> {caregiver.displayName}

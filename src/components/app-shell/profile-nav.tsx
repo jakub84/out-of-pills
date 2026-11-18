@@ -19,6 +19,8 @@ export type ProfileNavItem = {
   initial: string;
   avatarColor: AvatarColor;
   avatar: ProfileAvatarId | null;
+  /** At least one medication is red or has run out. */
+  runningOut: boolean;
 };
 
 /**
@@ -53,13 +55,24 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
                 aria-current={selected ? "page" : undefined}
                 onClick={closeSheet}
               >
-                <ProfileAvatar
-                  initial={profile.initial}
-                  avatarColor={profile.avatarColor}
-                  avatar={profile.avatar}
-                  size="list"
-                />
+                <span className="relative shrink-0">
+                  <ProfileAvatar
+                    initial={profile.initial}
+                    avatarColor={profile.avatarColor}
+                    avatar={profile.avatar}
+                    size="list"
+                  />
+                  {/* Urgency dot (mock 221:392). */}
+                  {profile.runningOut ? (
+                    <span
+                      aria-hidden
+                      data-slot="profile-urgency-dot"
+                      className="absolute top-px right-px size-[7px] rounded-full bg-urgency-red"
+                    />
+                  ) : null}
+                </span>
                 <span className="group-data-[collapsible=icon]:sr-only">{profile.name}</span>
+                {profile.runningOut ? <span className="sr-only">, running out</span> : null}
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
