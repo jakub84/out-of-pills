@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Logo } from "@/components/brand/logo";
+import { NavigationProgressBar } from "@/components/navigation/navigation-pending";
 import { cn } from "@/lib/utils";
 
 type AppHeaderProps = {
@@ -32,6 +33,7 @@ export function AppHeader({ leading, children, className }: AppHeaderProps) {
         </div>
         <div className="flex items-center gap-3">{children}</div>
       </div>
+      <NavigationProgressBar />
     </header>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
+import { PendingLink, useNavigationPending } from "@/components/navigation/navigation-pending";
 import { ProfileAvatar } from "@/components/profiles/profile-avatar";
 import {
   SidebarMenu,
@@ -26,12 +26,19 @@ export type ProfileNavItem = {
 /**
  * Profile rows plus "+ Add new". The selection mirrors the main page: on `/` it is the
  * `?profile=` id when it is one of these profiles, else the oldest; elsewhere none.
+ * During navigation it follows the destination, so the click shows straight away.
  * Uses `useSearchParams()`: render it inside `<Suspense>`.
  */
 export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const currentPathname = usePathname();
+  const currentSearchParams = useSearchParams();
+  const { pendingHref } = useNavigationPending();
   const { setOpenMobile } = useSidebar();
+
+  // The base only lets URL parse a relative href; it is never used.
+  const destination = pendingHref ? new URL(pendingHref, "http://localhost") : null;
+  const pathname = destination?.pathname ?? currentPathname;
+  const searchParams = destination?.searchParams ?? currentSearchParams;
 
   const requested = searchParams.get("profile");
   const selectedId =
@@ -50,8 +57,9 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
         return (
           <SidebarMenuItem key={profile.id}>
             <SidebarMenuButton asChild size="row" isActive={selected} tooltip={profile.name}>
-              <Link
+              <PendingLink
                 href={`/?profile=${encodeURIComponent(profile.id)}`}
+                trackPending={!selected}
                 aria-current={selected ? "page" : undefined}
                 onClick={closeSheet}
               >
@@ -76,15 +84,16 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
                   {profile.name}
                   {profile.runningOut ? <span className="sr-only">, running out</span> : null}
                 </span>
-              </Link>
+              </PendingLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         );
       })}
       <SidebarMenuItem className="mt-4">
         <SidebarMenuButton asChild size="row" isActive={onAddPage} tooltip="Add new">
-          <Link
+          <PendingLink
             href="/profiles/new"
+            trackPending={!onAddPage}
             aria-current={onAddPage ? "page" : undefined}
             onClick={closeSheet}
           >
@@ -95,7 +104,7 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
               <Plus className="size-3.5!" />
             </span>
             <span className="group-data-[collapsible=icon]:sr-only">Add new</span>
-          </Link>
+          </PendingLink>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

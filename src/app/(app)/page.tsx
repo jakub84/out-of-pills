@@ -10,8 +10,8 @@ import {
   RunOutTiles,
 } from "@/components/medications/medication-overview";
 import { StockIllustration } from "@/components/medications/stock-illustration";
+import { PageLoader } from "@/components/navigation/page-loader";
 import { ProfileAvatar } from "@/components/profiles/profile-avatar";
-import { Skeleton } from "@/components/ui/skeleton";
 import { listMedications } from "@/lib/medications/dal";
 import {
   computeStock,
@@ -39,7 +39,7 @@ export default function Home({ searchParams }: PageProps<"/">) {
     // `relative isolate` anchors the header illustration and keeps it behind the content, above the page.
     <div className="relative isolate w-full">
       <div className="mx-auto w-full max-w-[1000px] px-4 py-8 sm:px-10 sm:py-12 lg:px-20">
-        <Suspense fallback={<SelectedProfileSkeleton />}>
+        <Suspense fallback={<PageLoader />}>
           <SelectedProfile searchParams={searchParams} />
         </Suspense>
       </div>
@@ -122,18 +122,6 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
           <NoMedications action={addButton} />
         )}
       </section>
-    </div>
-  );
-}
-
-function SelectedProfileSkeleton() {
-  return (
-    <div aria-hidden className="flex flex-col gap-3">
-      <Skeleton className="h-7 w-40" />
-      <div className="flex items-center gap-3 sm:gap-4">
-        <Skeleton className="size-16 shrink-0 rounded-2xl sm:size-20" />
-        <Skeleton className="h-12 w-full max-w-72" />
-      </div>
     </div>
   );
 }

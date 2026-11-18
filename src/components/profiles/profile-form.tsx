@@ -1,9 +1,9 @@
 "use client";
 
 import { ArrowLeft, Baby, Heart, Plus, User, Users, type LucideIcon } from "lucide-react";
-import Link from "next/link";
 import { useActionState, useId, useState, type ReactNode } from "react";
 
+import { PendingLink } from "@/components/navigation/navigation-pending";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -332,10 +332,10 @@ export function ProfileForm({
             size="lg"
             className="border-2 border-brand-subtle bg-card text-brand-ink hover:bg-muted"
           >
-            <Link href={backHref}>
+            <PendingLink href={backHref}>
               <ArrowLeft data-icon="inline-start" aria-hidden />
               {backLabel}
-            </Link>
+            </PendingLink>
           </Button>
         ) : null}
         <Button type="submit" size="lg" disabled={isPending} className="max-w-full min-w-0">

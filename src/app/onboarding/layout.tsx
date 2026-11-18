@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from "react";
 
 import { SignOutButton } from "@/app/_components/sign-out-button";
 import { AppHeader } from "@/components/app-shell/app-header";
+import { PendingRegion } from "@/components/navigation/navigation-pending";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getCaregiver } from "@/lib/profiles/dal";
 import { initialOf } from "@/lib/profiles/validation";
@@ -20,7 +21,7 @@ export default function OnboardingLayout({ children }: { children: ReactNode }) 
       </AppHeader>
       <main className="flex flex-1 justify-center px-4 py-8 sm:px-6 sm:py-12">
         <div className="w-full max-w-[760px] pb-14">
-          {children}
+          <PendingRegion>{children}</PendingRegion>
         </div>
       </main>
     </div>
