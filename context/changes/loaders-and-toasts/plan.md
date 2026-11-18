@@ -331,17 +331,17 @@ No data migration. A deployment only changes application code, and `createProfil
 
 #### Automated
 
-- [x] 3.1 Lint passes: `npm run lint`
-- [x] 3.2 Unit tests pass: `npm test`
-- [x] 3.3 Production build passes: `npm run build`
+- [x] 3.1 Lint passes: `npm run lint` — ce6dea1
+- [x] 3.2 Unit tests pass: `npm test` — ce6dea1
+- [x] 3.3 Production build passes: `npm run build` — ce6dea1
 
 #### Manual
 
-- [x] 3.4 Creating a profile from the app shows `Profile <name> created`, the loader if needed, and then the new profile selected
-- [x] 3.5 Creating the first profile in onboarding shows the toast and lands on the main screen
-- [x] 3.6 Validation errors on the profile form stay inline with entered values kept
-- [x] 3.7 Skipped-name and signed-out profile paths still redirect correctly with no connection toast
-- [x] 3.8 A password reset shows `Password changed` and lands on the main screen
-- [x] 3.9 An expired session during a medication save redirects to sign-in with no connection toast
-- [x] 3.10 Offline saves on the profile, password and onboarding name forms show the connection toast and stay on the form
-- [x] 3.11 The onboarding name step shows no success toast
+- [x] 3.4 Creating a profile from the app shows `Profile <name> created`, the loader if needed, and then the new profile selected — ce6dea1
+- [x] 3.5 Creating the first profile in onboarding shows the toast and lands on the main screen — ce6dea1
+- [x] 3.6 Validation errors on the profile form stay inline with entered values kept — ce6dea1
+- [x] 3.7 Skipped-name and signed-out profile paths still redirect correctly with no connection toast — ce6dea1
+- [x] 3.8 A password reset shows `Password changed` and lands on the main screen — ce6dea1
+- [x] 3.9 An expired session during a medication save redirects to sign-in with no connection toast — ce6dea1
+- [x] 3.10 Offline saves on the profile, password and onboarding name forms show the connection toast and stay on the form — ce6dea1
+- [x] 3.11 The onboarding name step shows no success toast — ce6dea1
