@@ -79,14 +79,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_color": string,"created_at": string,"id": string,"kind": string,"name": string
+                    "avatar": string | null,"avatar_color": string,"created_at": string,"id": string,"kind": string,"name": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_color": string,"created_at"?: string,"id"?: string,"kind": string,"name": string
+                    "avatar"?: string | null,"avatar_color": string,"created_at"?: string,"id"?: string,"kind": string,"name": string
                   }
                   Update: {
-                    "avatar_color"?: string,"created_at"?: string,"id"?: string,"kind"?: string,"name"?: string
+                    "avatar"?: string | null,"avatar_color"?: string,"created_at"?: string,"id"?: string,"kind"?: string,"name"?: string
                   }
                   Relationships: [
                     
@@ -99,6 +99,8 @@ isOneToOne: false
           Functions: {
             "create_profile":
 { Args: { "p_avatar_color": string,"p_kind": string,"p_name": string }; Returns: string
+                           } |
+{ Args: { "p_avatar": string,"p_avatar_color": string,"p_kind": string,"p_name": string }; Returns: string
                            }
           }
           Enums: {

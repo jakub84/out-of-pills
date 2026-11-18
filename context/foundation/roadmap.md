@@ -25,7 +25,7 @@ milestone_status: open
 - **Intent:** Deliver the full v1 MVP flow from the PRD — a caregiver signs up, creates profiles, adds medications and always sees how many pills are left and when each one runs out — plus a public demo mode, before the 2026-11-27 deadline.
 - **Source materials:** `context/foundation/prd.md` (v1)
 - **Done when:** every F-NN and S-NN below is `done`.
-- **Scope anchors:** FR-001–FR-015, FR-019, FR-020 (all must-have FRs); US-01. FR-016–FR-018 (nice-to-have) are out of scope — see `## Parked`.
+- **Scope anchors:** FR-001–FR-015, FR-019–FR-022 (all must-have FRs); US-01. FR-016–FR-018 (nice-to-have) are out of scope — see `## Parked`.
 
 ## Vision recap
 
@@ -49,9 +49,10 @@ People taking many medications only notice they are running out when a medicatio
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
 | S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | done |
 | S-07 | edit-and-pause-medication  | edit a medication's dosage and pause / resume it, with the calculation following from that moment | S-03                 | FR-010, FR-012                 | proposed |
-| S-08 | rename-and-delete          | rename and delete profiles and delete medications, after a confirmation              | S-02, S-03                        | FR-004, FR-005, FR-013         | proposed |
+| S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | proposed |
 | S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
-| S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09      | FR-020                         | proposed |
+| S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09, S-11 | FR-020                        | proposed |
+| S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | in-progress |
 
 ## Streams
 
@@ -62,7 +63,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | A      | Core loop              | `S-01` → `S-02` → `S-03` → `S-09`       | Shortest path to the north star; `speed` puts this stream first.                      |
 | B      | Keeping stock accurate | `S-05` · `S-06` · `S-07` (parallel)     | Joins Stream A at `S-03`; the three slices can run as separate agent runs.            |
 | C      | Access & reach         | `F-01` → `S-04`                         | Runs alongside Stream A; Google sign-in needs the public URL from `F-01`.             |
-| D      | Housekeeping & demo    | `S-08` → `S-10`                         | Joins Stream A at `S-03`; demo comes last so it reflects the full feature set.        |
+| D      | Housekeeping & demo    | `S-11` → `S-08` → `S-10`                | Joins Stream A at `S-03`; demo comes last so it reflects the full feature set.        |
 
 ## Baseline
 
@@ -182,10 +183,10 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ### S-08: Rename and delete profiles and medications
 
-- **Outcome:** user can rename a profile, delete a profile together with its medications, and delete a single medication — each deletion after a confirmation.
+- **Outcome:** user can rename a profile, change or remove its avatar, delete a profile together with its medications, and delete a single medication — each deletion after a confirmation.
 - **Change ID:** rename-and-delete
-- **PRD refs:** FR-004, FR-005, FR-013
-- **Prerequisites:** S-02, S-03
+- **PRD refs:** FR-004, FR-005, FR-013, FR-022
+- **Prerequisites:** S-02, S-03, S-11
 - **Parallel with:** S-04, S-05, S-06, S-07, S-09
 - **Blockers:** —
 - **Unknowns:** —
@@ -209,13 +210,25 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Outcome:** visitor can open "Try without signing in", click through pre-filled sample profiles and medications and edit them, with a clear test-mode label; nothing is persisted or visible to other users.
 - **Change ID:** demo-mode
 - **PRD refs:** FR-020
-- **Prerequisites:** S-05, S-06, S-07, S-08, S-09
+- **Prerequisites:** S-05, S-06, S-07, S-08, S-09, S-11
 - **Parallel with:** F-01, S-04
 - **Blockers:** —
 - **Unknowns:**
   - When does demo data reset — on leaving the page, on a timer, or both? — Owner: user. Block: no.
 - **Risk:** Sequenced last so the demo mirrors the complete feature set in one pass; it must never write to the database (hard rule), which is the main thing to verify.
 - **Status:** proposed
+
+### S-11: Choose an avatar when creating a profile
+
+- **Outcome:** user can optionally choose a ready-made avatar, from a set that depends on the profile type, when creating a profile; the avatar appears on the profile list and the main screen, and a profile without one keeps showing its first letter.
+- **Change ID:** profile-avatars
+- **PRD refs:** FR-021
+- **Prerequisites:** S-02
+- **Parallel with:** S-04, S-05, S-07, S-09
+- **Blockers:** —
+- **Unknowns:** —
+- **Risk:** The migration reaches production before the code, so the existing `create_profile` signature must keep working; changing an avatar later belongs to S-08.
+- **Status:** in-progress
 
 ## Backlog Handoff
 
@@ -229,9 +242,10 @@ Foundations below assume these are present and do NOT re-scaffold them.
 | S-05       | irregular-dosage           | Support irregular dosage schedules                      | no                    | Needs S-03 | #13 |
 | S-06       | restock-and-correct        | Add a package in one action and correct pill count      | no                    | Needs S-03 | #14 |
 | S-07       | edit-and-pause-medication  | Edit dosage and pause / resume a medication             | no                    | Needs S-03 | #15 |
-| S-08       | rename-and-delete          | Rename and delete profiles, delete medications          | no                    | Needs S-02, S-03 | #16 |
+| S-08       | rename-and-delete          | Rename and delete profiles, delete medications          | no                    | Needs S-02, S-03, S-11 | #16 |
 | S-09       | profile-urgency-marker     | Show each profile's urgency on the profile list         | no                    | Needs S-02, S-03 | #17 |
-| S-10       | demo-mode                  | Demo mode without signing in                            | no                    | Needs S-05–S-09 | #18 |
+| S-10       | demo-mode                  | Demo mode without signing in                            | no                    | Needs S-05–S-09, S-11 | #18 |
+| S-11       | profile-avatars            | Choose an avatar when creating a profile                | yes                   | Plan: `context/changes/profile-avatars/plan.md` | — |
 
 ## Open Roadmap Questions
 
