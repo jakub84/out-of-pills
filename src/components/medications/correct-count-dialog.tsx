@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { countCorrectedMessage } from "@/lib/feedback/messages";
 import { correctPillCount } from "@/lib/medications/actions";
 import { formatTablets } from "@/lib/medications/format";
 import { computeStock, correctCount } from "@/lib/medications/stock";
@@ -66,6 +67,7 @@ function CorrectCountForm({
     action: correctPillCount,
     initialAmount: String(expected),
     validate: validatePillsLeft,
+    successMessage: (counted) => countCorrectedMessage(medication.name, counted),
     onSaved,
   });
 

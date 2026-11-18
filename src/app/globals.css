@@ -150,6 +150,47 @@
   }
 }
 
+/* Toasts. Unlayered and more specific than Sonner's own unlayered CSS, whatever the load order. */
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+  /* Room for the close button, so long medication names don't run under it. */
+  padding-right: 44px;
+}
+
+/* Starts higher, so the drop has room to bounce. Translate only: Sonner measures the toast's
+   height in this state, and a scale here would make it shrink on hover. */
+[data-sonner-toaster] [data-sonner-toast][data-y-position="top"][data-front="true"]:not([data-mounted="true"]) {
+  --y: translateY(-180%);
+}
+
+/* Spring on arrival only: dismissing and swiping keep Sonner's own motion. Sonner turns
+   transitions off under prefers-reduced-motion. */
+[data-sonner-toaster] [data-sonner-toast][data-mounted="true"]:not([data-removed="true"]):not([data-swiping="true"]) {
+  transition-duration: 800ms, 400ms, 400ms, 200ms;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1), ease, ease, ease;
+  transition-timing-function:
+    linear(0, 0.092, 0.31, 0.572, 0.818, 1.012, 1.138, 1.197, 1.202, 1.17, 1.12, 1.066, 1.019, 0.985, 0.965, 0.958, 0.96, 0.969, 0.98, 0.991, 0.999, 1.005, 1.008, 1.009, 1),
+    ease, ease, ease;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-close-button] {
+  top: 50%;
+  right: 8px;
+  left: auto;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--muted-foreground);
+  transform: translateY(-50%);
+  transition: color 200ms;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-styled="true"]:hover [data-close-button]:hover {
+  background: transparent;
+  color: var(--foreground);
+}
+
 @keyframes loader-fade-in {
   from {
     opacity: 0;

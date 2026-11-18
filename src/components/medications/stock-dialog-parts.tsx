@@ -2,9 +2,12 @@
 
 import { Minus, Plus } from "lucide-react";
 import { useActionState, useRef, useState, type FormEvent, type Ref } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { readField } from "@/lib/auth/validation";
+import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { formatDays, formatShortDate, formatTablets } from "@/lib/medications/format";
 import { initialStockFormState, type StockFormState } from "@/lib/medications/form-state";
 import type { Stock } from "@/lib/medications/stock";
@@ -40,19 +43,23 @@ type StockAction = (prev: StockFormState, formData: FormData) => Promise<StockFo
 
 /**
  * Form state for one stock dialog: the typed amount, its field error (client or server),
- * and the server action wrapped so a success closes the dialog. The dialog content
- * unmounts when closed, so each opening starts from `initialAmount` again.
+ * and the server action wrapped so a success shows a toast and closes the dialog. A failed
+ * request keeps the dialog open with the typed amount. The dialog content unmounts when
+ * closed, so each opening starts from `initialAmount` again.
  */
 export function useStockForm({
   action,
   initialAmount,
   validate,
+  successMessage,
   onSaved,
 }: {
   action: StockAction;
   initialAmount: string;
   /** Client-side check of the typed amount, same rules as the server action. */
   validate: (value: string) => string | undefined;
+  /** Toast text for a successful save of `tablets` from the submitted form. */
+  successMessage: (tablets: number) => string;
   onSaved: () => void;
 }) {
   const [amount, setAmount] = useState(initialAmount);
@@ -61,8 +68,10 @@ export function useStockForm({
 
   const [state, formAction, isPending] = useActionState(
     async (prev: StockFormState, formData: FormData) => {
-      const result = await action(prev, formData);
+      const result = await runSaveAction(() => action(prev, formData), initialStockFormState);
       if (result.status === "success") {
+        // Non-null: the server action accepted this amount.
+        toast.success(successMessage(parseAmount(readField(formData, "tablets")) as number));
         onSaved();
       } else if (result.fieldErrors?.tablets) {
         setFieldError(result.fieldErrors.tablets);

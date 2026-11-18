@@ -295,37 +295,37 @@ No data migration. A deployment only changes application code, and `createProfil
 
 #### Automated
 
-- [x] 1.1 Lint passes: `npm run lint`
-- [x] 1.2 Unit tests pass: `npm test`
-- [x] 1.3 Production build passes: `npm run build`
+- [x] 1.1 Lint passes: `npm run lint` — 77df296
+- [x] 1.2 Unit tests pass: `npm test` — 77df296
+- [x] 1.3 Production build passes: `npm run build` — 77df296
 
 #### Manual
 
-- [x] 1.4 On a throttled production build, switching profile hides the old medications at once and shows the loader while the sidebar highlights the clicked profile
-- [x] 1.5 A fast profile switch shows no loader flash
-- [x] 1.6 Clicking the already selected profile shows no loader
-- [x] 1.7 Add new, Cancel and onboarding Back show the loader on slow connections
-- [x] 1.8 Refreshing `/`, `/profiles/new` and both onboarding steps shows the loader in the content area while sidebar and avatar skeletons remain
-- [x] 1.9 The rings use only teal, ink and grey, and the page has no horizontal scroll at phone width
-- [x] 1.10 With reduced motion enabled, `Loading…` is shown instead of the animation
-- [x] 1.11 Ctrl/Cmd-click on a profile opens a new tab and leaves the current page visible
+- [x] 1.4 On a throttled production build, switching profile hides the old medications at once and shows the loader while the sidebar highlights the clicked profile — 77df296
+- [x] 1.5 A fast profile switch shows no loader flash — 77df296
+- [x] 1.6 Clicking the already selected profile shows no loader — 77df296
+- [x] 1.7 Add new, Cancel and onboarding Back show the loader on slow connections — 77df296
+- [x] 1.8 Refreshing `/`, `/profiles/new` and both onboarding steps shows the loader in the content area while sidebar and avatar skeletons remain — 77df296
+- [x] 1.9 The rings use only teal, ink and grey, and the page has no horizontal scroll at phone width — 77df296
+- [x] 1.10 With reduced motion enabled, `Loading…` is shown instead of the animation — 77df296
+- [x] 1.11 Ctrl/Cmd-click on a profile opens a new tab and leaves the current page visible — 77df296
 
 ### Phase 2: Toasts for In-Place Saves
 
 #### Automated
 
-- [ ] 2.1 Lint passes: `npm run lint`
-- [ ] 2.2 Unit tests pass, including `messages.test.ts` and `run-save-action.test.ts`: `npm test`
-- [ ] 2.3 Production build passes: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint`
+- [x] 2.2 Unit tests pass, including `messages.test.ts` and `run-save-action.test.ts`: `npm test`
+- [x] 2.3 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.4 Add medication, add package and correct count each close the dialog, update the page and show the agreed toast once
-- [ ] 2.5 Toasts appear bottom right on desktop and full width at the bottom on a phone, then disappear after about 4 seconds
-- [ ] 2.6 A stale-stock or validation error stays inline, with no toast
-- [ ] 2.7 With the network offline, saving shows the connection toast and the dialog keeps its values
-- [ ] 2.8 Clicking or swiping that toast does not close the dialog
-- [ ] 2.9 A screen reader announces the success toast
+- [x] 2.4 Add medication, add package and correct count each close the dialog, update the page and show the agreed toast once
+- [x] 2.5 Toasts appear bottom right on desktop and full width at the bottom on a phone, then disappear after about 4 seconds
+- [x] 2.6 A stale-stock or validation error stays inline, with no toast
+- [x] 2.7 With the network offline, saving shows the connection toast and the dialog keeps its values
+- [x] 2.8 Clicking or swiping that toast does not close the dialog
+- [x] 2.9 A screen reader announces the success toast
 
 ### Phase 3: Toasts for Saves That Change Page
 

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { packageAddedMessage } from "@/lib/feedback/messages";
 import { addPackage } from "@/lib/medications/actions";
 import { formatDays, formatTablets } from "@/lib/medications/format";
 import { addPackage as addPackageToStock, computeStock } from "@/lib/medications/stock";
@@ -98,6 +99,7 @@ function AddPackageForm({
     action: addPackage,
     initialAmount: String(medication.packageSize),
     validate,
+    successMessage: (added) => packageAddedMessage(medication.name, added),
     onSaved,
   });
 

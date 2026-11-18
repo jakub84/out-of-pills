@@ -3,6 +3,7 @@
 import { Plus } from "lucide-react";
 import { useActionState, useId, useRef, useState } from "react";
 import { flushSync } from "react-dom";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { readField } from "@/lib/auth/validation";
+import { medicationAddedMessage } from "@/lib/feedback/messages";
+import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { addMedication } from "@/lib/medications/actions";
 import {
   initialMedicationFormState,
@@ -103,8 +107,13 @@ function AddMedicationWizard({
 
   const [state, formAction, isPending] = useActionState(
     async (prev: MedicationFormState, formData: FormData) => {
-      const result = await addMedication(prev, formData);
+      // A failed request keeps the wizard on this step, with the draft in its state.
+      const result = await runSaveAction(
+        () => addMedication(prev, formData),
+        initialMedicationFormState,
+      );
       if (result.status === "success") {
+        toast.success(medicationAddedMessage(readField(formData, "name")));
         onSaved();
       } else if (result.fieldErrors) {
         setErrors(result.fieldErrors);
