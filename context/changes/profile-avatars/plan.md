@@ -284,20 +284,20 @@ Additive: one nullable column, one constraint and one function overload. Existin
 
 #### Automated
 
-- [x] 3.1 Unit tests pass: `npm test`
-- [x] 3.2 Database tests pass: `npx supabase test db`
-- [x] 3.3 Lint passes: `npm run lint`
-- [x] 3.4 Production build passes: `npm run build`
+- [x] 3.1 Unit tests pass: `npm test` — 547f105
+- [x] 3.2 Database tests pass: `npx supabase test db` — 547f105
+- [x] 3.3 Lint passes: `npm run lint` — 547f105
+- [x] 3.4 Production build passes: `npm run build` — 547f105
 - [ ] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
 
 #### Manual
 
-- [x] 3.6 Each profile type shows exactly its avatars, after "No avatar"
-- [x] 3.7 Creating a profile without choosing an avatar stores none and shows the letter
-- [x] 3.8 Creating a profile with an avatar shows it on the list and the main screen
-- [x] 3.9 Changing the profile type after choosing an avatar returns to "No avatar"
-- [x] 3.10 A tampered avatar value shows the field error and nothing is saved
-- [x] 3.11 The picker works at 375 px and with keyboard only
-- [x] 3.12 The picker works in onboarding and on `/profiles/new`
-- [ ] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration
+- [x] 3.6 Each profile type shows exactly its avatars, after "No avatar" — 547f105
+- [x] 3.7 Creating a profile without choosing an avatar stores none and shows the letter — 547f105
+- [x] 3.8 Creating a profile with an avatar shows it on the list and the main screen — 547f105
+- [x] 3.9 Changing the profile type after choosing an avatar returns to "No avatar" — 547f105
+- [x] 3.10 A tampered avatar value shows the field error and nothing is saved — 547f105
+- [x] 3.11 The picker works at 375 px and with keyboard only — 547f105
+- [x] 3.12 The picker works in onboarding and on `/profiles/new` — 547f105
+- [x] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration — 547f105
 - [ ] 3.14 On the PR preview, a real account can create a profile with an avatar

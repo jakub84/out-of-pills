@@ -245,7 +245,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 | S-08       | rename-and-delete          | Rename and delete profiles, delete medications          | no                    | Needs S-02, S-03, S-11 | #16 |
 | S-09       | profile-urgency-marker     | Show each profile's urgency on the profile list         | no                    | Needs S-02, S-03 | #17 |
 | S-10       | demo-mode                  | Demo mode without signing in                            | no                    | Needs S-05–S-09, S-11 | #18 |
-| S-11       | profile-avatars            | Choose an avatar when creating a profile                | yes                   | Plan: `context/changes/profile-avatars/plan.md` | — |
+| S-11       | profile-avatars            | Choose an avatar when creating a profile                | yes                   | Plan: `context/changes/profile-avatars/plan.md` | #22 |
 
 ## Open Roadmap Questions
 
