@@ -314,34 +314,34 @@ No data migration. A deployment only changes application code, and `createProfil
 
 #### Automated
 
-- [x] 2.1 Lint passes: `npm run lint`
-- [x] 2.2 Unit tests pass, including `messages.test.ts` and `run-save-action.test.ts`: `npm test`
-- [x] 2.3 Production build passes: `npm run build`
+- [x] 2.1 Lint passes: `npm run lint` — 33f025b
+- [x] 2.2 Unit tests pass, including `messages.test.ts` and `run-save-action.test.ts`: `npm test` — 33f025b
+- [x] 2.3 Production build passes: `npm run build` — 33f025b
 
 #### Manual
 
-- [x] 2.4 Add medication, add package and correct count each close the dialog, update the page and show the agreed toast once
-- [x] 2.5 Toasts appear bottom right on desktop and full width at the bottom on a phone, then disappear after about 4 seconds
-- [x] 2.6 A stale-stock or validation error stays inline, with no toast
-- [x] 2.7 With the network offline, saving shows the connection toast and the dialog keeps its values
-- [x] 2.8 Clicking or swiping that toast does not close the dialog
-- [x] 2.9 A screen reader announces the success toast
+- [x] 2.4 Add medication, add package and correct count each close the dialog, update the page and show the agreed toast once — 33f025b
+- [x] 2.5 Toasts appear bottom right on desktop and full width at the bottom on a phone, then disappear after about 4 seconds — 33f025b
+- [x] 2.6 A stale-stock or validation error stays inline, with no toast — 33f025b
+- [x] 2.7 With the network offline, saving shows the connection toast and the dialog keeps its values — 33f025b
+- [x] 2.8 Clicking or swiping that toast does not close the dialog — 33f025b
+- [x] 2.9 A screen reader announces the success toast — 33f025b
 
 ### Phase 3: Toasts for Saves That Change Page
 
 #### Automated
 
-- [ ] 3.1 Lint passes: `npm run lint`
-- [ ] 3.2 Unit tests pass: `npm test`
-- [ ] 3.3 Production build passes: `npm run build`
+- [x] 3.1 Lint passes: `npm run lint`
+- [x] 3.2 Unit tests pass: `npm test`
+- [x] 3.3 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 3.4 Creating a profile from the app shows `Profile <name> created`, the loader if needed, and then the new profile selected
-- [ ] 3.5 Creating the first profile in onboarding shows the toast and lands on the main screen
-- [ ] 3.6 Validation errors on the profile form stay inline with entered values kept
-- [ ] 3.7 Skipped-name and signed-out profile paths still redirect correctly with no connection toast
-- [ ] 3.8 A password reset shows `Password changed` and lands on the main screen
-- [ ] 3.9 An expired session during a medication save redirects to sign-in with no connection toast
-- [ ] 3.10 Offline saves on the profile, password and onboarding name forms show the connection toast and stay on the form
-- [ ] 3.11 The onboarding name step shows no success toast
+- [x] 3.4 Creating a profile from the app shows `Profile <name> created`, the loader if needed, and then the new profile selected
+- [x] 3.5 Creating the first profile in onboarding shows the toast and lands on the main screen
+- [x] 3.6 Validation errors on the profile form stay inline with entered values kept
+- [x] 3.7 Skipped-name and signed-out profile paths still redirect correctly with no connection toast
+- [x] 3.8 A password reset shows `Password changed` and lands on the main screen
+- [x] 3.9 An expired session during a medication save redirects to sign-in with no connection toast
+- [x] 3.10 Offline saves on the profile, password and onboarding name forms show the connection toast and stay on the form
+- [x] 3.11 The onboarding name step shows no success toast

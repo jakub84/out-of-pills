@@ -6,8 +6,11 @@ import {
   createContext,
   use,
   useCallback,
+  useLayoutEffect,
   useMemo,
   useOptimistic,
+  useRef,
+  useState,
   useTransition,
   type ComponentProps,
   type ReactNode,
@@ -61,6 +64,33 @@ export function useNavigationPending() {
     throw new Error("useNavigationPending must be used inside NavigationPendingProvider.");
   }
   return context;
+}
+
+/**
+ * For a form that navigates away after saving. Next.js keeps a left page mounted but hidden
+ * (`cacheComponents`), so the form would come back filled in with its submit still disabled.
+ * Use `formKey` as the form's `key` and call `markSaved` on success: the form starts fresh
+ * once its page is hidden. A form left unsaved keeps its draft.
+ */
+export function useSavedFormReset() {
+  const [formKey, setFormKey] = useState(0);
+  const saved = useRef(false);
+
+  // Layout effects are cleaned up when the page is hidden, as well as on unmount.
+  useLayoutEffect(
+    () => () => {
+      if (!saved.current) return;
+      saved.current = false;
+      setFormKey((key) => key + 1);
+    },
+    [],
+  );
+
+  const markSaved = useCallback(() => {
+    saved.current = true;
+  }, []);
+
+  return { formKey, markSaved };
 }
 
 // `navigate` takes a plain href and pushes, so the link options it can't honour are left out.

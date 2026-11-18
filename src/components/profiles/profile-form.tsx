@@ -2,14 +2,22 @@
 
 import { ArrowLeft, Baby, Heart, Plus, User, Users, type LucideIcon } from "lucide-react";
 import { useActionState, useId, useState, type ReactNode } from "react";
+import { toast } from "sonner";
 
-import { PendingLink } from "@/components/navigation/navigation-pending";
+import {
+  PendingLink,
+  useNavigationPending,
+  useSavedFormReset,
+} from "@/components/navigation/navigation-pending";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
+import { readField } from "@/lib/auth/validation";
+import { profileCreatedMessage } from "@/lib/feedback/messages";
+import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { initialProfileFormState, type ProfileFormState } from "@/lib/profiles/form-state";
 import {
   AVATAR_COLORS,
@@ -75,16 +83,44 @@ function nameChips(kind: ProfileKind, displayName: string): string[] {
   }
 }
 
+/** Profile form that confirms a saved profile, opens it, and starts empty on the next visit. */
+export function ProfileForm(props: ProfileFormProps) {
+  const { formKey, markSaved } = useSavedFormReset();
+
+  return <ProfileFormFields key={formKey} {...props} onSaved={markSaved} />;
+}
+
 /** Profile type, name (with suggestion chips), avatar colour and optional avatar; posts `name`, `kind`, `avatarColor`, `avatar`. */
-export function ProfileForm({
+function ProfileFormFields({
   displayName,
   action,
   backHref,
   backLabel = "Back",
   submitLabel,
   liveHeading,
-}: ProfileFormProps) {
-  const [state, formAction, isPending] = useActionState(action, initialProfileFormState);
+  onSaved,
+}: ProfileFormProps & { onSaved: () => void }) {
+  const { navigate } = useNavigationPending();
+  const [state, formAction, isPending] = useActionState(
+    async (prev: ProfileFormState, formData: FormData) => {
+      // A failed request leaves the form as it is: every field lives in the state below.
+      const result = await runSaveAction(
+        () => action(prev, formData),
+        initialProfileFormState,
+      );
+      if (result.status === "success") {
+        onSaved();
+        toast.success(profileCreatedMessage(readField(formData, "name")));
+        navigate(
+          result.profileId ? `/?profile=${encodeURIComponent(result.profileId)}` : "/",
+        );
+      }
+      return result;
+    },
+    initialProfileFormState,
+  );
+  // Stays on after a success, so a second click during navigation can't create a duplicate.
+  const isSubmitting = isPending || state.status === "success";
   const [kind, setKind] = useState<ProfileKind>("me");
   // Starts empty: the user types a name or picks a chip.
   const [name, setName] = useState("");
@@ -338,10 +374,10 @@ export function ProfileForm({
             </PendingLink>
           </Button>
         ) : null}
-        <Button type="submit" size="lg" disabled={isPending} className="max-w-full min-w-0">
+        <Button type="submit" size="lg" disabled={isSubmitting} className="max-w-full min-w-0">
           <Plus data-icon="inline-start" aria-hidden />
           <span className="truncate">
-            {isPending
+            {isSubmitting
               ? "Creating…"
               : trimmedName
                 ? `${submitLabel} “${trimmedName}”`

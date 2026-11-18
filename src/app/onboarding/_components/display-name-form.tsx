@@ -6,12 +6,22 @@ import { useActionState } from "react";
 import { TextField } from "@/app/(auth)/_components/text-field";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { readField } from "@/lib/auth/validation";
+import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { saveDisplayName } from "@/lib/profiles/actions";
-import { initialProfileFormState } from "@/lib/profiles/form-state";
+import { initialProfileFormState, type ProfileFormState } from "@/lib/profiles/form-state";
 
 /** Onboarding step 2: the caregiver's first name. */
 export function DisplayNameForm({ defaultName }: { defaultName: string }) {
-  const [state, formAction, isPending] = useActionState(saveDisplayName, initialProfileFormState);
+  const [state, formAction, isPending] = useActionState(
+    (prev: ProfileFormState, formData: FormData) =>
+      // `displayName` refills the field, which React clears after a form action.
+      runSaveAction<ProfileFormState>(() => saveDisplayName(prev, formData), {
+        status: "idle",
+        displayName: readField(formData, "displayName"),
+      }),
+    initialProfileFormState,
+  );
 
   return (
     <form action={formAction} className="flex flex-col gap-8">

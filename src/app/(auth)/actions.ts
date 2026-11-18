@@ -191,7 +191,8 @@ export async function updatePassword(
     return { status: "error", message: GENERIC_ERROR };
   }
 
-  redirect("/");
+  // The form confirms the change, then returns to the app.
+  return { status: "success" };
 }
 
 export async function signOut(): Promise<void> {
