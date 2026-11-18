@@ -38,6 +38,7 @@ import {
   type MedicationDraft,
 } from "./medication-draft";
 import { MedicationReviewStep } from "./medication-review-step";
+import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 type AddMedicationDialogProps = {
   profileId: string;
@@ -56,9 +57,10 @@ const FIELD_ORDER: MedicationField[] = ["name", "packageSize", "pillsLeft", "dai
 /** "Add medication" button and the two-step dialog (mocks 177:601, 182:300). */
 export function AddMedicationDialog({ profileId, profileName, today }: AddMedicationDialogProps) {
   const [open, setOpen] = useState(false);
+  const { onOpenChange, guardSave } = useSaveGuard(setOpen);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button size="lg">
           <Plus data-icon="inline-start" aria-hidden />
@@ -77,6 +79,7 @@ export function AddMedicationDialog({ profileId, profileName, today }: AddMedica
           profileId={profileId}
           profileName={profileName}
           today={today}
+          guardSave={guardSave}
           onSaved={() => setOpen(false)}
         />
       </DialogContent>
@@ -88,8 +91,9 @@ function AddMedicationWizard({
   profileId,
   profileName,
   today,
+  guardSave,
   onSaved,
-}: AddMedicationDialogProps & { onSaved: () => void }) {
+}: AddMedicationDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const [step, setStep] = useState<1 | 2>(1);
   const [draft, setDraft] = useState<MedicationDraft>(initialDraft);
   const [errors, setErrors] = useState<MedicationFieldErrors>({});
@@ -109,7 +113,7 @@ function AddMedicationWizard({
     async (prev: MedicationFormState, formData: FormData) => {
       // A failed request keeps the wizard on this step, with the draft in its state.
       const result = await runSaveAction(
-        () => addMedication(prev, formData),
+        () => guardSave(() => addMedication(prev, formData)),
         initialMedicationFormState,
       );
       if (result.status === "success") {

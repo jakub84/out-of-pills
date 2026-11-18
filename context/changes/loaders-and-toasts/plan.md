@@ -287,6 +287,35 @@ No data migration. A deployment only changes application code, and `createProfil
 - Existing save pattern: `src/components/medications/stock-dialog-parts.tsx:62`
 - Next.js docs: `node_modules/next/dist/docs/01-app/03-api-reference/04-functions/use-link-status.md`, `node_modules/next/dist/docs/01-app/03-api-reference/04-functions/unstable_rethrow.md`
 
+## Implementation Addendum
+
+What shipped differs from the phases above in these ways. Where they disagree, this section is current, including for the wording of Progress item 2.5.
+
+Agreed during manual testing:
+
+- Toasts appear top centre, across the top on phones, with a spring arrival and a borderless close button inside the toast.
+- The empty medication state is left-aligned copy with a benefit list and the add button, without the mascot card.
+- The sidebar footer shows the caregiver's name and email with a text "Sign out" button; the collapsed rail keeps only its icon.
+- A progress bar along the header's bottom edge shows while navigation is pending.
+- The page loader is 72 px rather than 6em.
+- The "Hi: <name>" greeting moved from the main page to the header, left of the avatar. On phones the header avatar and its menu are hidden; the sidebar sheet has the same details and sign-out.
+- The profile heading shows a smaller "Profile:" above the name, aligned to the top of the avatar. The name is clamped to two lines and may reach the faded edge of the header illustration.
+
+Added during implementation:
+
+- Toasts use `pointer-events-auto`, so a click does not pass through to an open dialog's overlay.
+- `useSavedFormReset` restarts a saved form that Next.js keeps mounted, once its page is hidden or the navigation ends with the page still shown.
+- The password fields are controlled, so they keep their values after failed requests and after server or validation errors.
+- `PendingLink` omits `replace`, `scroll` and `onNavigate`, which `navigate` cannot honour, and takes a string `href`.
+
+Changed by the implementation review (`reviews/impl-review.md`):
+
+- The failed-request toast is `Couldn't confirm the save. Check your connection and reload the page before trying again.`, because a lost response does not prove the save failed.
+- A tab from an older deployment sees `A new version is available. Reload the page and try again.`, and other failed requests are logged to the console.
+- Sign-out is a plain form post to `/auth/sign-out`, so it ends in a full page load; the `signOut` server action is gone.
+- Medication dialogs cannot be closed while a save is running.
+- The sidebar "Sign out" uses dark text for contrast. White text on primary buttons stays at 3.56:1, below WCAG AA, by decision to keep the brand colour.
+
 ## Progress
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.

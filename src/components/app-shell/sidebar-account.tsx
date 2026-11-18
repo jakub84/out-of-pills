@@ -1,6 +1,5 @@
 import { LogOut } from "lucide-react";
 
-import { signOut } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth/dal";
 import { getCaregiver } from "@/lib/profiles/dal";
@@ -22,13 +21,17 @@ export async function SidebarAccount() {
           {user.email}
         </p>
       </div>
-      <form action={signOut} className="w-full group-data-[collapsible=icon]:w-auto">
+      <form
+        method="post"
+        action="/auth/sign-out"
+        className="w-full group-data-[collapsible=icon]:w-auto"
+      >
         <Button
           type="submit"
-          variant="ghost"
+          variant="link"
           size="md"
           title="Sign out"
-          className="w-full justify-start px-0 text-primary hover:bg-transparent hover:text-primary hover:underline group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:hover:bg-muted"
+          className="w-full justify-start px-0 text-brand-ink group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:hover:bg-muted"
         >
           {/* Only on the icon rail, where the label is hidden. */}
           <LogOut aria-hidden className="hidden group-data-[collapsible=icon]:block" />

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  appUpdatedMessage,
   connectionErrorMessage,
   countCorrectedMessage,
   medicationAddedMessage,
@@ -33,7 +34,13 @@ describe("toast messages", () => {
     expect(passwordChangedMessage()).toBe("Password changed");
   });
 
+  it("asks an outdated tab to reload", () => {
+    expect(appUpdatedMessage()).toBe("A new version is available. Reload the page and try again.");
+  });
+
   it("explains a failed request", () => {
-    expect(connectionErrorMessage()).toBe("Couldn't save. Check your connection and try again.");
+    expect(connectionErrorMessage()).toBe(
+      "Couldn't confirm the save. Check your connection and reload the page before trying again.",
+    );
   });
 });

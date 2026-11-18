@@ -14,6 +14,7 @@ import type { Stock } from "@/lib/medications/stock";
 import { parseAmount } from "@/lib/medications/validation";
 import { cn } from "@/lib/utils";
 import { urgencyBgClass, urgencyTextClass, urgencyTintClass } from "./urgency";
+import type { GuardSave } from "./use-save-guard";
 
 /** What the restock and correction dialogs need about one medication, from the server. */
 export type StockDialogMedication = {
@@ -52,6 +53,7 @@ export function useStockForm({
   initialAmount,
   validate,
   successMessage,
+  guardSave,
   onSaved,
 }: {
   action: StockAction;
@@ -60,6 +62,7 @@ export function useStockForm({
   validate: (value: string) => string | undefined;
   /** Toast text for a successful save of `tablets` from the submitted form. */
   successMessage: (tablets: number) => string;
+  guardSave: GuardSave;
   onSaved: () => void;
 }) {
   const [amount, setAmount] = useState(initialAmount);
@@ -68,7 +71,10 @@ export function useStockForm({
 
   const [state, formAction, isPending] = useActionState(
     async (prev: StockFormState, formData: FormData) => {
-      const result = await runSaveAction(() => action(prev, formData), initialStockFormState);
+      const result = await runSaveAction(
+        () => guardSave(() => action(prev, formData)),
+        initialStockFormState,
+      );
       if (result.status === "success") {
         // Non-null: the server action accepted this amount.
         toast.success(successMessage(parseAmount(readField(formData, "tablets")) as number));

@@ -52,7 +52,7 @@ export function PageLoader() {
         />
       </svg>
       {/* Screen-reader text; replaces the animation under reduced motion. */}
-      <span className="sr-only text-sm text-muted-foreground motion-reduce:not-sr-only">
+      <span className="sr-only text-sm text-brand-subtle motion-reduce:not-sr-only">
         Loading…
       </span>
     </div>

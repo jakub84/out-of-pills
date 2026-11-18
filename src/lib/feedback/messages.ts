@@ -26,7 +26,12 @@ export function passwordChangedMessage(): string {
   return "Password changed";
 }
 
-/** Shown when the request itself failed, so the server never answered. */
+/** Shown when this tab's code no longer matches the deployed server. */
+export function appUpdatedMessage(): string {
+  return "A new version is available. Reload the page and try again.";
+}
+
+/** Shown when the request failed: the save may or may not have reached the server. */
 export function connectionErrorMessage(): string {
-  return "Couldn't save. Check your connection and try again.";
+  return "Couldn't confirm the save. Check your connection and reload the page before trying again.";
 }

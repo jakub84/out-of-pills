@@ -194,9 +194,3 @@ export async function updatePassword(
   // The form confirms the change, then returns to the app.
   return { status: "success" };
 }
-
-export async function signOut(): Promise<void> {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/sign-in");
-}

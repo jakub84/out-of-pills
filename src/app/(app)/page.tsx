@@ -77,11 +77,9 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
   return (
     <div className="flex flex-col gap-12">
       <StockIllustration urgency={overallUrgency(items)} />
-      <div className="flex flex-col gap-3">
-        <p className="font-heading text-2xl font-light text-brand-ink">
-          <span className="font-medium">Hi:</span> {caregiver.displayName}
-        </p>
-        <div className="flex items-center gap-3 sm:gap-4">
+      {/* Long names wrap within the header illustration's faded left edge, before the solid part. */}
+      <div className="flex flex-col gap-3 lg:max-w-[60%]">
+        <div className="flex items-start gap-3 sm:gap-4">
           <ProfileAvatar
             initial={initialOf(selected.name)}
             avatarColor={selected.avatarColor}
@@ -90,7 +88,10 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
           />
           {/* min-w-0 lets a long name wrap instead of pushing past the screen edge. */}
           <h1 className="min-w-0 font-heading text-4xl font-normal break-words text-foreground sm:text-[54px]">
-            Profile: <span className="text-primary">{selected.name}</span>
+            <span className="block text-lg sm:text-xl">Profile:</span>{" "}
+            <span title={selected.name} className="line-clamp-2 text-primary">
+              {selected.name}
+            </span>
           </h1>
         </div>
         <div className="flex flex-col gap-3 text-sm leading-[18px] text-brand-subtle">
