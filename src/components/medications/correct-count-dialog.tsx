@@ -1,0 +1,147 @@
+"use client";
+
+import { useId } from "react";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { correctPillCount } from "@/lib/medications/actions";
+import { formatTablets } from "@/lib/medications/format";
+import { computeStock, correctCount } from "@/lib/medications/stock";
+import { PILLS_LEFT_MAX, parseAmount, validatePillsLeft } from "@/lib/medications/validation";
+import {
+  AmountStepper,
+  BaselineFields,
+  FieldError,
+  STOCK_DIALOG_CONTENT_CLASS,
+  StockLine,
+  useStockForm,
+  type StockDialogProps,
+} from "./stock-dialog-parts";
+
+/**
+ * "Correct the count" dialog (FR-011): set the tablets left after a recount. Controlled — the
+ * card's options menu opens it.
+ */
+export function CorrectCountDialog({
+  medication,
+  today,
+  open,
+  onOpenChange,
+}: StockDialogProps & {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
+        {/* Content unmounts when closed, so every opening pre-fills today's expected count. */}
+        <CorrectCountForm
+          medication={medication}
+          today={today}
+          onSaved={() => onOpenChange(false)}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function CorrectCountForm({
+  medication,
+  today,
+  onSaved,
+}: StockDialogProps & { onSaved: () => void }) {
+  const id = useId();
+  const expected = computeStock(medication, today).pillsLeft;
+
+  const form = useStockForm({
+    action: correctPillCount,
+    initialAmount: String(expected),
+    validate: validatePillsLeft,
+    onSaved,
+  });
+
+  // Preview only from a valid amount: correctCount throws on non-half or negative tablets.
+  const tablets = validatePillsLeft(form.amount) ? null : (parseAmount(form.amount) as number);
+  const after =
+    tablets === null ? null : computeStock(correctCount(medication, today, tablets), today);
+  const errorId = `${id}-error`;
+  const hintId = `${id}-hint`;
+
+  return (
+    <form
+      action={form.formAction}
+      onSubmit={form.handleSubmit}
+      noValidate
+      className="flex flex-col gap-5"
+    >
+      <BaselineFields medication={medication} />
+
+      <DialogHeader className="gap-1.5 pr-8">
+        <DialogTitle className="font-heading text-2xl font-normal">Correct the count</DialogTitle>
+        <DialogDescription className="break-words text-brand-subtle">
+          {medication.name} · {formatTablets(medication.dailyDose)} tabl. daily
+        </DialogDescription>
+      </DialogHeader>
+
+      <p className="rounded-xl border bg-card px-4 py-3 text-sm text-foreground">
+        We expect now: <span className="font-semibold">{formatTablets(expected)} tabl.</span>
+      </p>
+
+      <div className="flex flex-col gap-3">
+        <Label htmlFor={`${id}-tablets`} className="font-semibold">
+          How many tablets do you have now?
+        </Label>
+        <AmountStepper
+          id={`${id}-tablets`}
+          name="tablets"
+          value={form.amount}
+          min={0}
+          max={PILLS_LEFT_MAX}
+          invalid={Boolean(form.fieldError)}
+          describedBy={form.fieldError ? `${errorId} ${hintId}` : hintId}
+          inputRef={form.inputRef}
+          onChange={form.changeAmount}
+        />
+        <FieldError id={errorId} message={form.fieldError} />
+        <p id={hintId} className="text-[13px] text-brand-subtle">
+          Count every tablet you have, including open packages. Today&apos;s dose is taken from this
+          number.
+        </p>
+      </div>
+
+      <div aria-live="polite">
+        {after ? (
+          <StockLine label="After correcting" stock={after} showDot />
+        ) : (
+          <p className="text-sm text-brand-subtle">Enter the tablets you have to see the result.</p>
+        )}
+      </div>
+
+      {form.errorMessage ? (
+        <Alert variant="destructive">
+          <AlertDescription>{form.errorMessage}</AlertDescription>
+        </Alert>
+      ) : null}
+
+      <div className="flex flex-wrap gap-3 sm:justify-end">
+        <DialogClose asChild>
+          <Button type="button" variant="outline" size="lg" className="flex-1 sm:flex-none">
+            Cancel
+          </Button>
+        </DialogClose>
+        <Button type="submit" size="lg" disabled={form.isPending} className="flex-1 sm:flex-none">
+          {form.isPending ? "Saving…" : "Save count"}
+        </Button>
+      </div>
+    </form>
+  );
+}

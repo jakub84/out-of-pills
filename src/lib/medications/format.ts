@@ -34,9 +34,10 @@ export function formatFullDate(date: string): string {
   return `${weekday}, ${day} ${month}`;
 }
 
-/** Parts of the card's date tile: { weekday: "Friday", day: "13", month: "November" }. */
-export function dateTileParts(date: string): { weekday: string; day: string; month: string } {
-  return dateParts(date, "long", "long");
+/** Parts of the card's date tile: { weekday: "Friday", dayMonth: "13.11" } (5 March → "5.03"). */
+export function dateTileParts(date: string): { weekday: string; dayMonth: string } {
+  const [, month, day] = date.split("-");
+  return { weekday: dateParts(date, "long", "long").weekday, dayMonth: `${Number(day)}.${month}` };
 }
 
 /** Tablet count with halves as "1.5". */

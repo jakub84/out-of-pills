@@ -5,8 +5,10 @@ import {
   validateDailyDose,
   validateMedication,
   validateMedicationName,
+  validatePackageAmount,
   validatePackageSize,
   validatePillsLeft,
+  validateResultingCount,
 } from "@/lib/medications/validation";
 
 describe("parseAmount", () => {
@@ -80,6 +82,40 @@ describe("validateDailyDose", () => {
     expect(validateDailyDose("0")).toBeDefined();
     expect(validateDailyDose("0.3")).toBeDefined();
     expect(validateDailyDose("50.5")).toBeDefined();
+  });
+});
+
+describe("validatePackageAmount", () => {
+  it("accepts 0.5 to 1000 in halves, with a comma decimal", () => {
+    expect(validatePackageAmount("0.5")).toBeUndefined();
+    expect(validatePackageAmount("30")).toBeUndefined();
+    expect(validatePackageAmount("30,5")).toBeUndefined();
+    expect(validatePackageAmount("1000")).toBeUndefined();
+  });
+
+  it("rejects empty, 0, 1000.5 and non-numbers with the range message", () => {
+    expect(validatePackageAmount("")).toBeDefined();
+    expect(validatePackageAmount("0")).toBe("Use a number from 0.5 to 1000");
+    expect(validatePackageAmount("1000.5")).toBe("Use a number from 0.5 to 1000");
+    expect(validatePackageAmount("-1")).toBe("Use a number from 0.5 to 1000");
+    expect(validatePackageAmount("abc")).toBe("Use a number from 0.5 to 1000");
+  });
+
+  it("rejects non-halves", () => {
+    expect(validatePackageAmount("1.3")).toBe("Use whole or half tablets, e.g. 30 or 30.5");
+    expect(validatePackageAmount("30.25")).toBe("Use whole or half tablets, e.g. 30 or 30.5");
+  });
+});
+
+describe("validateResultingCount", () => {
+  it("accepts up to 9999 tablets", () => {
+    expect(validateResultingCount(0)).toBeUndefined();
+    expect(validateResultingCount(9999)).toBeUndefined();
+  });
+
+  it("rejects anything above 9999", () => {
+    expect(validateResultingCount(9999.5)).toBe("That would be more than 9999 tablets");
+    expect(validateResultingCount(10000)).toBe("That would be more than 9999 tablets");
   });
 });
 

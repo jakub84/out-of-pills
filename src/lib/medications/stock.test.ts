@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   addDays,
+  addPackage,
   compareByRunOut,
   computeStock,
+  correctCount,
   daysBetween,
   groupByUrgency,
   todayInWarsaw,
@@ -197,5 +199,75 @@ describe("groupByUrgency", () => {
 
   it("returns empty groups for no items", () => {
     expect(groupByUrgency([])).toEqual({ red: [], yellow: [], green: [] });
+  });
+});
+
+describe("addPackage", () => {
+  const NOV_8 = "2026-11-08";
+  const counted18 = { pillsCounted: 18, countedOn: NOV_5, dailyDose: 2 };
+
+  it("worked example: 12 left on 8 Nov + 30 → 42 counted 8 Nov, 21 days, until 28 Nov", () => {
+    const next = addPackage(counted18, NOV_8, 30);
+    expect(next).toEqual({ pillsCounted: 42, countedOn: NOV_8, dailyDose: 2 });
+    const stock = computeStock(next, NOV_8);
+    expect(stock.daysLeft).toBe(21);
+    expect(stock.runOutDate).toBe("2026-11-28");
+  });
+
+  it("same-day restock keeps today's dose in the stock: 18 + 30 → 48, 24 days", () => {
+    const next = addPackage(counted18, NOV_5, 30);
+    expect(next).toEqual({ pillsCounted: 48, countedOn: NOV_5, dailyDose: 2 });
+    expect(computeStock(next, NOV_5).daysLeft).toBe(24);
+  });
+
+  it("does not carry a deficit over: ran out + 30 → 30, 15 days", () => {
+    const ranOut = { pillsCounted: 10, countedOn: NOV_5, dailyDose: 2 };
+    expect(computeStock(ranOut, "2026-11-20").pillsLeft).toBe(0);
+    const next = addPackage(ranOut, "2026-11-20", 30);
+    expect(next.pillsCounted).toBe(30);
+    expect(computeStock(next, "2026-11-20").daysLeft).toBe(15);
+  });
+
+  it("handles halves: 5.5 left + 0.5 → 6", () => {
+    const input = { pillsCounted: 7, countedOn: NOV_5, dailyDose: 1.5 };
+    expect(addPackage(input, "2026-11-06", 0.5).pillsCounted).toBe(6);
+  });
+
+  it("always dates the new baseline today", () => {
+    const future = { pillsCounted: 4, countedOn: "2026-11-07", dailyDose: 2 };
+    expect(addPackage(future, NOV_5, 30).countedOn).toBe(NOV_5);
+  });
+
+  it("rejects negative and non-half amounts", () => {
+    expect(() => addPackage(counted18, NOV_5, -1)).toThrow(RangeError);
+    expect(() => addPackage(counted18, NOV_5, 0.3)).toThrow(RangeError);
+  });
+});
+
+describe("correctCount", () => {
+  const NOV_8 = "2026-11-08";
+  const counted18 = { pillsCounted: 18, countedOn: NOV_5, dailyDose: 2 };
+
+  it("worked example: correct to 7 on 8 Nov → 3 days, until 10 Nov", () => {
+    const next = correctCount(counted18, NOV_8, 7);
+    expect(next).toEqual({ pillsCounted: 7, countedOn: NOV_8, dailyDose: 2 });
+    const stock = computeStock(next, NOV_8);
+    expect(stock.daysLeft).toBe(3);
+    expect(stock.runOutDate).toBe("2026-11-10");
+  });
+
+  it("correct to 0 → ran out with no last covered day", () => {
+    expect(computeStock(correctCount(counted18, NOV_8, 0), NOV_8)).toEqual({
+      pillsLeft: 0,
+      daysLeft: 0,
+      runOutDate: null,
+      lastCoveredDay: null,
+      urgency: "ran-out",
+    });
+  });
+
+  it("rejects negative and non-half counts", () => {
+    expect(() => correctCount(counted18, NOV_8, -0.5)).toThrow(RangeError);
+    expect(() => correctCount(counted18, NOV_8, 2.2)).toThrow(RangeError);
   });
 });

@@ -18,6 +18,14 @@ export const urgencyTextClass: Record<Urgency, string> = {
   green: "text-urgency-green",
 };
 
+/** Light urgency background with a matching soft border (e.g. the "After adding" preview). */
+export const urgencyTintClass: Record<Urgency, string> = {
+  "ran-out": "border-urgency-red/40 bg-urgency-red-tint",
+  red: "border-urgency-red/40 bg-urgency-red-tint",
+  yellow: "border-urgency-yellow/40 bg-urgency-yellow-tint",
+  green: "border-urgency-green/40 bg-urgency-green-tint",
+};
+
 /** Short label of the urgency group (PRD FR-015 thresholds). */
 export const urgencyLabel: Record<Urgency, string> = {
   "ran-out": "Not enough for a day",

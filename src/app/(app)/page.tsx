@@ -68,6 +68,9 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
     id: medication.id,
     name: medication.name,
     dailyDose: medication.dailyDose,
+    packageSize: medication.packageSize,
+    pillsCounted: medication.pillsCounted,
+    countedOn: medication.countedOn,
     stock: computeStock(medication, today),
   }));
   // Each group comes back sorted by compareByRunOut, ran-out items first in red.
@@ -109,7 +112,7 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
           {items.length > 0 ? addButton : null}
         </div>
         {items.length > 0 ? (
-          <MedicationGroups groups={groups} />
+          <MedicationGroups groups={groups} today={today} />
         ) : (
           <NoMedications action={addButton} />
         )}
