@@ -268,36 +268,36 @@ Additive: one nullable column, one constraint and one function overload. Existin
 
 #### Automated
 
-- [x] 2.1 `public/avatars/` holds exactly 10 WebP files, each 256×256 and under 60 KB
-- [x] 2.2 Unit tests pass: `npm test`
-- [x] 2.3 Lint passes: `npm run lint`
-- [x] 2.4 Production build passes: `npm run build`
+- [x] 2.1 `public/avatars/` holds exactly 10 WebP files, each 256×256 and under 60 KB — 03a02f8
+- [x] 2.2 Unit tests pass: `npm test` — 03a02f8
+- [x] 2.3 Lint passes: `npm run lint` — 03a02f8
+- [x] 2.4 Production build passes: `npm run build` — 03a02f8
 
 #### Manual
 
-- [x] 2.5 A profile given an avatar in Studio shows it at 32 px on the list and larger on the main screen, framed by its colour
-- [x] 2.6 A profile without an avatar shows its letter on its colour in both places
-- [x] 2.7 The collapsed sidebar, a 375 px screen and a 40-character profile name all display correctly
-- [x] 2.8 The `man` avatar shows no lettering
+- [x] 2.5 A profile given an avatar in Studio shows it at 32 px on the list and larger on the main screen, framed by its colour — 03a02f8
+- [x] 2.6 A profile without an avatar shows its letter on its colour in both places — 03a02f8
+- [x] 2.7 The collapsed sidebar, a 375 px screen and a 40-character profile name all display correctly — 03a02f8
+- [x] 2.8 The `man` avatar shows no lettering — 03a02f8
 
 ### Phase 3: Avatar Picker and Release
 
 #### Automated
 
-- [ ] 3.1 Unit tests pass: `npm test`
-- [ ] 3.2 Database tests pass: `npx supabase test db`
-- [ ] 3.3 Lint passes: `npm run lint`
-- [ ] 3.4 Production build passes: `npm run build`
+- [x] 3.1 Unit tests pass: `npm test`
+- [x] 3.2 Database tests pass: `npx supabase test db`
+- [x] 3.3 Lint passes: `npm run lint`
+- [x] 3.4 Production build passes: `npm run build`
 - [ ] 3.5 On the PR, `Lint and build` and `preview` succeed: `gh pr checks`
 
 #### Manual
 
-- [ ] 3.6 Each profile type shows exactly its avatars, after "No avatar"
-- [ ] 3.7 Creating a profile without choosing an avatar stores none and shows the letter
-- [ ] 3.8 Creating a profile with an avatar shows it on the list and the main screen
-- [ ] 3.9 Changing the profile type after choosing an avatar returns to "No avatar"
-- [ ] 3.10 A tampered avatar value shows the field error and nothing is saved
-- [ ] 3.11 The picker works at 375 px and with keyboard only
-- [ ] 3.12 The picker works in onboarding and on `/profiles/new`
+- [x] 3.6 Each profile type shows exactly its avatars, after "No avatar"
+- [x] 3.7 Creating a profile without choosing an avatar stores none and shows the letter
+- [x] 3.8 Creating a profile with an avatar shows it on the list and the main screen
+- [x] 3.9 Changing the profile type after choosing an avatar returns to "No avatar"
+- [x] 3.10 A tampered avatar value shows the field error and nothing is saved
+- [x] 3.11 The picker works at 375 px and with keyboard only
+- [x] 3.12 The picker works in onboarding and on `/profiles/new`
 - [ ] 3.13 Before the PR opened, `npx supabase db push --remote` applied the migration
 - [ ] 3.14 On the PR preview, a real account can create a profile with an avatar

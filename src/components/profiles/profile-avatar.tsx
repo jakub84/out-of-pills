@@ -5,13 +5,18 @@ import { cn } from "@/lib/utils";
 import { avatarBgClass } from "./avatar-colors";
 
 const SIZES = {
-  list: { frame: "size-8 p-0.5 text-sm", image: "32px" },
-  picker: { frame: "size-16 p-1 text-2xl", image: "64px" },
-  header: { frame: "size-16 p-1 text-2xl sm:size-20 sm:text-3xl", image: "(min-width: 640px) 80px, 64px" },
+  list: { frame: "size-8 rounded-full p-0.5 text-sm", image: "rounded-full", sizes: "32px" },
+  picker: { frame: "size-16 rounded-full p-1 text-2xl", image: "rounded-full", sizes: "64px" },
+  header: {
+    frame: "size-16 rounded-2xl p-1 text-2xl sm:size-20 sm:text-3xl",
+    image: "rounded-xl",
+    sizes: "(min-width: 640px) 80px, 64px",
+  },
 } as const;
 
 /**
- * The profile's portrait inside a ring of its colour, or its initial on that colour.
+ * The profile's portrait inside a frame of its colour, or its initial on that colour.
+ * Round on the list and in the picker, square in the main-screen header.
  * Decorative: the profile name or radio label is always adjacent.
  */
 export function ProfileAvatar({
@@ -29,7 +34,7 @@ export function ProfileAvatar({
     <span
       aria-hidden
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full font-semibold text-foreground",
+        "flex shrink-0 items-center justify-center font-semibold text-foreground",
         avatarBgClass[avatarColor],
         SIZES[size].frame,
       )}
@@ -40,8 +45,8 @@ export function ProfileAvatar({
           alt=""
           width={256}
           height={256}
-          sizes={SIZES[size].image}
-          className="size-full rounded-full object-cover"
+          sizes={SIZES[size].sizes}
+          className={cn("size-full object-cover", SIZES[size].image)}
         />
       ) : (
         initial
