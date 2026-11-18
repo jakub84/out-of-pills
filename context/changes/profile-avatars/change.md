@@ -1,7 +1,7 @@
 ---
 change_id: profile-avatars
 title: Add avatars when creating a profile
-status: implementing
+status: implemented
 created: 2026-11-18
 updated: 2026-11-18
 archived_at: null
