@@ -236,7 +236,7 @@ export function ProfileForm({
                   key={color}
                   htmlFor={itemId}
                   className={cn(
-                    "relative flex size-16 cursor-pointer items-center justify-center rounded-full text-2xl font-semibold text-foreground has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring/50",
+                    "relative flex size-16 cursor-pointer items-center justify-center rounded-full text-2xl font-semibold text-foreground has-focus-visible:outline-2 has-focus-visible:outline-offset-[7px] has-focus-visible:outline-foreground",
                     avatarBgClass[color],
                     selected
                       ? "ring-[3px] ring-primary ring-offset-2 ring-offset-card"
@@ -282,7 +282,7 @@ export function ProfileForm({
               <Label
                 key={option.value}
                 htmlFor={itemId}
-                className="group relative cursor-pointer rounded-full has-focus-visible:ring-8 has-focus-visible:ring-ring/50"
+                className="group relative cursor-pointer rounded-full has-focus-visible:outline-2 has-focus-visible:outline-offset-[7px] has-focus-visible:outline-foreground"
               >
                 {/* Invisible but focusable; covers the avatar without taking up layout space. */}
                 <RadioGroupItem

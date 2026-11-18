@@ -1,3 +1,4 @@
+import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
@@ -12,8 +13,9 @@ import { SidebarEdgeToggle } from "./sidebar-edge-toggle";
 const HEADING_ID = "sidebar-profiles-heading";
 
 /**
- * Left sidebar (mock 176:226, S-02 parts only): the caregiver's profiles, oldest first,
- * and "+ Add new". Below `md` the shadcn Sidebar renders itself as a Sheet.
+ * Left sidebar (mock 176:226): the caregiver's profiles, oldest first, a red dot on those
+ * with a medication running out, and "+ Add new". Below `md` the shadcn Sidebar renders
+ * itself as a Sheet.
  */
 export function AppSidebar() {
   return (
@@ -43,8 +45,20 @@ export function AppSidebar() {
   );
 }
 
+/** The dots are an extra: if medications fail to load, the profile list still works. */
+async function loadMedicationsForDots() {
+  try {
+    return await listAllMedications();
+  } catch (error) {
+    // Lets Next's own control-flow errors (redirects, dynamic rendering) through.
+    unstable_rethrow(error);
+    console.error("Failed to load medications for the sidebar", error);
+    return [];
+  }
+}
+
 async function SidebarProfiles() {
-  const [profiles, medications] = await Promise.all([listProfiles(), listAllMedications()]);
+  const [profiles, medications] = await Promise.all([listProfiles(), loadMedicationsForDots()]);
   const today = todayInWarsaw();
   const runningOutProfileIds = new Set(
     medications

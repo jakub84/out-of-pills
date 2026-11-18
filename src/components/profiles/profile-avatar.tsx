@@ -1,3 +1,4 @@
+import { User } from "lucide-react";
 import Image from "next/image";
 
 import type { AvatarColor, ProfileAvatar as ProfileAvatarId } from "@/lib/profiles/validation";
@@ -49,7 +50,8 @@ export function ProfileAvatar({
           className={cn("size-full object-cover", SIZES[size].image)}
         />
       ) : (
-        initial
+        // No initial yet: the profile form before a name is typed.
+        initial || <User className="size-1/2 text-foreground/60" />
       )}
     </span>
   );
