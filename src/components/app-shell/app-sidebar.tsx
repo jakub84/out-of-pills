@@ -51,6 +51,7 @@ async function SidebarProfiles() {
         name: profile.name,
         initial: initialOf(profile.name),
         avatarColor: profile.avatarColor,
+        avatar: profile.avatar,
       }))}
     />
   );
@@ -64,7 +65,7 @@ function ProfileNavSkeleton() {
           key={width}
           className="flex h-12 items-center gap-3 px-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <Skeleton className="size-6 rounded-full" />
+          <Skeleton className="size-8 rounded-full" />
           <Skeleton className={`h-4 ${width} group-data-[collapsible=icon]:hidden`} />
         </div>
       ))}

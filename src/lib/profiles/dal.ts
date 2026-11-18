@@ -6,8 +6,10 @@ import { getCurrentUser } from "@/lib/auth/dal";
 import { createClient } from "@/lib/supabase/server";
 import {
   isAvatarColor,
+  isProfileAvatar,
   isProfileKind,
   type AvatarColor,
+  type ProfileAvatar,
   type ProfileKind,
 } from "./validation";
 
@@ -18,6 +20,7 @@ export type Profile = {
   name: string;
   kind: ProfileKind;
   avatarColor: AvatarColor;
+  avatar: ProfileAvatar | null;
 };
 
 /**
@@ -50,7 +53,7 @@ export const listProfiles = cache(async (): Promise<Profile[]> => {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, name, kind, avatar_color")
+    .select("id, name, kind, avatar_color, avatar")
     .order("created_at", { ascending: true })
     .order("id", { ascending: true });
 
@@ -62,5 +65,6 @@ export const listProfiles = cache(async (): Promise<Profile[]> => {
     name: row.name,
     kind: isProfileKind(row.kind) ? row.kind : "other",
     avatarColor: isAvatarColor(row.avatar_color) ? row.avatar_color : "mint",
+    avatar: row.avatar !== null && isProfileAvatar(row.avatar) ? row.avatar : null,
   }));
 });

@@ -253,32 +253,32 @@ Additive: one nullable column, one constraint and one function overload. Existin
 
 #### Automated
 
-- [x] 1.1 Unit tests pass: `npm test`
-- [x] 1.2 Migration applies on a clean database: `npx supabase db reset`
-- [x] 1.3 Database tests pass: `npx supabase test db`
-- [x] 1.4 Generated types are current: `npm run db:types` leaves `git status` clean
-- [x] 1.5 Lint passes: `npm run lint`
-- [x] 1.6 Production build passes: `npm run build`
+- [x] 1.1 Unit tests pass: `npm test` — 2f6b0ed
+- [x] 1.2 Migration applies on a clean database: `npx supabase db reset` — 2f6b0ed
+- [x] 1.3 Database tests pass: `npx supabase test db` — 2f6b0ed
+- [x] 1.4 Generated types are current: `npm run db:types` leaves `git status` clean — 2f6b0ed
+- [x] 1.5 Lint passes: `npm run lint` — 2f6b0ed
+- [x] 1.6 Production build passes: `npm run build` — 2f6b0ed
 
 #### Manual
 
-- [x] 1.7 In Studio (http://127.0.0.1:55323) `profiles.avatar` is empty for profiles created through the three-argument function
+- [x] 1.7 In Studio (http://127.0.0.1:55323) `profiles.avatar` is empty for profiles created through the three-argument function — 2f6b0ed
 
 ### Phase 2: Avatar Images and Display
 
 #### Automated
 
-- [ ] 2.1 `public/avatars/` holds exactly 10 WebP files, each 256×256 and under 60 KB
-- [ ] 2.2 Unit tests pass: `npm test`
-- [ ] 2.3 Lint passes: `npm run lint`
-- [ ] 2.4 Production build passes: `npm run build`
+- [x] 2.1 `public/avatars/` holds exactly 10 WebP files, each 256×256 and under 60 KB
+- [x] 2.2 Unit tests pass: `npm test`
+- [x] 2.3 Lint passes: `npm run lint`
+- [x] 2.4 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 2.5 A profile given an avatar in Studio shows it at 32 px on the list and larger on the main screen, framed by its colour
-- [ ] 2.6 A profile without an avatar shows its letter on its colour in both places
-- [ ] 2.7 The collapsed sidebar, a 375 px screen and a 40-character profile name all display correctly
-- [ ] 2.8 The `man` avatar shows no lettering
+- [x] 2.5 A profile given an avatar in Studio shows it at 32 px on the list and larger on the main screen, framed by its colour
+- [x] 2.6 A profile without an avatar shows its letter on its colour in both places
+- [x] 2.7 The collapsed sidebar, a 375 px screen and a 40-character profile name all display correctly
+- [x] 2.8 The `man` avatar shows no lettering
 
 ### Phase 3: Avatar Picker and Release
 
