@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { ProfileFormState } from "./form-state";
 import {
   isAvatarColor,
+  isAvatarForKind,
   isProfileKind,
   validateDisplayName,
   validateProfileName,
@@ -54,22 +55,28 @@ export async function createProfile(
   const name = readField(formData, "name");
   const kind = readField(formData, "kind");
   const avatarColor = readField(formData, "avatarColor");
+  // Empty means "No avatar".
+  const avatar = readField(formData, "avatar");
 
   const fieldErrors: ProfileFormState["fieldErrors"] = {
     name: validateProfileName(name),
     kind: isProfileKind(kind) ? undefined : "Choose whose medications these are",
     avatarColor: isAvatarColor(avatarColor) ? undefined : "Choose an avatar colour",
+    // An invalid kind is already an error, and has no avatar list to check against.
+    avatar:
+      avatar && isProfileKind(kind) && !isAvatarForKind(kind, avatar)
+        ? "Choose an avatar from the list"
+        : undefined,
   };
-  if (fieldErrors.name || fieldErrors.kind || fieldErrors.avatarColor) {
+  if (fieldErrors.name || fieldErrors.kind || fieldErrors.avatarColor || fieldErrors.avatar) {
     return { status: "error", fieldErrors };
   }
 
   const supabase = await createClient();
-  const { data: profileId, error } = await supabase.rpc("create_profile", {
-    p_name: name,
-    p_kind: kind,
-    p_avatar_color: avatarColor,
-  });
+  const profileArgs = { p_name: name, p_kind: kind, p_avatar_color: avatarColor };
+  const { data: profileId, error } = avatar
+    ? await supabase.rpc("create_profile", { ...profileArgs, p_avatar: avatar })
+    : await supabase.rpc("create_profile", profileArgs);
 
   if (error) {
     // P0001 "Caregiver name is not set": the name step was skipped.

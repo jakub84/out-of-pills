@@ -4,21 +4,23 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { avatarBgClass } from "@/components/profiles/avatar-colors";
+import { ProfileAvatar } from "@/components/profiles/profile-avatar";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import type { AvatarColor } from "@/lib/profiles/validation";
-import { cn } from "@/lib/utils";
+import type { AvatarColor, ProfileAvatar as ProfileAvatarId } from "@/lib/profiles/validation";
 
 export type ProfileNavItem = {
   id: string;
   name: string;
   initial: string;
   avatarColor: AvatarColor;
+  avatar: ProfileAvatarId | null;
+  /** At least one medication is red or has run out. */
+  runningOut: boolean;
 };
 
 /**
@@ -53,16 +55,24 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
                 aria-current={selected ? "page" : undefined}
                 onClick={closeSheet}
               >
-                <span
-                  aria-hidden
-                  className={cn(
-                    "flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-foreground",
-                    avatarBgClass[profile.avatarColor],
-                  )}
-                >
-                  {profile.initial}
+                <span className="relative shrink-0">
+                  <ProfileAvatar
+                    initial={profile.initial}
+                    avatarColor={profile.avatarColor}
+                    avatar={profile.avatar}
+                    size="list"
+                  />
+                  {/* Urgency dot (mock 221:392). */}
+                  {profile.runningOut ? (
+                    <span
+                      aria-hidden
+                      data-slot="profile-urgency-dot"
+                      className="absolute top-px right-px size-[7px] rounded-full bg-urgency-red"
+                    />
+                  ) : null}
                 </span>
                 <span className="group-data-[collapsible=icon]:sr-only">{profile.name}</span>
+                {profile.runningOut ? <span className="sr-only">, running out</span> : null}
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -77,7 +87,7 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
           >
             <span
               aria-hidden
-              className="flex size-6 shrink-0 items-center justify-center rounded-md border border-dashed border-brand-subtle text-brand-ink"
+              className="flex size-8 shrink-0 items-center justify-center rounded-md border border-dashed border-brand-subtle text-brand-ink"
             >
               <Plus className="size-3.5!" />
             </span>

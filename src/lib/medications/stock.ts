@@ -197,3 +197,10 @@ export function groupByUrgency<T extends StockItem>(
   }
   return groups;
 }
+
+/** The most urgent colour among `items`; ran-out counts as red, no items as green. */
+export function overallUrgency(items: readonly StockItem[]): "red" | "yellow" | "green" {
+  const urgencies = items.map((item) => item.stock.urgency);
+  if (urgencies.includes("ran-out") || urgencies.includes("red")) return "red";
+  return urgencies.includes("yellow") ? "yellow" : "green";
+}

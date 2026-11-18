@@ -8,6 +8,7 @@ import {
   correctCount,
   daysBetween,
   groupByUrgency,
+  overallUrgency,
   todayInWarsaw,
   type StockInput,
   type StockItem,
@@ -199,6 +200,32 @@ describe("groupByUrgency", () => {
 
   it("returns empty groups for no items", () => {
     expect(groupByUrgency([])).toEqual({ red: [], yellow: [], green: [] });
+  });
+});
+
+describe("overallUrgency", () => {
+  const withDaysLeft = (days: number, id = String(days)) =>
+    item(id, id, { pillsCounted: days, countedOn: NOV_5, dailyDose: 1 }, NOV_5);
+
+  it("is green when every medication has more than 30 days left", () => {
+    expect(overallUrgency([withDaysLeft(31), withDaysLeft(90)])).toBe("green");
+  });
+
+  it("is yellow when the most urgent medication has 15 to 30 days left", () => {
+    expect(overallUrgency([withDaysLeft(60), withDaysLeft(30)])).toBe("yellow");
+    expect(overallUrgency([withDaysLeft(60), withDaysLeft(15)])).toBe("yellow");
+  });
+
+  it("is red when any medication has 14 days or fewer left", () => {
+    expect(overallUrgency([withDaysLeft(60), withDaysLeft(20), withDaysLeft(14)])).toBe("red");
+  });
+
+  it("treats a medication that ran out as red", () => {
+    expect(overallUrgency([withDaysLeft(60), withDaysLeft(0)])).toBe("red");
+  });
+
+  it("is green when there are no medications", () => {
+    expect(overallUrgency([])).toBe("green");
   });
 });
 

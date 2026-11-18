@@ -1,4 +1,4 @@
-import type { AvatarColor } from "@/lib/profiles/validation";
+import type { AvatarColor, ProfileAvatar } from "@/lib/profiles/validation";
 
 /** Background utility per stored avatar colour (tokens in globals.css); full class names so Tailwind sees them. */
 export const avatarBgClass: Record<AvatarColor, string> = {
@@ -18,4 +18,18 @@ export const avatarColorLabel: Record<AvatarColor, string> = {
   rose: "Rose",
   lavender: "Lavender",
   stone: "Stone",
+};
+
+/** Human-readable avatar names for the picker. */
+export const avatarLabel: Record<ProfileAvatar, string> = {
+  woman: "Woman",
+  man: "Man",
+  mom: "Mom",
+  dad: "Dad",
+  grandma: "Grandma",
+  grandpa: "Grandpa",
+  son: "Son",
+  daughter: "Daughter",
+  cat: "Cat",
+  dog: "Dog",
 };

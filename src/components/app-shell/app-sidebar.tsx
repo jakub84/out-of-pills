@@ -2,6 +2,8 @@ import { Suspense } from "react";
 
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { listAllMedications } from "@/lib/medications/dal";
+import { computeStock, overallUrgency, todayInWarsaw } from "@/lib/medications/stock";
 import { listProfiles } from "@/lib/profiles/dal";
 import { initialOf } from "@/lib/profiles/validation";
 import { ProfileNav } from "./profile-nav";
@@ -42,7 +44,16 @@ export function AppSidebar() {
 }
 
 async function SidebarProfiles() {
-  const profiles = await listProfiles();
+  const [profiles, medications] = await Promise.all([listProfiles(), listAllMedications()]);
+  const today = todayInWarsaw();
+  const runningOutProfileIds = new Set(
+    medications
+      .filter((medication) => {
+        const stock = computeStock(medication, today);
+        return overallUrgency([{ ...medication, stock }]) === "red";
+      })
+      .map((medication) => medication.profileId),
+  );
 
   return (
     <ProfileNav
@@ -51,6 +62,8 @@ async function SidebarProfiles() {
         name: profile.name,
         initial: initialOf(profile.name),
         avatarColor: profile.avatarColor,
+        avatar: profile.avatar,
+        runningOut: runningOutProfileIds.has(profile.id),
       }))}
     />
   );
@@ -64,7 +77,7 @@ function ProfileNavSkeleton() {
           key={width}
           className="flex h-12 items-center gap-3 px-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <Skeleton className="size-6 rounded-full" />
+          <Skeleton className="size-8 rounded-full" />
           <Skeleton className={`h-4 ${width} group-data-[collapsible=icon]:hidden`} />
         </div>
       ))}

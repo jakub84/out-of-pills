@@ -87,6 +87,10 @@ MVP flow (v1): 1) user signs up (email + password or Google) → 2) user creates
   > Socrates: Counter-argument considered: "an urgent medication in another profile is invisible while looking at the current one." Resolution: added FR-019 (urgency marker on the profile list).
 - FR-019: User can see on the profile list the urgency of each profile (colour of its most urgent medication). Priority: must-have
   > Socrates: Counter-argument considered: "duplicates information." Resolution: no counter-argument accepted; stands as written.
+- FR-021: User can optionally choose a ready-made avatar when creating a profile, from a set that depends on the profile type; a profile without an avatar shows the first letter of its name. Priority: must-have
+  > Added 2026-11-18 at the user's request. No photo upload: the avatars are generic illustrations, so no personal images are stored.
+- FR-022: User can change or remove a profile's avatar later. Priority: must-have
+  > Added 2026-11-18 at the user's request; delivered with profile rename (FR-004).
 
 ### Medications
 
