@@ -52,7 +52,7 @@ People taking many medications only notice they are running out when a medicatio
 | S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | proposed |
 | S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
 | S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09, S-11 | FR-020                        | proposed |
-| S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | in-progress |
+| S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | done |
 
 ## Streams
 
@@ -228,7 +228,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** The migration reaches production before the code, so the existing `create_profile` signature must keep working; changing an avatar later belongs to S-08.
-- **Status:** in-progress
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -270,3 +270,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **S-02: user can create several profiles (e.g. "Mom", "Dad", "Me") and switch between them using the profile list on the main screen.** — Archived 2026-11-16 → `context/archive/2026-11-16-create-and-switch-profiles/`. Lesson: —.
 - **S-03: user can add a medication to a profile (name + strength, pills per package, pills left, daily dosage) and see, for every medication of the profile, pills left, run-out date, days left and an urgency colour (red ≤ 14 days, yellow ≤ 30, green above), sorted from the one running out soonest.** — Archived 2026-11-17 → `context/archive/2026-11-16-first-medication-run-out/`. Lesson: —.
 - **S-06: user can add a new package of a tracked medication in one action (pill count pre-filled, editable before confirming) and correct the current number of pills left.** — Archived 2026-11-18 → `context/archive/2026-11-17-restock-and-correct/`. Lesson: —.
+- **S-11: user can optionally choose a ready-made avatar, from a set that depends on the profile type, when creating a profile; the avatar appears on the profile list and the main screen, and a profile without one keeps showing its first letter.** — Archived 2026-11-18 → `context/archive/2026-11-18-profile-avatars/`. Lesson: —.

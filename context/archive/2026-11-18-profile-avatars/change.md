@@ -1,10 +1,10 @@
 ---
 change_id: profile-avatars
 title: Add avatars when creating a profile
-status: impl_reviewed
+status: archived
 created: 2026-11-18
 updated: 2026-11-18
-archived_at: null
+archived_at: 2026-11-18T16:17:14Z
 ---
 
 ## Notes
