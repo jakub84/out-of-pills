@@ -6,7 +6,10 @@
 -- A dose or pause change only stays correct when the stock baseline is
 -- rebased at the same time (pills left today, counted today), so the
 -- "counted today" trigger now covers daily_dose and paused_on too: a dose or
--- pause change on a baseline counted on an earlier day raises OP001.
+-- pause change on a baseline counted on an earlier day raises OP001. The
+-- trigger enforces the day, not the amounts: the rebase maths lives in
+-- src/lib/medications/stock.ts, and RLS keeps any other write to the caller's
+-- own medications.
 
 -- ---------------------------------------------------------------------------
 -- Pause state: the Warsaw day the medication was paused, null when taken.

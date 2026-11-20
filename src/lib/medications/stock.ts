@@ -195,7 +195,9 @@ export function correctCount(input: StockInput, today: string, tablets: number):
  * tablets left still hold today's dose at the old rate; on a dose decrease the
  * difference comes out too, so today's dose at the new rate stays in the count
  * (today is day 1) and the date never moves later than the real one. A paused
- * stock keeps its frozen count: nothing was taken while paused.
+ * stock keeps its frozen count: nothing was taken while paused. With the same
+ * dose and no count entered the stock is returned as stored, so a rename or a
+ * package-size change keeps the count day (and the day a run-out stock ran out).
  */
 export function editStock(
   input: StockInput,
@@ -203,6 +205,9 @@ export function editStock(
   { dailyDose, pillsLeft }: { dailyDose: number; pillsLeft: number | null },
 ): StockInput {
   const newDoseHalves = toDoseHalves(dailyDose);
+  if (pillsLeft === null && newDoseHalves === toDoseHalves(input.dailyDose)) {
+    return { ...input };
+  }
   let countedHalves: number;
   if (pillsLeft !== null) {
     countedHalves = toTabletHalves(pillsLeft);

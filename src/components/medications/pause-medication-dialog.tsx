@@ -22,6 +22,7 @@ import {
   BaselineFields,
   STOCK_DIALOG_CONTENT_CLASS,
   StockLine,
+  type StockDialogMedication,
   type StockDialogProps,
 } from "./stock-dialog-parts";
 import { useSaveGuard, type GuardSave } from "./use-save-guard";
@@ -62,9 +63,11 @@ function PauseMedicationForm({
   guardSave,
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
-  // The state shown on opening: the refreshed card must not flip the direction while the
-  // dialog closes, and a change from elsewhere is caught by the baseline as a stale error.
-  const [shown] = useState(medication);
+  // Live until the save succeeds, then frozen: the refreshed card must not flip the
+  // direction while the dialog closes, but a retry after a stale error must send the
+  // refreshed baseline (and offer the right direction).
+  const [frozen, setFrozen] = useState<StockDialogMedication | null>(null);
+  const shown = frozen ?? medication;
   const resuming = shown.pausedOn !== null;
   const action = resuming ? resumeMedication : pauseMedication;
   const successMessage = resuming ? medicationResumedMessage : medicationPausedMessage;
@@ -78,6 +81,7 @@ function PauseMedicationForm({
         initialStockFormState,
       );
       if (result.status === "success") {
+        setFrozen(shown);
         toast.success(successMessage(shown.name));
         onSaved();
       }

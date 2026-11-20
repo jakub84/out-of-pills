@@ -355,10 +355,23 @@ describe("editStock", () => {
     expect(computeStock(next, NOV_9).runOutDate).toBe(addDays(NOV_9, 4));
   });
 
-  it("same dose with 10 left counts 10 today: the run-out date does not move", () => {
+  it("same dose, pills left not typed: the stock is kept as stored (rename only)", () => {
     const next = editStock(tenLeftAt2, NOV_9, { dailyDose: 2, pillsLeft: null });
-    expect(next.pillsCounted).toBe(10);
+    expect(next).toEqual(tenLeftAt2);
     expect(computeStock(next, NOV_9).runOutDate).toBe(computeStock(tenLeftAt2, NOV_9).runOutDate);
+  });
+
+  it("same dose on a run-out stock keeps the day it ran out", () => {
+    // 4 at 2/day counted 5 Nov → last covered day 6 Nov, ran out by 9 Nov.
+    const ranOut = { pillsCounted: 4, countedOn: NOV_5, dailyDose: 2, pausedOn: null };
+    const next = editStock(ranOut, NOV_9, { dailyDose: 2, pillsLeft: null });
+    expect(next).toEqual(ranOut);
+    expect(computeStock(next, NOV_9).lastCoveredDay).toBe("2026-11-06");
+  });
+
+  it("same dose with pills left typed still counts today", () => {
+    const next = editStock(tenLeftAt2, NOV_9, { dailyDose: 2, pillsLeft: 10 });
+    expect(next).toEqual({ pillsCounted: 10, countedOn: NOV_9, dailyDose: 2, pausedOn: null });
   });
 
   it("manual pills left wins: dose 2 → 1 with 20 counted by hand counts 20 today, not 19", () => {

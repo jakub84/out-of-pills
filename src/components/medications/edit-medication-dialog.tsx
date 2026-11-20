@@ -44,6 +44,7 @@ import {
   FieldError,
   STOCK_DIALOG_CONTENT_CLASS,
   StockLine,
+  type StockDialogMedication,
   type StockDialogProps,
 } from "./stock-dialog-parts";
 import { useSaveGuard, type GuardSave } from "./use-save-guard";
@@ -69,6 +70,53 @@ type EditDraft = {
 function chipChoice(value: number, chips: readonly string[]) {
   const text = String(value);
   return chips.includes(text) ? { choice: text, other: "" } : { choice: OTHER, other: text };
+}
+
+/** The form pre-filled from a stored medication. */
+function draftFrom(medication: StockDialogMedication): EditDraft {
+  const packageChip = chipChoice(medication.packageSize, PACKAGE_CHIPS);
+  const doseChip = chipChoice(medication.dailyDose, DOSE_CHIPS);
+  return {
+    name: medication.name,
+    packageChoice: packageChip.choice,
+    packageOther: packageChip.other,
+    doseChoice: doseChip.choice,
+    doseOther: doseChip.other,
+    pillsMode: "auto",
+    pillsManual: "",
+  };
+}
+
+/** Identifies the stored values the form was filled from. */
+function seedKey(medication: StockDialogMedication): string {
+  return [
+    medication.name,
+    medication.packageSize,
+    medication.dailyDose,
+    medication.pillsCounted,
+    medication.countedOn,
+    medication.pausedOn ?? "",
+  ].join("|");
+}
+
+/**
+ * Moves the fields the user has not changed from `from` to `to`; edited fields are kept.
+ * Pills left in manual mode count as edited.
+ */
+function reseedDraft(draft: EditDraft, from: StockDialogMedication, to: StockDialogMedication): EditDraft {
+  const before = draftFrom(from);
+  const after = draftFrom(to);
+  const untouched = (...keys: (keyof EditDraft)[]) => keys.every((key) => draft[key] === before[key]);
+  return {
+    ...draft,
+    ...(untouched("name") ? { name: after.name } : {}),
+    ...(untouched("packageChoice", "packageOther")
+      ? { packageChoice: after.packageChoice, packageOther: after.packageOther }
+      : {}),
+    ...(untouched("doseChoice", "doseOther")
+      ? { doseChoice: after.doseChoice, doseOther: after.doseOther }
+      : {}),
+  };
 }
 
 /**
@@ -110,22 +158,12 @@ function EditMedicationForm({
   const ids = useId();
   const id = (suffix: string) => `${ids}-${suffix}`;
   const pillsRef = useRef<HTMLInputElement>(null);
-  const paused = medication.pausedOn !== null;
-
-  const [draft, setDraft] = useState<EditDraft>(() => {
-    const packageChip = chipChoice(medication.packageSize, PACKAGE_CHIPS);
-    const doseChip = chipChoice(medication.dailyDose, DOSE_CHIPS);
-    return {
-      name: medication.name,
-      packageChoice: packageChip.choice,
-      packageOther: packageChip.other,
-      doseChoice: doseChip.choice,
-      doseOther: doseChip.other,
-      pillsMode: "auto",
-      pillsManual: "",
-    };
-  });
+  // The stored values the form was filled from; they are sent back as the baseline, so a
+  // save never pairs a fresh baseline with values chosen against an older one.
+  const [seed, setSeed] = useState(medication);
+  const [draft, setDraft] = useState<EditDraft>(() => draftFrom(medication));
   const [errors, setErrors] = useState<MedicationFieldErrors>({});
+  const paused = seed.pausedOn !== null;
 
   const packageSize = draft.packageChoice === OTHER ? draft.packageOther : draft.packageChoice;
   const dailyDose = draft.doseChoice === OTHER ? draft.doseOther : draft.doseChoice;
@@ -138,13 +176,13 @@ function EditMedicationForm({
   // Untouched, pills left follow the dose like the server's auto mode; today's count otherwise.
   const autoPills =
     dose === null
-      ? computeStock(medication, today).pillsLeft
-      : editStock(medication, today, { dailyDose: dose, pillsLeft: null }).pillsCounted;
+      ? computeStock(seed, today).pillsLeft
+      : editStock(seed, today, { dailyDose: dose, pillsLeft: null }).pillsCounted;
   const pillsLeft = manual ? draft.pillsManual : String(autoPills);
   const preview =
     dose === null || (manual && typedPills === null)
       ? null
-      : computeStock(editStock(medication, today, { dailyDose: dose, pillsLeft: typedPills }), today);
+      : computeStock(editStock(seed, today, { dailyDose: dose, pillsLeft: typedPills }), today);
 
   function focusField(field: MedicationField) {
     switch (field) {
@@ -189,6 +227,15 @@ function EditMedicationForm({
     initialMedicationFormState,
   );
 
+  // After a failed save the page may bring newer stored values (e.g. the stale-stock error
+  // revalidates). Move the untouched fields and the baseline to them, keeping the error
+  // visible, so the retry is based on what is stored now. After a success the dialog
+  // closes, so nothing changes under it.
+  if (state.status === "error" && seedKey(medication) !== seedKey(seed)) {
+    setSeed(medication);
+    setDraft(reseedDraft(draft, seed, medication));
+  }
+
   function change(patch: Partial<EditDraft>, field: MedicationField) {
     setDraft((current) => ({ ...current, ...patch }));
     if (errors[field]) setErrors((current) => ({ ...current, [field]: undefined }));
@@ -211,15 +258,17 @@ function EditMedicationForm({
 
   return (
     <form action={formAction} onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
-      <BaselineFields medication={medication} />
+      <BaselineFields medication={seed} />
       <input type="hidden" name="packageSize" value={packageSize} />
       <input type="hidden" name="dailyDose" value={dailyDose} />
       <input type="hidden" name="pillsMode" value={draft.pillsMode} />
+      {/* The day the stepper's starting number was worked out for; a typed count is refused after midnight. */}
+      <input type="hidden" name="shownOn" value={today} />
 
       <DialogHeader className="gap-1.5 pr-8">
         <DialogTitle className="font-heading text-2xl font-normal">Edit medication</DialogTitle>
         <DialogDescription className="break-words text-brand-subtle">
-          {medication.name} · {formatTablets(medication.dailyDose)} tabl. daily
+          {seed.name} · {formatTablets(seed.dailyDose)} tabl. daily
           {paused ? " · Paused" : ""}
         </DialogDescription>
       </DialogHeader>

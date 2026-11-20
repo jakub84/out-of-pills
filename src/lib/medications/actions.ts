@@ -302,7 +302,8 @@ export async function correctPillCount(
  * Edits name, package size and daily dose, rebased to today; the pause state is kept. In
  * `auto` pills mode the server works out pills left from the stored stock and its own
  * Warsaw date (the form's pre-filled number is never trusted); in `manual` mode the typed
- * number is saved as is.
+ * number is saved as is. With the same dose and no typed count the stock is not rebased,
+ * so a rename or package-size change keeps the stored count and its day.
  */
 export async function editMedication(
   _prevState: MedicationFormState,
@@ -326,6 +327,12 @@ export async function editMedication(
   }
 
   const { name, packageSize, dailyDose, pillsLeft } = result.values;
+  // A typed count may have been stepped from the day before's number (dialog open over
+  // midnight), which would still hold yesterday's dose and push the date later.
+  if (pillsMode === "manual" && readField(formData, "shownOn") !== todayInWarsaw()) {
+    revalidatePath("/", "layout");
+    return { status: "error", message: DAY_CHANGED_ERROR };
+  }
   const outcome = await guardedUpdate(formData, {
     action: "editMedication",
     rebase: (stored, today) => editStock(stored, today, { dailyDose, pillsLeft }),
