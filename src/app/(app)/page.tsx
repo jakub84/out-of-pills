@@ -66,6 +66,7 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
     packageSize: medication.packageSize,
     pillsCounted: medication.pillsCounted,
     countedOn: medication.countedOn,
+    pausedOn: medication.pausedOn,
     stock: computeStock(medication, today),
   }));
   // Each group comes back sorted by compareByRunOut, ran-out items first in red.

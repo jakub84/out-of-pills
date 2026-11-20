@@ -81,12 +81,12 @@ select throws_ok(
   null,
   'B cannot add a medication to A''s profile'
 );
-select throws_ok(
+-- name is updatable since S-07, so RLS hides A's rows: the update matches nothing
+-- (the ground truth below proves A's medication is unchanged).
+select lives_ok(
   $$update public.medications set name = 'Hacked'
     where profile_id = current_setting('test.profile_a')::uuid$$,
-  '42501',
-  null,
-  'B cannot update A''s medications'
+  'B''s update of A''s medications runs without error (matches no rows)'
 );
 select throws_ok(
   $$delete from public.medications where profile_id = current_setting('test.profile_a')::uuid$$,

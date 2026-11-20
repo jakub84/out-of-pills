@@ -4,6 +4,7 @@ import {
   parseAmount,
   validateDailyDose,
   validateMedication,
+  validateMedicationEdit,
   validateMedicationName,
   validatePackageAmount,
   validatePackageSize,
@@ -142,5 +143,63 @@ describe("validateMedication", () => {
     expect(result.fieldErrors.packageSize).toBeDefined();
     expect(result.fieldErrors.pillsLeft).toBeUndefined();
     expect(result.fieldErrors.dailyDose).toBeDefined();
+  });
+});
+
+describe("validateMedicationEdit", () => {
+  const valid = { name: "  Bisocard 5 mg ", packageSize: "30", dailyDose: "1.5" };
+
+  it("returns trimmed name, numeric values and no pills left in auto mode", () => {
+    expect(validateMedicationEdit({ ...valid, pillsMode: "auto", pillsLeft: "" })).toEqual({
+      ok: true,
+      values: { name: "Bisocard 5 mg", packageSize: 30, dailyDose: 1.5, pillsLeft: null },
+    });
+  });
+
+  it("ignores pills left in auto mode, even when invalid", () => {
+    const result = validateMedicationEdit({ ...valid, pillsMode: "auto", pillsLeft: "abc" });
+    expect(result).toEqual({
+      ok: true,
+      values: { name: "Bisocard 5 mg", packageSize: 30, dailyDose: 1.5, pillsLeft: null },
+    });
+  });
+
+  it("returns the typed pills left in manual mode, zero and halves included", () => {
+    expect(validateMedicationEdit({ ...valid, pillsMode: "manual", pillsLeft: "12,5" })).toEqual({
+      ok: true,
+      values: { name: "Bisocard 5 mg", packageSize: 30, dailyDose: 1.5, pillsLeft: 12.5 },
+    });
+    expect(validateMedicationEdit({ ...valid, pillsMode: "manual", pillsLeft: "0" })).toEqual({
+      ok: true,
+      values: { name: "Bisocard 5 mg", packageSize: 30, dailyDose: 1.5, pillsLeft: 0 },
+    });
+  });
+
+  it("requires a valid pills left in manual mode", () => {
+    const empty = validateMedicationEdit({ ...valid, pillsMode: "manual", pillsLeft: "" });
+    expect(empty.ok).toBe(false);
+    if (empty.ok) return;
+    expect(empty.fieldErrors.pillsLeft).toBe("Enter how many tablets are left");
+
+    const tooMany = validateMedicationEdit({ ...valid, pillsMode: "manual", pillsLeft: "10000" });
+    expect(tooMany.ok).toBe(false);
+    if (tooMany.ok) return;
+    expect(tooMany.fieldErrors.pillsLeft).toBe("Use a number from 0 to 9999");
+  });
+
+  it("returns an error per invalid field", () => {
+    const result = validateMedicationEdit({
+      name: "",
+      packageSize: "0",
+      dailyDose: "0.3",
+      pillsMode: "manual",
+      pillsLeft: "0.3",
+    });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.fieldErrors.name).toBe("Enter the medication name");
+    expect(result.fieldErrors.packageSize).toBeDefined();
+    expect(result.fieldErrors.dailyDose).toBeDefined();
+    expect(result.fieldErrors.pillsLeft).toBeDefined();
   });
 });

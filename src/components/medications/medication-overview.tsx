@@ -3,9 +3,10 @@ import type { ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { MedicationCard, type OverviewItem } from "./medication-card";
-import { URGENCY_GROUPS, type UrgencyGroup } from "./urgency";
+import { CARD_GROUPS, URGENCY_GROUPS, type CardGroup } from "./urgency";
 
-export type UrgencyGroups = Record<UrgencyGroup, OverviewItem[]>;
+/** Cards per group, as `groupByUrgency` returns them; paused items are only in `paused`. */
+export type UrgencyGroups = Record<CardGroup, OverviewItem[]>;
 
 /** "What's running out?" tiles (mock 176:460 / 176:456 / 176:464); counts are the group sizes. */
 export function RunOutTiles({ groups }: { groups: UrgencyGroups }) {
@@ -38,11 +39,11 @@ export function RunOutTiles({ groups }: { groups: UrgencyGroups }) {
   );
 }
 
-/** Cards grouped red → yellow → green; empty groups are left out. */
+/** Cards grouped red → yellow → green, then paused; empty groups are left out. */
 export function MedicationGroups({ groups, today }: { groups: UrgencyGroups; today: string }) {
   return (
     <div className="flex flex-col gap-10">
-      {URGENCY_GROUPS.filter(({ key }) => groups[key].length > 0).map(
+      {CARD_GROUPS.filter(({ key }) => groups[key].length > 0).map(
         ({ key, label, Icon, textClass }) => (
           <section key={key} aria-labelledby={`group-${key}`} className="flex flex-col gap-4">
             <h3

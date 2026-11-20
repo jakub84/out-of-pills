@@ -15,6 +15,8 @@ export type Medication = {
   dailyDose: number;
   /** Calendar day of the count, `YYYY-MM-DD` (Europe/Warsaw). */
   countedOn: string;
+  /** Day the medication was paused, `YYYY-MM-DD` (Europe/Warsaw); null when taken. */
+  pausedOn: string | null;
 };
 
 export type ProfileMedication = Medication & { profileId: string };
@@ -26,6 +28,7 @@ type MedicationRow = {
   pills_counted: number;
   daily_dose: number;
   counted_on: string;
+  paused_on: string | null;
 };
 
 // PostgREST may return numeric columns as strings; normalise to numbers.
@@ -37,6 +40,7 @@ function toMedication(row: MedicationRow): Medication {
     pillsCounted: Number(row.pills_counted),
     dailyDose: Number(row.daily_dose),
     countedOn: row.counted_on,
+    pausedOn: row.paused_on,
   };
 }
 
@@ -51,7 +55,7 @@ export const listAllMedications = cache(async (): Promise<ProfileMedication[]> =
 
   const { data, error } = await supabase
     .from("medications")
-    .select("id, profile_id, name, package_size, pills_counted, daily_dose, counted_on");
+    .select("id, profile_id, name, package_size, pills_counted, daily_dose, counted_on, paused_on");
 
   if (error) throw new Error(`Failed to load medications: ${error.message}`);
 
@@ -70,7 +74,7 @@ export const listMedications = cache(
 
     const { data, error } = await supabase
       .from("medications")
-      .select("id, name, package_size, pills_counted, daily_dose, counted_on")
+      .select("id, name, package_size, pills_counted, daily_dose, counted_on, paused_on")
       .eq("profile_id", profileId)
       .order("created_at", { ascending: true })
       .order("id", { ascending: true });

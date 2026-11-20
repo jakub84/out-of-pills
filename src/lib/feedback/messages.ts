@@ -7,6 +7,21 @@ export function medicationAddedMessage(name: string): string {
   return `${name} added`;
 }
 
+/** "Aspirin updated" */
+export function medicationUpdatedMessage(name: string): string {
+  return `${name} updated`;
+}
+
+/** "Aspirin paused" */
+export function medicationPausedMessage(name: string): string {
+  return `${name} paused`;
+}
+
+/** "Aspirin resumed" */
+export function medicationResumedMessage(name: string): string {
+  return `${name} resumed`;
+}
+
 /** "+28 tabl. added to Aspirin" */
 export function packageAddedMessage(name: string, tablets: number): string {
   return `+${formatTablets(tablets)} tabl. added to ${name}`;

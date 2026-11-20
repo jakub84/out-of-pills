@@ -1,5 +1,7 @@
-import { dateTileParts, formatTablets } from "@/lib/medications/format";
-import type { StockItem, Urgency } from "@/lib/medications/stock";
+import { CirclePause } from "lucide-react";
+
+import { dateTileParts, formatShortDate, formatTablets } from "@/lib/medications/format";
+import type { Stock, StockItem, Urgency } from "@/lib/medications/stock";
 import { cn } from "@/lib/utils";
 import { AddPackageDialog } from "./add-package-dialog";
 import { MedicationOptionsMenu } from "./medication-options-menu";
@@ -11,6 +13,7 @@ export type OverviewItem = StockItem & {
   packageSize: number;
   pillsCounted: number;
   countedOn: string;
+  pausedOn: string | null;
 };
 
 /** Bar segments in days (0–14, 15–30, 31–60); the fill stops at 60 days. */
@@ -23,12 +26,15 @@ const BAR_MAX_DAYS = 60;
 
 /**
  * One medication card (mock 176:226): date tile, urgency dot, details, days left, bar, the
- * add-package button and the "⋯" options menu (mock 45:1930). `today` is the server's Warsaw
- * date for the dialogs.
+ * add-package button and the "⋯" options menu (mock 45:1930). A paused medication is muted:
+ * a dash in the date tile and "Paused since …" instead of days left, bar and add-package.
+ * `today` is the server's Warsaw date for the dialogs.
  */
 export function MedicationCard({ item, today }: { item: OverviewItem; today: string }) {
   const { stock } = item;
   const ranOut = stock.urgency === "ran-out";
+  const paused = item.pausedOn !== null;
+  // Null while paused, so the tile shows a dash.
   const tileDate = stock.runOutDate ?? stock.lastCoveredDay;
 
   return (
@@ -46,6 +52,7 @@ export function MedicationCard({ item, today }: { item: OverviewItem; today: str
           // edge in line with the button's; the one-row min height keeps ~16px between them.
           "relative flex min-w-0 flex-1 flex-wrap items-end justify-between gap-x-6 gap-y-3 rounded-[16px] border bg-card px-4 py-[18px] @3xl:min-h-[108px] @3xl:flex-nowrap @3xl:px-5",
           ranOut && "border-urgency-red bg-urgency-red-tint",
+          paused && "border-dashed bg-muted",
         )}
       >
         <div className="flex min-w-0 flex-col gap-2 pr-8 @3xl:pr-0">
@@ -62,34 +69,52 @@ export function MedicationCard({ item, today }: { item: OverviewItem; today: str
             </p>
           </div>
         </div>
-        <div className="flex w-full flex-col gap-2 @3xl:mb-1 @3xl:w-auto @3xl:shrink-0">
-          {ranOut ? (
-            <span className="w-fit rounded-full bg-urgency-red px-2.5 py-0.5 text-xs font-semibold text-primary-foreground">
-              Ran out
-            </span>
-          ) : (
-            <p
-              className={cn(
-                "flex items-baseline gap-1 font-heading font-semibold",
-                urgencyTextClass[stock.urgency],
-              )}
-            >
-              <span className="text-2xl leading-5">{stock.daysLeft}</span>
-              <span className="text-sm leading-5">
-                {stock.daysLeft === 1 ? "day left" : "days left"}
-              </span>
-            </p>
-          )}
-          <StockBar daysLeft={stock.daysLeft} urgency={stock.urgency} />
-        </div>
-        <div className="flex w-full @3xl:w-auto @3xl:shrink-0">
-          <AddPackageDialog medication={item} today={today} />
-        </div>
+        {item.pausedOn !== null ? (
+          // Paused: no days left, no bar and no restock; the count stays frozen.
+          <p className="flex w-fit items-center gap-1.5 rounded-full border bg-card px-2.5 py-0.5 text-xs font-semibold text-muted-foreground @3xl:mb-1 @3xl:shrink-0">
+            <CirclePause className="size-3.5" aria-hidden />
+            Paused since {formatShortDate(item.pausedOn)}
+          </p>
+        ) : (
+          <>
+            <StockSummary stock={stock} />
+            <div className="flex w-full @3xl:w-auto @3xl:shrink-0">
+              <AddPackageDialog medication={item} today={today} />
+            </div>
+          </>
+        )}
         <div className="absolute top-3.5 right-4 @3xl:right-5">
           <MedicationOptionsMenu medication={item} today={today} />
         </div>
       </div>
     </article>
+  );
+}
+
+/** Days left (or the "Ran out" badge) above the stock bar. */
+function StockSummary({ stock }: { stock: Stock }) {
+  const ranOut = stock.urgency === "ran-out";
+  return (
+    <div className="flex w-full flex-col gap-2 @3xl:mb-1 @3xl:w-auto @3xl:shrink-0">
+      {ranOut ? (
+        <span className="w-fit rounded-full bg-urgency-red px-2.5 py-0.5 text-xs font-semibold text-primary-foreground">
+          Ran out
+        </span>
+      ) : (
+        <p
+          className={cn(
+            "flex items-baseline gap-1 font-heading font-semibold",
+            urgencyTextClass[stock.urgency],
+          )}
+        >
+          <span className="text-2xl leading-5">{stock.daysLeft}</span>
+          <span className="text-sm leading-5">
+            {stock.daysLeft === 1 ? "day left" : "days left"}
+          </span>
+        </p>
+      )}
+      <StockBar daysLeft={stock.daysLeft} urgency={stock.urgency} />
+    </div>
   );
 }
 

@@ -25,6 +25,8 @@ export type StockDialogMedication = {
   /** Stored baseline: tablets counted on `countedOn`; sent back as the expected baseline. */
   pillsCounted: number;
   countedOn: string;
+  /** Stored pause day (null when taken); sent back as part of the expected baseline. */
+  pausedOn: string | null;
 };
 
 export type StockDialogProps = {
@@ -122,11 +124,17 @@ export function BaselineFields({ medication }: { medication: StockDialogMedicati
       <input type="hidden" name="medicationId" value={medication.id} />
       <input type="hidden" name="expectedPillsCounted" value={String(medication.pillsCounted)} />
       <input type="hidden" name="expectedCountedOn" value={medication.countedOn} />
+      <input type="hidden" name="expectedDailyDose" value={String(medication.dailyDose)} />
+      {/* Empty when not paused. */}
+      <input type="hidden" name="expectedPausedOn" value={medication.pausedOn ?? ""} />
     </>
   );
 }
 
-/** "<label>: 18 tabl. · 9 days · until Sat 14 Nov", or "… · Ran out"; optional urgency dot. */
+/**
+ * "<label>: 18 tabl. · 9 days · until Sat 14 Nov", "… · Ran out", or "… · Paused" (frozen
+ * count, no date); optional urgency dot.
+ */
 export function StockLine({
   label,
   stock,
@@ -149,7 +157,9 @@ export function StockLine({
       <span>
         {label}: <span className="font-semibold">{formatTablets(stock.pillsLeft)} tabl.</span>
         {" · "}
-        {stock.runOutDate ? (
+        {stock.urgency === "paused" ? (
+          <span className="font-semibold text-muted-foreground">Paused</span>
+        ) : stock.runOutDate ? (
           <>
             {formatDays(stock.daysLeft)} · until{" "}
             <span className="font-semibold">{formatShortDate(stock.runOutDate)}</span>

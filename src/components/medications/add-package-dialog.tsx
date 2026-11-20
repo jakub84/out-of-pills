@@ -59,7 +59,10 @@ function packageCountOptions(size: number) {
   })).filter((option) => option.tablets <= PACKAGE_AMOUNT_MAX);
 }
 
-/** "+ Add package" button and dialog (mock 182:304): restock with the effect shown first. */
+/**
+ * "+ Add package" button and dialog (mock 182:304): restock with the effect shown first. Not
+ * offered while the medication is paused (the card hides it; the action rejects it).
+ */
 export function AddPackageDialog({ medication, today }: StockDialogProps) {
   const [open, setOpen] = useState(false);
   const { onOpenChange, guardSave } = useSaveGuard(setOpen);

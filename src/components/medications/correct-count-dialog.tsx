@@ -66,6 +66,8 @@ function CorrectCountForm({
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
+  const paused = medication.pausedOn !== null;
+  // While paused this is the frozen count; the correction keeps the pause.
   const expected = computeStock(medication, today).pillsLeft;
 
   const form = useStockForm({
@@ -121,8 +123,10 @@ function CorrectCountForm({
         />
         <FieldError id={errorId} message={form.fieldError} />
         <p id={hintId} className="text-[13px] text-brand-subtle">
-          Count every tablet you have, including open packages. Today&apos;s dose is taken from this
-          number.
+          Count every tablet you have, including open packages.{" "}
+          {paused
+            ? "This medication is paused, so the count stays as it is until you resume it."
+            : "Today's dose is taken from this number."}
         </p>
       </div>
 

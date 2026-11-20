@@ -11,6 +11,16 @@ export const PACKAGE_CHIPS = ["20", "28", "30", "56", "60", "90"] as const;
 export const DOSE_CHIPS = ["0.5", "1", "2", "3"] as const;
 export const OTHER = "other";
 
+/** Chip options for the package size and daily dose, each with "Other" last. */
+export const PACKAGE_OPTIONS = [
+  ...PACKAGE_CHIPS.map((value) => ({ value, label: value })),
+  { value: OTHER, label: "Other" },
+];
+export const DOSE_OPTIONS = [
+  ...DOSE_CHIPS.map((value) => ({ value, label: value })),
+  { value: OTHER, label: "Other" },
+];
+
 /**
  * "Left now" follows the package size (`full`, `double`) until the user types or
  * steps the number (`manual`).
@@ -68,5 +78,5 @@ export function previewStock(input: MedicationInput, today: string): Stock | nul
   const pillsCounted = parseAmount(input.pillsLeft);
   const dailyDose = parseAmount(input.dailyDose);
   if (pillsCounted === null || dailyDose === null) return null;
-  return computeStock({ pillsCounted, countedOn: today, dailyDose }, today);
+  return computeStock({ pillsCounted, countedOn: today, dailyDose, pausedOn: null }, today);
 }

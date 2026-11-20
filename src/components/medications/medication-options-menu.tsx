@@ -1,6 +1,6 @@
 "use client";
 
-import { Ellipsis, Pencil, Scale, Trash2 } from "lucide-react";
+import { Ellipsis, Pause, Pencil, Play, Scale, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,14 +11,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CorrectCountDialog } from "./correct-count-dialog";
+import { EditMedicationDialog } from "./edit-medication-dialog";
+import { PauseMedicationDialog } from "./pause-medication-dialog";
 import type { StockDialogProps } from "./stock-dialog-parts";
 
+type OpenDialog = "correct" | "edit" | "pause" | null;
+
 /**
- * The card's "⋯" menu (mock 45:1930): "Correct count" opens its dialog; "Edit" (S-07) and
- * "Remove" (S-08) are disabled placeholders until their slices land.
+ * The card's "⋯" menu (mock 45:1930): "Correct count", "Edit" and "Pause" (or "Resume" while
+ * paused) open their dialogs; "Remove" (S-08) is a disabled placeholder until its slice lands.
  */
 export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
-  const [correcting, setCorrecting] = useState(false);
+  const [dialog, setDialog] = useState<OpenDialog>(null);
+  const paused = medication.pausedOn !== null;
+
+  /** Open state of one dialog; closing it closes whichever dialog is open. */
+  function dialogProps(name: Exclude<OpenDialog, null>) {
+    return {
+      open: dialog === name,
+      onOpenChange: (open: boolean) => setDialog(open ? name : null),
+    };
+  }
 
   return (
     <>
@@ -29,13 +42,17 @@ export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem onSelect={() => setCorrecting(true)}>
+          <DropdownMenuItem onSelect={() => setDialog("correct")}>
             <Scale aria-hidden />
             Correct count
           </DropdownMenuItem>
-          <DropdownMenuItem disabled>
+          <DropdownMenuItem onSelect={() => setDialog("edit")}>
             <Pencil aria-hidden />
             Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setDialog("pause")}>
+            {paused ? <Play aria-hidden /> : <Pause aria-hidden />}
+            {paused ? "Resume" : "Pause"}
           </DropdownMenuItem>
           <DropdownMenuItem disabled variant="destructive">
             <Trash2 aria-hidden />
@@ -43,12 +60,9 @@ export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <CorrectCountDialog
-        medication={medication}
-        today={today}
-        open={correcting}
-        onOpenChange={setCorrecting}
-      />
+      <CorrectCountDialog medication={medication} today={today} {...dialogProps("correct")} />
+      <EditMedicationDialog medication={medication} today={today} {...dialogProps("edit")} />
+      <PauseMedicationDialog medication={medication} today={today} {...dialogProps("pause")} />
     </>
   );
 }
