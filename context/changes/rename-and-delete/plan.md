@@ -434,28 +434,28 @@ Additive migration. Existing rows are untouched. Push it to the cloud project be
 
 #### Automated
 
-- [x] 1.1 `npx supabase db reset` applies all migrations cleanly
-- [x] 1.2 `npx supabase test db` passes, including `rename_and_delete.test.sql` and the rewritten assertions
-- [x] 1.3 `npm run db:types` regenerates `database.types.ts` with `delete_profile` and the file starts with `export type`
-- [x] 1.4 `npm run lint`, `npm test` and `npm run build` pass
+- [x] 1.1 `npx supabase db reset` applies all migrations cleanly — d92b233
+- [x] 1.2 `npx supabase test db` passes, including `rename_and_delete.test.sql` and the rewritten assertions — d92b233
+- [x] 1.3 `npm run db:types` regenerates `database.types.ts` with `delete_profile` and the file starts with `export type` — d92b233
+- [x] 1.4 `npm run lint`, `npm test` and `npm run build` pass — d92b233
 
 #### Manual
 
-- [x] 1.5 In local Studio, the new policies and `delete_profile` are visible, with RLS still enabled on every table
+- [x] 1.5 In local Studio, the new policies and `delete_profile` are visible, with RLS still enabled on every table — d92b233
 
 ### Phase 2: Remove a medication
 
 #### Automated
 
-- [ ] 2.1 `npm test` passes, including the new message test
-- [ ] 2.2 `npm run lint` and `npm run build` pass
+- [x] 2.1 `npm test` passes, including the new message test
+- [x] 2.2 `npm run lint` and `npm run build` pass
 
 #### Manual
 
-- [ ] 2.3 "Remove" opens "Remove <name>?"; Cancel, Escape and outside click close it without changes
-- [ ] 2.4 Confirming removes the card, updates tiles, counts and the sidebar dot, and shows "<name> removed"
-- [ ] 2.5 Removing again from a stale tab shows success and the card disappears there
-- [ ] 2.6 Offline confirm shows the connection-error toast and the dialog stays open
+- [x] 2.3 "Remove" opens "Remove <name>?"; Cancel, Escape and outside click close it without changes
+- [x] 2.4 Confirming removes the card, updates tiles, counts and the sidebar dot, and shows "<name> removed"
+- [x] 2.5 Removing again from a stale tab shows success and the card disappears there
+- [x] 2.6 Offline confirm shows the connection-error toast and the dialog stays open
 
 ### Phase 3: Edit a profile
 

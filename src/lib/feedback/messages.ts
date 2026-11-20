@@ -22,6 +22,11 @@ export function medicationResumedMessage(name: string): string {
   return `${name} resumed`;
 }
 
+/** "Aspirin removed" */
+export function medicationRemovedMessage(name: string): string {
+  return `${name} removed`;
+}
+
 /** "+28 tabl. added to Aspirin" */
 export function packageAddedMessage(name: string, tablets: number): string {
   return `+${formatTablets(tablets)} tabl. added to ${name}`;

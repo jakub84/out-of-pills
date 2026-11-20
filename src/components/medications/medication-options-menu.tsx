@@ -13,13 +13,14 @@ import {
 import { CorrectCountDialog } from "./correct-count-dialog";
 import { EditMedicationDialog } from "./edit-medication-dialog";
 import { PauseMedicationDialog } from "./pause-medication-dialog";
+import { RemoveMedicationDialog } from "./remove-medication-dialog";
 import type { StockDialogProps } from "./stock-dialog-parts";
 
-type OpenDialog = "correct" | "edit" | "pause" | null;
+type OpenDialog = "correct" | "edit" | "pause" | "remove" | null;
 
 /**
- * The card's "⋯" menu (mock 45:1930): "Correct count", "Edit" and "Pause" (or "Resume" while
- * paused) open their dialogs; "Remove" (S-08) is a disabled placeholder until its slice lands.
+ * The card's "⋯" menu (mock 45:1930): "Correct count", "Edit", "Pause" (or "Resume" while
+ * paused) and "Remove" each open their dialog.
  */
 export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
   const [dialog, setDialog] = useState<OpenDialog>(null);
@@ -54,7 +55,7 @@ export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
             {paused ? <Play aria-hidden /> : <Pause aria-hidden />}
             {paused ? "Resume" : "Pause"}
           </DropdownMenuItem>
-          <DropdownMenuItem disabled variant="destructive">
+          <DropdownMenuItem variant="destructive" onSelect={() => setDialog("remove")}>
             <Trash2 aria-hidden />
             Remove
           </DropdownMenuItem>
@@ -63,6 +64,7 @@ export function MedicationOptionsMenu({ medication, today }: StockDialogProps) {
       <CorrectCountDialog medication={medication} today={today} {...dialogProps("correct")} />
       <EditMedicationDialog medication={medication} today={today} {...dialogProps("edit")} />
       <PauseMedicationDialog medication={medication} today={today} {...dialogProps("pause")} />
+      <RemoveMedicationDialog medication={medication} {...dialogProps("remove")} />
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   countCorrectedMessage,
   medicationAddedMessage,
   medicationPausedMessage,
+  medicationRemovedMessage,
   medicationResumedMessage,
   medicationUpdatedMessage,
   packageAddedMessage,
@@ -22,6 +23,10 @@ describe("toast messages", () => {
     expect(medicationUpdatedMessage("Aspirin")).toBe("Aspirin updated");
     expect(medicationPausedMessage("Aspirin")).toBe("Aspirin paused");
     expect(medicationResumedMessage("Aspirin")).toBe("Aspirin resumed");
+  });
+
+  it("confirms a removed medication", () => {
+    expect(medicationRemovedMessage("Aspirin")).toBe("Aspirin removed");
   });
 
   it("confirms an added package, with whole and half tablets", () => {
