@@ -8,6 +8,7 @@ export const urgencyBgClass: Record<Urgency, string> = {
   red: "bg-urgency-red",
   yellow: "bg-urgency-yellow",
   green: "bg-urgency-green",
+  paused: "bg-muted-foreground",
 };
 
 /** Text in the urgency colour (days-left number, group headers). */
@@ -16,6 +17,7 @@ export const urgencyTextClass: Record<Urgency, string> = {
   red: "text-urgency-red",
   yellow: "text-urgency-yellow",
   green: "text-urgency-green",
+  paused: "text-muted-foreground",
 };
 
 /** Light urgency background with a matching soft border (e.g. the "After adding" preview). */
@@ -24,6 +26,7 @@ export const urgencyTintClass: Record<Urgency, string> = {
   red: "border-urgency-red/40 bg-urgency-red-tint",
   yellow: "border-urgency-yellow/40 bg-urgency-yellow-tint",
   green: "border-urgency-green/40 bg-urgency-green-tint",
+  paused: "border-border bg-muted",
 };
 
 /** Short label of the urgency group (PRD FR-015 thresholds). */
@@ -32,6 +35,7 @@ export const urgencyLabel: Record<Urgency, string> = {
   red: "14 days or less",
   yellow: "30 days or less",
   green: "More than 30 days",
+  paused: "Paused",
 };
 
 export type UrgencyGroup = "red" | "yellow" | "green";

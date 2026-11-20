@@ -25,7 +25,11 @@ import {
 import { packageAddedMessage } from "@/lib/feedback/messages";
 import { addPackage } from "@/lib/medications/actions";
 import { formatDays, formatTablets } from "@/lib/medications/format";
-import { addPackage as addPackageToStock, computeStock } from "@/lib/medications/stock";
+import {
+  addPackage as addPackageToStock,
+  computeStock,
+  type StockInput,
+} from "@/lib/medications/stock";
 import {
   PACKAGE_AMOUNT_MAX,
   PACKAGE_AMOUNT_MIN,
@@ -92,7 +96,9 @@ function AddPackageForm({
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
-  const now = computeStock(medication, today);
+  // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
+  const stockInput: StockInput = { ...medication, pausedOn: null };
+  const now = computeStock(stockInput, today);
   const [packageSize, setPackageSize] = useState(medication.packageSize);
 
   // The resulting count must fit the 9999 limit too, like the server action checks.
@@ -100,7 +106,7 @@ function AddPackageForm({
     const error = validatePackageAmount(value);
     if (error) return error;
     const tablets = parseAmount(value) as number;
-    return validateResultingCount(addPackageToStock(medication, today, tablets).pillsCounted);
+    return validateResultingCount(addPackageToStock(stockInput, today, tablets).pillsCounted);
   }
 
   const form = useStockForm({
@@ -115,7 +121,7 @@ function AddPackageForm({
   // Preview only from a valid amount: addPackage throws on non-half or negative tablets.
   const tablets = validatePackageAmount(form.amount) ? null : (parseAmount(form.amount) as number);
   const after =
-    tablets === null ? null : computeStock(addPackageToStock(medication, today, tablets), today);
+    tablets === null ? null : computeStock(addPackageToStock(stockInput, today, tablets), today);
   const extendsBy = after ? after.daysLeft - now.daysLeft : null;
 
   // 1–3 whole packages of the chosen size; counts above the amount limit are left out.

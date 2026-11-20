@@ -141,6 +141,8 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
       pillsCounted: Number(row.pills_counted),
       countedOn: row.counted_on,
       dailyDose: Number(row.daily_dose),
+      // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
+      pausedOn: null,
     },
     todayInWarsaw(),
     tablets,

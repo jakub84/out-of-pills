@@ -68,5 +68,5 @@ export function previewStock(input: MedicationInput, today: string): Stock | nul
   const pillsCounted = parseAmount(input.pillsLeft);
   const dailyDose = parseAmount(input.dailyDose);
   if (pillsCounted === null || dailyDose === null) return null;
-  return computeStock({ pillsCounted, countedOn: today, dailyDose }, today);
+  return computeStock({ pillsCounted, countedOn: today, dailyDose, pausedOn: null }, today);
 }
