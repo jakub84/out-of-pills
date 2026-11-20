@@ -22,6 +22,11 @@ export function medicationResumedMessage(name: string): string {
   return `${name} resumed`;
 }
 
+/** "Aspirin removed" */
+export function medicationRemovedMessage(name: string): string {
+  return `${name} removed`;
+}
+
 /** "+28 tabl. added to Aspirin" */
 export function packageAddedMessage(name: string, tablets: number): string {
   return `+${formatTablets(tablets)} tabl. added to ${name}`;
@@ -35,6 +40,16 @@ export function countCorrectedMessage(name: string, tablets: number): string {
 /** "Profile Mom created" */
 export function profileCreatedMessage(name: string): string {
   return `Profile ${name} created`;
+}
+
+/** "Profile Mom updated" */
+export function profileUpdatedMessage(name: string): string {
+  return `Profile ${name} updated`;
+}
+
+/** "Profile Mom deleted" */
+export function profileDeletedMessage(name: string): string {
+  return `Profile ${name} deleted`;
 }
 
 export function passwordChangedMessage(): string {

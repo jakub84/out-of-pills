@@ -7,15 +7,10 @@ import { getCurrentUser } from "@/lib/auth/dal";
 import { readField } from "@/lib/auth/validation";
 import { createClient } from "@/lib/supabase/server";
 import type { ProfileFormState } from "./form-state";
-import {
-  isAvatarColor,
-  isAvatarForKind,
-  isProfileKind,
-  validateDisplayName,
-  validateProfileName,
-} from "./validation";
+import { validateDisplayName, validateProfileFields } from "./validation";
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Onboarding step 2: saves (or updates) the caller's first name, then opens step 3. */
 export async function saveDisplayName(
@@ -44,6 +39,20 @@ export async function saveDisplayName(
   redirect("/onboarding/profile");
 }
 
+/** The profile form's fields; readField trims, and an empty `avatar` means "No avatar". */
+function readProfileFields(formData: FormData) {
+  return {
+    name: readField(formData, "name"),
+    kind: readField(formData, "kind"),
+    avatarColor: readField(formData, "avatarColor"),
+    avatar: readField(formData, "avatar"),
+  };
+}
+
+function hasErrors(fieldErrors: object): boolean {
+  return Object.keys(fieldErrors).length > 0;
+}
+
 /** Creates a profile linked to the caller (`create_profile` RPC); the form then confirms and opens it. */
 export async function createProfile(
   _prevState: ProfileFormState,
@@ -51,24 +60,11 @@ export async function createProfile(
 ): Promise<ProfileFormState> {
   await getCurrentUser();
 
-  // readField trims; create_profile stores the name exactly as passed.
-  const name = readField(formData, "name");
-  const kind = readField(formData, "kind");
-  const avatarColor = readField(formData, "avatarColor");
-  // Empty means "No avatar".
-  const avatar = readField(formData, "avatar");
+  // create_profile stores the name exactly as passed.
+  const { name, kind, avatarColor, avatar } = readProfileFields(formData);
 
-  const fieldErrors: ProfileFormState["fieldErrors"] = {
-    name: validateProfileName(name),
-    kind: isProfileKind(kind) ? undefined : "Choose whose medications these are",
-    avatarColor: isAvatarColor(avatarColor) ? undefined : "Choose an avatar colour",
-    // An invalid kind is already an error, and has no avatar list to check against.
-    avatar:
-      avatar && isProfileKind(kind) && !isAvatarForKind(kind, avatar)
-        ? "Choose an avatar from the list"
-        : undefined,
-  };
-  if (fieldErrors.name || fieldErrors.kind || fieldErrors.avatarColor || fieldErrors.avatar) {
+  const fieldErrors = validateProfileFields({ name, kind, avatarColor, avatar });
+  if (hasErrors(fieldErrors)) {
     return { status: "error", fieldErrors };
   }
 
@@ -89,4 +85,75 @@ export async function createProfile(
   // Refresh the app shell so the sidebar lists the new profile.
   revalidatePath("/", "layout");
   return { status: "success", profileId };
+}
+
+/** Saves an edited profile's name, type, avatar colour and avatar; the form then confirms and opens it. */
+export async function updateProfile(
+  _prevState: ProfileFormState,
+  formData: FormData,
+): Promise<ProfileFormState> {
+  await getCurrentUser();
+
+  const profileId = readField(formData, "profileId");
+  const { name, kind, avatarColor, avatar } = readProfileFields(formData);
+
+  const fieldErrors = validateProfileFields({ name, kind, avatarColor, avatar });
+  if (hasErrors(fieldErrors)) {
+    return { status: "error", fieldErrors };
+  }
+  if (!UUID_PATTERN.test(profileId)) {
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({ name, kind, avatar_color: avatarColor, avatar: avatar || null })
+    .eq("id", profileId)
+    .select("id");
+
+  if (error) {
+    // Keep the failure visible in the server logs; the user only sees the generic message.
+    console.error("updateProfile update failed", error);
+    return { status: "error", message: GENERIC_ERROR };
+  }
+  // RLS hides profiles the caller doesn't belong to: 0 rows means deleted or not theirs.
+  if (data.length === 0) {
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  // Refresh the app shell so the sidebar and the profile page show the new details.
+  revalidatePath("/", "layout");
+  return { status: "success", profileId };
+}
+
+/**
+ * Detaches the caller from a profile (`delete_profile` RPC). The last caregiver to detach
+ * deletes the profile and its medications; a profile that was already gone counts as deleted.
+ */
+export async function deleteProfile(
+  _prevState: ProfileFormState,
+  formData: FormData,
+): Promise<ProfileFormState> {
+  await getCurrentUser();
+
+  const profileId = readField(formData, "profileId");
+  if (!UUID_PATTERN.test(profileId)) {
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("delete_profile", { p_profile_id: profileId });
+
+  if (error) {
+    // 42501 "Not authenticated": the session ended between the check above and the call.
+    if (error.code === "42501") redirect("/sign-in");
+    // Keep the failure visible in the server logs; the user only sees the generic message.
+    console.error("deleteProfile delete_profile failed", error);
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  // Refresh the app shell so the sidebar and the main page drop the profile.
+  revalidatePath("/", "layout");
+  return { status: "success" };
 }

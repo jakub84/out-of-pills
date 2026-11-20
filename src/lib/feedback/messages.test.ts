@@ -6,11 +6,14 @@ import {
   countCorrectedMessage,
   medicationAddedMessage,
   medicationPausedMessage,
+  medicationRemovedMessage,
   medicationResumedMessage,
   medicationUpdatedMessage,
   packageAddedMessage,
   passwordChangedMessage,
   profileCreatedMessage,
+  profileDeletedMessage,
+  profileUpdatedMessage,
 } from "@/lib/feedback/messages";
 
 describe("toast messages", () => {
@@ -22,6 +25,10 @@ describe("toast messages", () => {
     expect(medicationUpdatedMessage("Aspirin")).toBe("Aspirin updated");
     expect(medicationPausedMessage("Aspirin")).toBe("Aspirin paused");
     expect(medicationResumedMessage("Aspirin")).toBe("Aspirin resumed");
+  });
+
+  it("confirms a removed medication", () => {
+    expect(medicationRemovedMessage("Aspirin")).toBe("Aspirin removed");
   });
 
   it("confirms an added package, with whole and half tablets", () => {
@@ -37,6 +44,14 @@ describe("toast messages", () => {
 
   it("confirms a created profile", () => {
     expect(profileCreatedMessage("Mom")).toBe("Profile Mom created");
+  });
+
+  it("confirms an updated profile", () => {
+    expect(profileUpdatedMessage("Mom")).toBe("Profile Mom updated");
+  });
+
+  it("confirms a deleted profile", () => {
+    expect(profileDeletedMessage("Mom")).toBe("Profile Mom deleted");
   });
 
   it("confirms a changed password", () => {

@@ -74,11 +74,11 @@ select is_empty(
   $$select 1 from public.profiles where id = current_setting('test.profile_a')::uuid$$,
   'B cannot select A''s profile by id'
 );
-select throws_ok(
+-- name is updatable since S-08, so RLS hides A's profile: the update matches
+-- nothing (the ground truth below proves A's profile is unchanged).
+select lives_ok(
   $$update public.profiles set name = 'Hacked' where id = current_setting('test.profile_a')::uuid$$,
-  '42501',
-  null,
-  'B cannot update A''s profile'
+  'B''s update of A''s profile runs without error (matches no rows)'
 );
 select throws_ok(
   $$insert into public.profile_caregivers (profile_id, user_id)

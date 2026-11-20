@@ -52,7 +52,10 @@ export function AppSidebar() {
   );
 }
 
-/** The dots are an extra: if medications fail to load, the profile list still works. */
+/**
+ * The dots are an extra: if medications fail to load, the profile list still works.
+ * Returns `null` on failure, so the counts can tell "none" from "unknown".
+ */
 async function loadMedicationsForDots() {
   try {
     return await listAllMedications();
@@ -60,21 +63,28 @@ async function loadMedicationsForDots() {
     // Lets Next's own control-flow errors (redirects, dynamic rendering) through.
     unstable_rethrow(error);
     console.error("Failed to load medications for the sidebar", error);
-    return [];
+    return null;
   }
 }
 
 async function SidebarProfiles() {
   const [profiles, medications] = await Promise.all([listProfiles(), loadMedicationsForDots()]);
   const today = todayInWarsaw();
+  // Medications that failed to load show no dots.
   const runningOutProfileIds = new Set(
-    medications
+    (medications ?? [])
       .filter((medication) => {
         const stock = computeStock(medication, today);
         return overallUrgency([{ ...medication, stock }]) === "red";
       })
       .map((medication) => medication.profileId),
   );
+  // For the delete confirmation: paused medications are deleted too, so they count.
+  const medicationCounts = new Map<string, number>();
+  for (const medication of medications ?? []) {
+    const count = medicationCounts.get(medication.profileId) ?? 0;
+    medicationCounts.set(medication.profileId, count + 1);
+  }
 
   return (
     <ProfileNav
@@ -85,6 +95,7 @@ async function SidebarProfiles() {
         avatarColor: profile.avatarColor,
         avatar: profile.avatar,
         runningOut: runningOutProfileIds.has(profile.id),
+        medicationCount: medications ? (medicationCounts.get(profile.id) ?? 0) : null,
       }))}
     />
   );

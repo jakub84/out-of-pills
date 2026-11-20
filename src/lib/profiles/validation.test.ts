@@ -6,6 +6,7 @@ import {
   isProfileAvatar,
   PROFILE_AVATARS,
   PROFILE_KINDS,
+  validateProfileFields,
 } from "@/lib/profiles/validation";
 
 describe("AVATARS_BY_KIND", () => {
@@ -61,5 +62,47 @@ describe("isAvatarForKind", () => {
       expect(isAvatarForKind(kind, "robot")).toBe(false);
       expect(isAvatarForKind(kind, "")).toBe(false);
     }
+  });
+});
+
+describe("validateProfileFields", () => {
+  const valid = { name: "Mom", kind: "parent", avatarColor: "rose", avatar: "grandma" };
+
+  it("accepts a valid set of fields", () => {
+    expect(validateProfileFields(valid)).toEqual({});
+  });
+
+  it("accepts an empty avatar as no avatar", () => {
+    expect(validateProfileFields({ ...valid, avatar: "" })).toEqual({});
+  });
+
+  it("rejects an empty or too long name", () => {
+    expect(validateProfileFields({ ...valid, name: "   " })).toEqual({
+      name: "Enter a profile name",
+    });
+    expect(validateProfileFields({ ...valid, name: "a".repeat(41) })).toEqual({
+      name: "Use at most 40 characters",
+    });
+  });
+
+  it("rejects an unknown kind without checking the avatar against it", () => {
+    expect(validateProfileFields({ ...valid, kind: "pet" })).toEqual({
+      kind: "Choose whose medications these are",
+    });
+  });
+
+  it("rejects an unknown avatar colour", () => {
+    expect(validateProfileFields({ ...valid, avatarColor: "red" })).toEqual({
+      avatarColor: "Choose an avatar colour",
+    });
+  });
+
+  it("rejects an avatar not allowed for the kind, or unknown", () => {
+    expect(validateProfileFields({ ...valid, avatar: "son" })).toEqual({
+      avatar: "Choose an avatar from the list",
+    });
+    expect(validateProfileFields({ ...valid, avatar: "robot" })).toEqual({
+      avatar: "Choose an avatar from the list",
+    });
   });
 });

@@ -88,11 +88,11 @@ select lives_ok(
     where profile_id = current_setting('test.profile_a')::uuid$$,
   'B''s update of A''s medications runs without error (matches no rows)'
 );
-select throws_ok(
+-- delete is granted since S-08, so RLS hides A's rows: the delete matches
+-- nothing (the ground truth below proves A's medication still exists).
+select lives_ok(
   $$delete from public.medications where profile_id = current_setting('test.profile_a')::uuid$$,
-  '42501',
-  null,
-  'B cannot delete A''s medications'
+  'B''s delete of A''s medications runs without error (matches no rows)'
 );
 
 -- ---------------------------------------------------------------------------

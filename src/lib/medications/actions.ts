@@ -379,3 +379,33 @@ export async function resumeMedication(
   // No result check is configured, so `invalid` cannot happen.
   return outcome.status === "invalid" ? { status: "error", message: GENERIC_ERROR } : outcome;
 }
+
+/**
+ * Removes one medication for good (FR-013). RLS scopes the row to the caller's profiles; no
+ * deleted row (already removed, or not visible to the caller) counts as success, so a stale
+ * tab ends up showing the same list.
+ */
+export async function removeMedication(
+  _prevState: StockFormState,
+  formData: FormData,
+): Promise<StockFormState> {
+  await getCurrentUser();
+
+  const medicationId = readField(formData, "medicationId");
+  if (!UUID_PATTERN.test(medicationId)) {
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("medications").delete().eq("id", medicationId);
+
+  if (error) {
+    // Keep the failure visible in the server logs; the user only sees the generic message.
+    console.error("removeMedication delete failed", error);
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  // Refresh the main screen so the card, tiles and sidebar dot update without a reload.
+  revalidatePath("/", "layout");
+  return { status: "success" };
+}
