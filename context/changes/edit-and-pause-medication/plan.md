@@ -359,26 +359,26 @@ Additive migration; existing rows get `paused_on = null` (unpaused) and keep the
 
 #### Automated
 
-- [x] 1.1 Unit tests pass, including the new paused / edit / resume cases: `npm test`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 Production build passes: `npm run build`
+- [x] 1.1 Unit tests pass, including the new paused / edit / resume cases: `npm test` — 7914634
+- [x] 1.2 Lint passes: `npm run lint` — 7914634
+- [x] 1.3 Production build passes: `npm run build` — 7914634
 
 #### Manual
 
-- [x] 1.4 The worked examples in the test names read correctly to the user (dose decrease, pause, same-day pause + resume)
+- [x] 1.4 The worked examples in the test names read correctly to the user (dose decrease, pause, same-day pause + resume) — 7914634
 
 ### Phase 2: Database — pause column, edit grants, same-day guard
 
 #### Automated
 
-- [ ] 2.1 Local database rebuilds from all migrations: `npx supabase db reset`
-- [ ] 2.2 pgTAP tests pass: `npx supabase test db`
-- [ ] 2.3 Generated types start with `export type` and include `paused_on`: `npm run db:types`
-- [ ] 2.4 Lint, unit tests and build pass: `npm run lint`, `npm test`, `npm run build`
+- [x] 2.1 Local database rebuilds from all migrations: `npx supabase db reset`
+- [x] 2.2 pgTAP tests pass: `npx supabase test db`
+- [x] 2.3 Generated types start with `export type` and include `paused_on`: `npm run db:types`
+- [x] 2.4 Lint, unit tests and build pass: `npm run lint`, `npm test`, `npm run build`
 
 #### Manual
 
-- [ ] 2.5 Existing medications still show the same figures as before the migration
+- [x] 2.5 Existing medications still show the same figures as before the migration
 
 ### Phase 3: Server actions for edit, pause and resume
 

@@ -70,8 +70,7 @@ async function SidebarProfiles() {
   const runningOutProfileIds = new Set(
     medications
       .filter((medication) => {
-        // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
-        const stock = computeStock({ ...medication, pausedOn: null }, today);
+        const stock = computeStock(medication, today);
         return overallUrgency([{ ...medication, stock }]) === "red";
       })
       .map((medication) => medication.profileId),

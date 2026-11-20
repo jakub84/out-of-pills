@@ -66,8 +66,7 @@ async function SelectedProfile({ searchParams }: { searchParams: PageProps<"/">[
     packageSize: medication.packageSize,
     pillsCounted: medication.pillsCounted,
     countedOn: medication.countedOn,
-    // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
-    stock: computeStock({ ...medication, pausedOn: null }, today),
+    stock: computeStock(medication, today),
   }));
   // Each group comes back sorted by compareByRunOut, ran-out items first in red.
   const groups = groupByUrgency(items);

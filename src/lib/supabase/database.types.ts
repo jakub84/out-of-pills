@@ -39,14 +39,14 @@ export type Database = {
                   ]
                 },"medications": {
                   Row: {
-                    "counted_on": string,"created_at": string,"daily_dose": number,"id": string,"name": string,"package_size": number,"pills_counted": number,"profile_id": string
+                    "counted_on": string,"created_at": string,"daily_dose": number,"id": string,"name": string,"package_size": number,"paused_on": string | null,"pills_counted": number,"profile_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "counted_on"?: string,"created_at"?: string,"daily_dose": number,"id"?: string,"name": string,"package_size": number,"pills_counted": number,"profile_id": string
+                    "counted_on"?: string,"created_at"?: string,"daily_dose": number,"id"?: string,"name": string,"package_size": number,"paused_on"?: string | null,"pills_counted": number,"profile_id": string
                   }
                   Update: {
-                    "counted_on"?: string,"created_at"?: string,"daily_dose"?: number,"id"?: string,"name"?: string,"package_size"?: number,"pills_counted"?: number,"profile_id"?: string
+                    "counted_on"?: string,"created_at"?: string,"daily_dose"?: number,"id"?: string,"name"?: string,"package_size"?: number,"paused_on"?: string | null,"pills_counted"?: number,"profile_id"?: string
                   }
                   Relationships: [
                     {

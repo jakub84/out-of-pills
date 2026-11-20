@@ -66,7 +66,7 @@ function CorrectCountForm({
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
-  // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
+  // Unpaused until OverviewItem carries the pause state (edit-and-pause-medication Phase 4).
   const stockInput: StockInput = { ...medication, pausedOn: null };
   const expected = computeStock(stockInput, today).pillsLeft;
 

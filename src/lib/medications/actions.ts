@@ -120,7 +120,7 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
   const supabase = await createClient();
   const { data: row, error: selectError } = await supabase
     .from("medications")
-    .select("id, pills_counted, counted_on, daily_dose")
+    .select("id, pills_counted, counted_on, daily_dose, paused_on")
     .eq("id", medicationId)
     .maybeSingle();
 
@@ -141,8 +141,7 @@ async function updateStock(formData: FormData, update: StockUpdate): Promise<Sto
       pillsCounted: Number(row.pills_counted),
       countedOn: row.counted_on,
       dailyDose: Number(row.daily_dose),
-      // Unpaused until the pause column is read (edit-and-pause-medication Phase 2).
-      pausedOn: null,
+      pausedOn: row.paused_on,
     },
     todayInWarsaw(),
     tablets,
