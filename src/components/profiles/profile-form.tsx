@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Baby, Heart, Plus, User, Users, type LucideIcon } from "lucide-react";
+import { ArrowLeft, Baby, Check, Heart, Plus, User, Users, type LucideIcon } from "lucide-react";
 import { useActionState, useId, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { readField } from "@/lib/auth/validation";
-import { profileCreatedMessage } from "@/lib/feedback/messages";
+import { profileCreatedMessage, profileUpdatedMessage } from "@/lib/feedback/messages";
 import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { initialProfileFormState, type ProfileFormState } from "@/lib/profiles/form-state";
 import {
@@ -46,10 +46,21 @@ type ProfileFormProps = {
   /** Where the secondary button leads; omitted → no secondary button. */
   backHref?: string;
   backLabel?: string;
-  /** Verb of the submit button; the typed name is appended, e.g. `Create profile "Mom"`. */
+  /**
+   * Submit button label. Creating appends the typed name, e.g. `Create profile "Mom"`;
+   * editing shows it as is, e.g. "Save changes".
+   */
   submitLabel: string;
   /** Onboarding header: rendered above a live "Profile: <typed name>" heading. */
   liveHeading?: { eyebrow: ReactNode; intro: ReactNode };
+  /** Edit mode: the stored profile the form starts from; its id is posted as `profileId`. */
+  initial?: {
+    profileId: string;
+    name: string;
+    kind: ProfileKind;
+    avatarColor: AvatarColor;
+    avatar: ProfileAvatarId | null;
+  };
 };
 
 const KIND_OPTIONS: { value: ProfileKind; label: string; hint: string; icon: LucideIcon }[] = [
@@ -98,8 +109,10 @@ function ProfileFormFields({
   backLabel = "Back",
   submitLabel,
   liveHeading,
+  initial: stored,
   onSaved,
 }: ProfileFormProps & { onSaved: () => void }) {
+  const editing = stored !== undefined;
   const { navigate } = useNavigationPending();
   const [state, formAction, isPending] = useActionState(
     async (prev: ProfileFormState, formData: FormData) => {
@@ -110,7 +123,10 @@ function ProfileFormFields({
       );
       if (result.status === "success") {
         onSaved();
-        toast.success(profileCreatedMessage(readField(formData, "name")));
+        const savedName = readField(formData, "name");
+        toast.success(
+          editing ? profileUpdatedMessage(savedName) : profileCreatedMessage(savedName),
+        );
         navigate(
           result.profileId ? `/?profile=${encodeURIComponent(result.profileId)}` : "/",
         );
@@ -121,11 +137,12 @@ function ProfileFormFields({
   );
   // Stays on after a success, so a second click during navigation can't create a duplicate.
   const isSubmitting = isPending || state.status === "success";
-  const [kind, setKind] = useState<ProfileKind>("me");
-  // Starts empty: the user types a name or picks a chip.
-  const [name, setName] = useState("");
-  const [avatarColor, setAvatarColor] = useState<AvatarColor>("mint");
-  const [avatar, setAvatar] = useState<ProfileAvatarId | null>(null);
+  // Editing starts from the stored profile; creating from these defaults.
+  const [kind, setKind] = useState<ProfileKind>(stored?.kind ?? "me");
+  // Creating starts empty: the user types a name or picks a chip.
+  const [name, setName] = useState(stored?.name ?? "");
+  const [avatarColor, setAvatarColor] = useState<AvatarColor>(stored?.avatarColor ?? "mint");
+  const [avatar, setAvatar] = useState<ProfileAvatarId | null>(stored?.avatar ?? null);
 
   const ids = useId();
   const kindHeadingId = `${ids}-kind`;
@@ -143,6 +160,7 @@ function ProfileFormFields({
 
   return (
     <form action={formAction} className="flex flex-col gap-12">
+      {stored ? <input type="hidden" name="profileId" value={stored.profileId} /> : null}
       <input type="hidden" name="kind" value={kind} />
       <input type="hidden" name="avatarColor" value={avatarColor} />
       <input type="hidden" name="avatar" value={avatar ?? ""} />
@@ -375,11 +393,17 @@ function ProfileFormFields({
           </Button>
         ) : null}
         <Button type="submit" size="lg" disabled={isSubmitting} className="max-w-full min-w-0">
-          <Plus data-icon="inline-start" aria-hidden />
+          {editing ? (
+            <Check data-icon="inline-start" aria-hidden />
+          ) : (
+            <Plus data-icon="inline-start" aria-hidden />
+          )}
           <span className="truncate">
             {isSubmitting
-              ? "Creating…"
-              : trimmedName
+              ? editing
+                ? "Saving…"
+                : "Creating…"
+              : !editing && trimmedName
                 ? `${submitLabel} “${trimmedName}”`
                 : submitLabel}
           </span>

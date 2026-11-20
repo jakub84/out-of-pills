@@ -77,3 +77,33 @@ export function initialOf(name: string): string {
   const first = Array.from(name.trim())[0] ?? "";
   return first.toLocaleUpperCase();
 }
+
+export type ProfileFieldErrors = Partial<Record<"name" | "kind" | "avatarColor" | "avatar", string>>;
+
+/**
+ * Checks the fields of the create and edit profile forms; returns only the fields in error.
+ * An empty `avatar` means "No avatar".
+ */
+export function validateProfileFields({
+  name,
+  kind,
+  avatarColor,
+  avatar,
+}: {
+  name: string;
+  kind: string;
+  avatarColor: string;
+  avatar: string;
+}): ProfileFieldErrors {
+  const errors: ProfileFieldErrors = {};
+  const nameError = validateProfileName(name);
+  if (nameError) errors.name = nameError;
+  if (!isProfileKind(kind)) {
+    errors.kind = "Choose whose medications these are";
+  } else if (avatar && !isAvatarForKind(kind, avatar)) {
+    // An invalid kind is already an error, and has no avatar list to check against.
+    errors.avatar = "Choose an avatar from the list";
+  }
+  if (!isAvatarColor(avatarColor)) errors.avatarColor = "Choose an avatar colour";
+  return errors;
+}

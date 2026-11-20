@@ -447,30 +447,30 @@ Additive migration. Existing rows are untouched. Push it to the cloud project be
 
 #### Automated
 
-- [x] 2.1 `npm test` passes, including the new message test
-- [x] 2.2 `npm run lint` and `npm run build` pass
+- [x] 2.1 `npm test` passes, including the new message test — ef1b7ca
+- [x] 2.2 `npm run lint` and `npm run build` pass — ef1b7ca
 
 #### Manual
 
-- [x] 2.3 "Remove" opens "Remove <name>?"; Cancel, Escape and outside click close it without changes
-- [x] 2.4 Confirming removes the card, updates tiles, counts and the sidebar dot, and shows "<name> removed"
-- [x] 2.5 Removing again from a stale tab shows success and the card disappears there
-- [x] 2.6 Offline confirm shows the connection-error toast and the dialog stays open
+- [x] 2.3 "Remove" opens "Remove <name>?"; Cancel, Escape and outside click close it without changes — ef1b7ca
+- [x] 2.4 Confirming removes the card, updates tiles, counts and the sidebar dot, and shows "<name> removed" — ef1b7ca
+- [x] 2.5 Removing again from a stale tab shows success and the card disappears there — ef1b7ca
+- [x] 2.6 Offline confirm shows the connection-error toast and the dialog stays open — ef1b7ca
 
 ### Phase 3: Edit a profile
 
 #### Automated
 
-- [ ] 3.1 `npm test` passes, including `validateProfileFields` and `profileUpdatedMessage` tests
-- [ ] 3.2 `npm run lint` and `npm run build` pass
+- [x] 3.1 `npm test` passes, including `validateProfileFields` and `profileUpdatedMessage` tests
+- [x] 3.2 `npm run lint` and `npm run build` pass
 
 #### Manual
 
-- [ ] 3.3 Active sidebar row shows ⋯ (desktop and mobile sheet); inactive rows and the collapsed rail don't
-- [ ] 3.4 "Edit profile" opens the edit page pre-filled with name, type, colour and avatar
-- [ ] 3.5 Rename, colour and avatar changes save, toast "Profile <name> updated", and return to the profile with the sidebar and header updated
-- [ ] 3.6 Changing type clears a mismatched avatar; an empty name shows the inline error
-- [ ] 3.7 `/profiles/<random-uuid>/edit` redirects to `/`; creating a profile still behaves as before
+- [x] 3.3 Active sidebar row shows ⋯ (desktop and mobile sheet); inactive rows and the collapsed rail don't
+- [x] 3.4 "Edit profile" opens the edit page pre-filled with name, type, colour and avatar
+- [x] 3.5 Rename, colour and avatar changes save, toast "Profile <name> updated", and return to the profile with the sidebar and header updated
+- [x] 3.6 Changing type clears a mismatched avatar; an empty name shows the inline error
+- [x] 3.7 `/profiles/<random-uuid>/edit` redirects to `/`; creating a profile still behaves as before
 
 ### Phase 4: Delete a profile
 

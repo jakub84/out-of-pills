@@ -42,6 +42,11 @@ export function profileCreatedMessage(name: string): string {
   return `Profile ${name} created`;
 }
 
+/** "Profile Mom updated" */
+export function profileUpdatedMessage(name: string): string {
+  return `Profile ${name} updated`;
+}
+
 export function passwordChangedMessage(): string {
   return "Password changed";
 }

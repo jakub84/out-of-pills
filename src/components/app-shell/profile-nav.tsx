@@ -12,6 +12,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import type { AvatarColor, ProfileAvatar as ProfileAvatarId } from "@/lib/profiles/validation";
+import { ProfileOptionsMenu } from "./profile-options-menu";
 
 export type ProfileNavItem = {
   id: string;
@@ -23,9 +24,21 @@ export type ProfileNavItem = {
   runningOut: boolean;
 };
 
+/** The profile id in `/profiles/<id>/edit`, or `null` for any other path. */
+function editedProfileId(pathname: string): string | null {
+  const match = /^\/profiles\/([^/]+)\/edit$/.exec(pathname);
+  if (!match) return null;
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Profile rows plus "+ Add new". The selection mirrors the main page: on `/` it is the
- * `?profile=` id when it is one of these profiles, else the oldest; elsewhere none.
+ * `?profile=` id when it is one of these profiles, else the oldest; on `/profiles/<id>/edit`
+ * it is that profile; elsewhere none. The selected row shows the "⋯" options menu.
  * During navigation it follows the destination, so the click shows straight away.
  * Uses `useSearchParams()`: render it inside `<Suspense>`.
  */
@@ -40,11 +53,12 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
   const pathname = destination?.pathname ?? currentPathname;
   const searchParams = destination?.searchParams ?? currentSearchParams;
 
+  const onProfilePage = pathname === "/";
   const requested = searchParams.get("profile");
-  const selectedId =
-    pathname === "/"
-      ? (profiles.find((profile) => profile.id === requested) ?? profiles[0])?.id
-      : undefined;
+  const editedId = editedProfileId(pathname);
+  const selectedId = onProfilePage
+    ? (profiles.find((profile) => profile.id === requested) ?? profiles[0])?.id
+    : profiles.find((profile) => profile.id === editedId)?.id;
   const onAddPage = pathname === "/profiles/new";
 
   // On phones the sidebar is a sheet: close it once a destination is chosen.
@@ -54,13 +68,22 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
     <SidebarMenu>
       {profiles.map((profile) => {
         const selected = profile.id === selectedId;
+        // On the edit page the selected row links back to the profile: a real navigation.
+        const current = selected && onProfilePage;
         return (
           <SidebarMenuItem key={profile.id}>
-            <SidebarMenuButton asChild size="row" isActive={selected} tooltip={profile.name}>
+            <SidebarMenuButton
+              asChild
+              size="row"
+              isActive={selected}
+              tooltip={profile.name}
+              // Leaves room for the "⋯" so the name truncates before it.
+              className="group-has-data-[sidebar=menu-action]/menu-item:pr-12"
+            >
               <PendingLink
                 href={`/?profile=${encodeURIComponent(profile.id)}`}
-                trackPending={!selected}
-                aria-current={selected ? "page" : undefined}
+                trackPending={!current}
+                aria-current={current ? "page" : undefined}
                 onClick={closeSheet}
               >
                 <span className="relative shrink-0">
@@ -86,6 +109,7 @@ export function ProfileNav({ profiles }: { profiles: ProfileNavItem[] }) {
                 </span>
               </PendingLink>
             </SidebarMenuButton>
+            {selected ? <ProfileOptionsMenu profile={profile} /> : null}
           </SidebarMenuItem>
         );
       })}
