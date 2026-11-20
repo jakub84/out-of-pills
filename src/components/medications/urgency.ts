@@ -1,4 +1,10 @@
-import { AlarmClockCheck, ClockAlert, MessageCircleWarning, type LucideIcon } from "lucide-react";
+import {
+  AlarmClockCheck,
+  CirclePause,
+  ClockAlert,
+  MessageCircleWarning,
+  type LucideIcon,
+} from "lucide-react";
 
 import type { Urgency } from "@/lib/medications/stock";
 
@@ -40,14 +46,18 @@ export const urgencyLabel: Record<Urgency, string> = {
 
 export type UrgencyGroup = "red" | "yellow" | "green";
 
-/** The overview's groups in display order (tiles and grouped cards, mock 176:226). */
-export const URGENCY_GROUPS: {
-  key: UrgencyGroup;
+/** Groups of cards on the overview: the run-out groups, then paused medications. */
+export type CardGroup = UrgencyGroup | "paused";
+
+type GroupStyle<K extends CardGroup> = {
+  key: K;
   label: string;
   Icon: LucideIcon;
   textClass: string;
-  borderClass: string;
-}[] = [
+};
+
+/** The run-out groups in display order (tiles and grouped cards, mock 176:226). */
+export const URGENCY_GROUPS: (GroupStyle<UrgencyGroup> & { borderClass: string })[] = [
   {
     key: "red",
     label: urgencyLabel.red,
@@ -68,5 +78,16 @@ export const URGENCY_GROUPS: {
     Icon: AlarmClockCheck,
     textClass: urgencyTextClass.green,
     borderClass: "border-urgency-green",
+  },
+];
+
+/** Card groups in display order: the run-out groups, then paused (which has no run-out tile). */
+export const CARD_GROUPS: GroupStyle<CardGroup>[] = [
+  ...URGENCY_GROUPS,
+  {
+    key: "paused",
+    label: urgencyLabel.paused,
+    Icon: CirclePause,
+    textClass: urgencyTextClass.paused,
   },
 ];

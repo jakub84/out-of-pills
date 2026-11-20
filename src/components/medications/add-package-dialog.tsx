@@ -25,11 +25,7 @@ import {
 import { packageAddedMessage } from "@/lib/feedback/messages";
 import { addPackage } from "@/lib/medications/actions";
 import { formatDays, formatTablets } from "@/lib/medications/format";
-import {
-  addPackage as addPackageToStock,
-  computeStock,
-  type StockInput,
-} from "@/lib/medications/stock";
+import { addPackage as addPackageToStock, computeStock } from "@/lib/medications/stock";
 import {
   PACKAGE_AMOUNT_MAX,
   PACKAGE_AMOUNT_MIN,
@@ -63,7 +59,10 @@ function packageCountOptions(size: number) {
   })).filter((option) => option.tablets <= PACKAGE_AMOUNT_MAX);
 }
 
-/** "+ Add package" button and dialog (mock 182:304): restock with the effect shown first. */
+/**
+ * "+ Add package" button and dialog (mock 182:304): restock with the effect shown first. Not
+ * offered while the medication is paused (the card hides it; the action rejects it).
+ */
 export function AddPackageDialog({ medication, today }: StockDialogProps) {
   const [open, setOpen] = useState(false);
   const { onOpenChange, guardSave } = useSaveGuard(setOpen);
@@ -96,9 +95,7 @@ function AddPackageForm({
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
-  // Unpaused until OverviewItem carries the pause state (edit-and-pause-medication Phase 4).
-  const stockInput: StockInput = { ...medication, pausedOn: null };
-  const now = computeStock(stockInput, today);
+  const now = computeStock(medication, today);
   const [packageSize, setPackageSize] = useState(medication.packageSize);
 
   // The resulting count must fit the 9999 limit too, like the server action checks.
@@ -106,7 +103,7 @@ function AddPackageForm({
     const error = validatePackageAmount(value);
     if (error) return error;
     const tablets = parseAmount(value) as number;
-    return validateResultingCount(addPackageToStock(stockInput, today, tablets).pillsCounted);
+    return validateResultingCount(addPackageToStock(medication, today, tablets).pillsCounted);
   }
 
   const form = useStockForm({
@@ -121,7 +118,7 @@ function AddPackageForm({
   // Preview only from a valid amount: addPackage throws on non-half or negative tablets.
   const tablets = validatePackageAmount(form.amount) ? null : (parseAmount(form.amount) as number);
   const after =
-    tablets === null ? null : computeStock(addPackageToStock(stockInput, today, tablets), today);
+    tablets === null ? null : computeStock(addPackageToStock(medication, today, tablets), today);
   const extendsBy = after ? after.daysLeft - now.daysLeft : null;
 
   // 1–3 whole packages of the chosen size; counts above the amount limit are left out.

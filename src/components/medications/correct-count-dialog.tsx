@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { countCorrectedMessage } from "@/lib/feedback/messages";
 import { correctPillCount } from "@/lib/medications/actions";
 import { formatTablets } from "@/lib/medications/format";
-import { computeStock, correctCount, type StockInput } from "@/lib/medications/stock";
+import { computeStock, correctCount } from "@/lib/medications/stock";
 import { PILLS_LEFT_MAX, parseAmount, validatePillsLeft } from "@/lib/medications/validation";
 import {
   AmountStepper,
@@ -66,9 +66,9 @@ function CorrectCountForm({
   onSaved,
 }: StockDialogProps & { guardSave: GuardSave; onSaved: () => void }) {
   const id = useId();
-  // Unpaused until OverviewItem carries the pause state (edit-and-pause-medication Phase 4).
-  const stockInput: StockInput = { ...medication, pausedOn: null };
-  const expected = computeStock(stockInput, today).pillsLeft;
+  const paused = medication.pausedOn !== null;
+  // While paused this is the frozen count; the correction keeps the pause.
+  const expected = computeStock(medication, today).pillsLeft;
 
   const form = useStockForm({
     action: correctPillCount,
@@ -82,7 +82,7 @@ function CorrectCountForm({
   // Preview only from a valid amount: correctCount throws on non-half or negative tablets.
   const tablets = validatePillsLeft(form.amount) ? null : (parseAmount(form.amount) as number);
   const after =
-    tablets === null ? null : computeStock(correctCount(stockInput, today, tablets), today);
+    tablets === null ? null : computeStock(correctCount(medication, today, tablets), today);
   const errorId = `${id}-error`;
   const hintId = `${id}-hint`;
 
@@ -123,8 +123,10 @@ function CorrectCountForm({
         />
         <FieldError id={errorId} message={form.fieldError} />
         <p id={hintId} className="text-[13px] text-brand-subtle">
-          Count every tablet you have, including open packages. Today&apos;s dose is taken from this
-          number.
+          Count every tablet you have, including open packages.{" "}
+          {paused
+            ? "This medication is paused, so the count stays as it is until you resume it."
+            : "Today's dose is taken from this number."}
         </p>
       </div>
 

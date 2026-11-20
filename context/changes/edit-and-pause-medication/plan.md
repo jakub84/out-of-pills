@@ -384,31 +384,31 @@ Additive migration; existing rows get `paused_on = null` (unpaused) and keep the
 
 #### Automated
 
-- [x] 3.1 Unit tests pass, including the edit validation: `npm test`
-- [x] 3.2 Lint passes: `npm run lint`
-- [x] 3.3 Production build passes: `npm run build`
+- [x] 3.1 Unit tests pass, including the edit validation: `npm test` — 74947b9
+- [x] 3.2 Lint passes: `npm run lint` — 74947b9
+- [x] 3.3 Production build passes: `npm run build` — 74947b9
 
 #### Manual
 
-- [x] 3.4 Restock and correction still save and show their toasts exactly as before
+- [x] 3.4 Restock and correction still save and show their toasts exactly as before — 74947b9
 
 ### Phase 4: UI — edit dialog, pause / resume, paused card and group
 
 #### Automated
 
-- [ ] 4.1 Lint passes: `npm run lint`
-- [ ] 4.2 Unit tests pass: `npm test`
-- [ ] 4.3 Production build passes: `npm run build`
+- [x] 4.1 Lint passes: `npm run lint`
+- [x] 4.2 Unit tests pass: `npm test`
+- [x] 4.3 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 4.4 Edit: renaming, changing package size and raising the dose save with the toast "<name> updated" and the card shows the new values and date
-- [ ] 4.5 Edit: lowering the dose 2 → 1 lowers the pre-filled pills left by 1 and the preview matches the saved card; typing a number first keeps the typed number
-- [ ] 4.6 Edit: invalid values show inline errors with the dialog open; offline save shows the connection toast
-- [ ] 4.7 Pause: confirm dialog shows the frozen count; after saving, the card moves to "Paused" with "Paused since <today>", no date, no bar, no "+ Add package"
-- [ ] 4.8 Paused medication no longer affects the red / yellow / green tiles, "running out" line, sidebar red dot or header illustration
-- [ ] 4.9 Next day (or with the date changed locally) the paused count is unchanged
-- [ ] 4.10 Resume: preview shows days left from today; after saving the card returns to its urgency group with day 1 = today
-- [ ] 4.11 Edit and Correct count on a paused medication keep it paused
-- [ ] 4.12 Double-submitting pause (two tabs) shows the stale-stock error in the second tab
-- [ ] 4.13 Layout works at phone width and with keyboard only; toasts are announced
+- [x] 4.4 Edit: renaming, changing package size and raising the dose save with the toast "<name> updated" and the card shows the new values and date
+- [x] 4.5 Edit: lowering the dose 2 → 1 lowers the pre-filled pills left by 1 and the preview matches the saved card; typing a number first keeps the typed number
+- [x] 4.6 Edit: invalid values show inline errors with the dialog open; offline save shows the connection toast
+- [x] 4.7 Pause: confirm dialog shows the frozen count; after saving, the card moves to "Paused" with "Paused since <today>", no date, no bar, no "+ Add package"
+- [x] 4.8 Paused medication no longer affects the red / yellow / green tiles, "running out" line, sidebar red dot or header illustration
+- [x] 4.9 Next day (or with the date changed locally) the paused count is unchanged
+- [x] 4.10 Resume: preview shows days left from today; after saving the card returns to its urgency group with day 1 = today
+- [x] 4.11 Edit and Correct count on a paused medication keep it paused
+- [x] 4.12 Double-submitting pause (two tabs) shows the stale-stock error in the second tab
+- [x] 4.13 Layout works at phone width and with keyboard only; toasts are announced

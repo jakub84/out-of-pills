@@ -18,9 +18,9 @@ import {
 import { cn } from "@/lib/utils";
 import { ChipGroup } from "./chip-group";
 import {
-  DOSE_CHIPS,
+  DOSE_OPTIONS,
   OTHER,
-  PACKAGE_CHIPS,
+  PACKAGE_OPTIONS,
   packageSizeOf,
   type MedicationDraft,
 } from "./medication-draft";
@@ -45,15 +45,6 @@ type MedicationDetailsStepProps = {
   onChange: (patch: Partial<MedicationDraft>, field: keyof MedicationFieldErrors) => void;
   onNext: () => void;
 };
-
-const PACKAGE_OPTIONS = [
-  ...PACKAGE_CHIPS.map((value) => ({ value, label: value })),
-  { value: OTHER, label: "Other" },
-];
-const DOSE_OPTIONS = [
-  ...DOSE_CHIPS.map((value) => ({ value, label: value })),
-  { value: OTHER, label: "Other" },
-];
 
 /** Step 1 of the add-medication wizard (mock 177:601). */
 export function MedicationDetailsStep({
