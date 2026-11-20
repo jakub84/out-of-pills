@@ -12,6 +12,7 @@ import {
   packageAddedMessage,
   passwordChangedMessage,
   profileCreatedMessage,
+  profileDeletedMessage,
   profileUpdatedMessage,
 } from "@/lib/feedback/messages";
 
@@ -47,6 +48,10 @@ describe("toast messages", () => {
 
   it("confirms an updated profile", () => {
     expect(profileUpdatedMessage("Mom")).toBe("Profile Mom updated");
+  });
+
+  it("confirms a deleted profile", () => {
+    expect(profileDeletedMessage("Mom")).toBe("Profile Mom deleted");
   });
 
   it("confirms a changed password", () => {

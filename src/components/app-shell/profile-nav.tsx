@@ -22,6 +22,8 @@ export type ProfileNavItem = {
   avatar: ProfileAvatarId | null;
   /** At least one medication is red or has run out. */
   runningOut: boolean;
+  /** How many medications the profile has; `null` when they failed to load. */
+  medicationCount: number | null;
 };
 
 /** The profile id in `/profiles/<id>/edit`, or `null` for any other path. */

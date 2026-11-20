@@ -461,30 +461,30 @@ Additive migration. Existing rows are untouched. Push it to the cloud project be
 
 #### Automated
 
-- [x] 3.1 `npm test` passes, including `validateProfileFields` and `profileUpdatedMessage` tests
-- [x] 3.2 `npm run lint` and `npm run build` pass
+- [x] 3.1 `npm test` passes, including `validateProfileFields` and `profileUpdatedMessage` tests — f5b5de5
+- [x] 3.2 `npm run lint` and `npm run build` pass — f5b5de5
 
 #### Manual
 
-- [x] 3.3 Active sidebar row shows ⋯ (desktop and mobile sheet); inactive rows and the collapsed rail don't
-- [x] 3.4 "Edit profile" opens the edit page pre-filled with name, type, colour and avatar
-- [x] 3.5 Rename, colour and avatar changes save, toast "Profile <name> updated", and return to the profile with the sidebar and header updated
-- [x] 3.6 Changing type clears a mismatched avatar; an empty name shows the inline error
-- [x] 3.7 `/profiles/<random-uuid>/edit` redirects to `/`; creating a profile still behaves as before
+- [x] 3.3 Active sidebar row shows ⋯ (desktop and mobile sheet); inactive rows and the collapsed rail don't — f5b5de5
+- [x] 3.4 "Edit profile" opens the edit page pre-filled with name, type, colour and avatar — f5b5de5
+- [x] 3.5 Rename, colour and avatar changes save, toast "Profile <name> updated", and return to the profile with the sidebar and header updated — f5b5de5
+- [x] 3.6 Changing type clears a mismatched avatar; an empty name shows the inline error — f5b5de5
+- [x] 3.7 `/profiles/<random-uuid>/edit` redirects to `/`; creating a profile still behaves as before — f5b5de5
 
 ### Phase 4: Delete a profile
 
 #### Automated
 
-- [ ] 4.1 `npm test` passes, including `profileDeletedMessage` tests
-- [ ] 4.2 `npm run lint` and `npm run build` pass
-- [ ] 4.3 `npx supabase test db` still passes
-- [ ] 4.4 `npx supabase db push --remote --dry-run` lists only the new migration
+- [x] 4.1 `npm test` passes, including `profileDeletedMessage` tests
+- [x] 4.2 `npm run lint` and `npm run build` pass
+- [x] 4.3 `npx supabase test db` still passes
+- [x] 4.4 `npx supabase db push --remote --dry-run` lists only the new migration
 
 #### Manual
 
-- [ ] 4.5 "Delete profile" opens "Delete <name>?" with the correct medication count (0 / 1 / many); Cancel changes nothing
-- [ ] 4.6 Confirming deletes the profile and its medications, toasts "Profile <name> deleted", and lands on the oldest remaining profile
-- [ ] 4.7 Deleting from the edit page also lands on `/`
-- [ ] 4.8 Deleting the only profile lands on onboarding "first profile"; creating one returns to the app
+- [x] 4.5 "Delete profile" opens "Delete <name>?" with the correct medication count (0 / 1 / many); Cancel changes nothing
+- [x] 4.6 Confirming deletes the profile and its medications, toasts "Profile <name> deleted", and lands on the oldest remaining profile
+- [x] 4.7 Deleting from the edit page also lands on `/`
+- [x] 4.8 Deleting the only profile lands on onboarding "first profile"; creating one returns to the app
 - [ ] 4.9 On the Vercel preview after the remote push, edit, delete profile and remove medication work against the cloud database

@@ -126,3 +126,34 @@ export async function updateProfile(
   revalidatePath("/", "layout");
   return { status: "success", profileId };
 }
+
+/**
+ * Detaches the caller from a profile (`delete_profile` RPC). The last caregiver to detach
+ * deletes the profile and its medications; a profile that was already gone counts as deleted.
+ */
+export async function deleteProfile(
+  _prevState: ProfileFormState,
+  formData: FormData,
+): Promise<ProfileFormState> {
+  await getCurrentUser();
+
+  const profileId = readField(formData, "profileId");
+  if (!UUID_PATTERN.test(profileId)) {
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("delete_profile", { p_profile_id: profileId });
+
+  if (error) {
+    // 42501 "Not authenticated": the session ended between the check above and the call.
+    if (error.code === "42501") redirect("/sign-in");
+    // Keep the failure visible in the server logs; the user only sees the generic message.
+    console.error("deleteProfile delete_profile failed", error);
+    return { status: "error", message: GENERIC_ERROR };
+  }
+
+  // Refresh the app shell so the sidebar and the main page drop the profile.
+  revalidatePath("/", "layout");
+  return { status: "success" };
+}
