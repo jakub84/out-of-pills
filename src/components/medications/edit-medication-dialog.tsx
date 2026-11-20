@@ -3,6 +3,8 @@
 import { useActionState, useId, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,12 +44,10 @@ import {
   AmountStepper,
   BaselineFields,
   FieldError,
-  STOCK_DIALOG_CONTENT_CLASS,
   StockLine,
   type StockDialogMedication,
   type StockDialogProps,
 } from "./stock-dialog-parts";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 /** Fields in the order they appear, for moving focus to the first error. */
 const FIELD_ORDER: MedicationField[] = ["name", "packageSize", "dailyDose", "pillsLeft"];
@@ -136,7 +136,7 @@ export function EditMedicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={guard.onOpenChange}>
-      <DialogContent className={cn(STOCK_DIALOG_CONTENT_CLASS, "sm:max-w-lg")}>
+      <DialogContent className={cn(FORM_DIALOG_CONTENT_CLASS, "sm:max-w-lg")}>
         {/* Content unmounts when closed, so every opening pre-fills the stored values again. */}
         <EditMedicationForm
           medication={medication}

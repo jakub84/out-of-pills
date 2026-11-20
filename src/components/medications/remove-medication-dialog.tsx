@@ -3,6 +3,8 @@
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
 
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,8 +19,7 @@ import { medicationRemovedMessage } from "@/lib/feedback/messages";
 import { runSaveAction } from "@/lib/feedback/run-save-action";
 import { removeMedication } from "@/lib/medications/actions";
 import { initialStockFormState, type StockFormState } from "@/lib/medications/form-state";
-import { STOCK_DIALOG_CONTENT_CLASS, type StockDialogMedication } from "./stock-dialog-parts";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
+import type { StockDialogMedication } from "./stock-dialog-parts";
 
 type RemoveDialogMedication = Pick<StockDialogMedication, "id" | "name" | "pausedOn">;
 
@@ -39,7 +40,7 @@ export function RemoveMedicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={guard.onOpenChange}>
-      <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
+      <DialogContent className={FORM_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening starts without an old error. */}
         <RemoveMedicationForm
           medication={medication}

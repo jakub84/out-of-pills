@@ -5,6 +5,7 @@ import { useActionState, useId, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { toast } from "sonner";
 
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,7 +39,6 @@ import {
   type MedicationDraft,
 } from "./medication-draft";
 import { MedicationReviewStep } from "./medication-review-step";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 type AddMedicationDialogProps = {
   profileId: string;

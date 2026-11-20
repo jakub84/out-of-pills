@@ -476,15 +476,15 @@ Additive migration. Existing rows are untouched. Push it to the cloud project be
 
 #### Automated
 
-- [x] 4.1 `npm test` passes, including `profileDeletedMessage` tests
-- [x] 4.2 `npm run lint` and `npm run build` pass
-- [x] 4.3 `npx supabase test db` still passes
-- [x] 4.4 `npx supabase db push --remote --dry-run` lists only the new migration
+- [x] 4.1 `npm test` passes, including `profileDeletedMessage` tests — e444a14
+- [x] 4.2 `npm run lint` and `npm run build` pass — e444a14
+- [x] 4.3 `npx supabase test db` still passes — e444a14
+- [x] 4.4 `npx supabase db push --remote --dry-run` lists only the new migration — e444a14
 
 #### Manual
 
-- [x] 4.5 "Delete profile" opens "Delete <name>?" with the correct medication count (0 / 1 / many); Cancel changes nothing
-- [x] 4.6 Confirming deletes the profile and its medications, toasts "Profile <name> deleted", and lands on the oldest remaining profile
-- [x] 4.7 Deleting from the edit page also lands on `/`
-- [x] 4.8 Deleting the only profile lands on onboarding "first profile"; creating one returns to the app
-- [ ] 4.9 On the Vercel preview after the remote push, edit, delete profile and remove medication work against the cloud database
+- [x] 4.5 "Delete profile" opens "Delete <name>?" with the correct medication count (0 / 1 / many); Cancel changes nothing — e444a14
+- [x] 4.6 Confirming deletes the profile and its medications, toasts "Profile <name> deleted", and lands on the oldest remaining profile — e444a14
+- [x] 4.7 Deleting from the edit page also lands on `/` — e444a14
+- [x] 4.8 Deleting the only profile lands on onboarding "first profile"; creating one returns to the app — e444a14
+- [x] 4.9 On the Vercel preview after the remote push, edit, delete profile and remove medication work against the cloud database
