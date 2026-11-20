@@ -1,10 +1,10 @@
 ---
 change_id: loaders-and-toasts
 title: Page transition loaders and toasts after data changes
-status: impl_reviewed
+status: archived
 created: 2026-11-18
-updated: 2026-11-18
-archived_at: null
+updated: 2026-11-20
+archived_at: 2026-11-20T10:26:19Z
 ---
 
 ## Notes
