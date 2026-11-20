@@ -11,6 +11,7 @@ export type OverviewItem = StockItem & {
   packageSize: number;
   pillsCounted: number;
   countedOn: string;
+  pausedOn: string | null;
 };
 
 /** Bar segments in days (0–14, 15–30, 31–60); the fill stops at 60 days. */

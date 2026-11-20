@@ -5,6 +5,9 @@ import {
   connectionErrorMessage,
   countCorrectedMessage,
   medicationAddedMessage,
+  medicationPausedMessage,
+  medicationResumedMessage,
+  medicationUpdatedMessage,
   packageAddedMessage,
   passwordChangedMessage,
   profileCreatedMessage,
@@ -13,6 +16,12 @@ import {
 describe("toast messages", () => {
   it("confirms an added medication", () => {
     expect(medicationAddedMessage("Aspirin")).toBe("Aspirin added");
+  });
+
+  it("confirms an updated, paused and resumed medication", () => {
+    expect(medicationUpdatedMessage("Aspirin")).toBe("Aspirin updated");
+    expect(medicationPausedMessage("Aspirin")).toBe("Aspirin paused");
+    expect(medicationResumedMessage("Aspirin")).toBe("Aspirin resumed");
   });
 
   it("confirms an added package, with whole and half tablets", () => {

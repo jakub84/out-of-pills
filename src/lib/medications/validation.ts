@@ -136,3 +136,56 @@ export function validateMedication(
     },
   };
 }
+
+/**
+ * Pills left in the edit form: `auto` lets the server work them out from the stored
+ * stock and the new dose; `manual` saves the typed number as is.
+ */
+export type EditPillsMode = "auto" | "manual";
+
+/** Raw edit-form values, as typed (strings); `pillsLeft` is ignored in `auto` mode. */
+export type MedicationEditInput = {
+  name: string;
+  packageSize: string;
+  dailyDose: string;
+  pillsMode: EditPillsMode;
+  pillsLeft: string;
+};
+
+/** Validated edit values; `pillsLeft` is null in `auto` mode. */
+export type MedicationEditValues = {
+  name: string;
+  packageSize: number;
+  dailyDose: number;
+  pillsLeft: number | null;
+};
+
+/**
+ * Validates the edit form with the add-medication field rules: either the field errors,
+ * or the parsed values. Pills left are checked only in `manual` mode. The name is
+ * returned trimmed.
+ */
+export function validateMedicationEdit(
+  input: MedicationEditInput,
+): { ok: true; values: MedicationEditValues } | { ok: false; fieldErrors: MedicationFieldErrors } {
+  const manual = input.pillsMode === "manual";
+  const fieldErrors: MedicationFieldErrors = {
+    name: validateMedicationName(input.name),
+    packageSize: validatePackageSize(input.packageSize),
+    pillsLeft: manual ? validatePillsLeft(input.pillsLeft) : undefined,
+    dailyDose: validateDailyDose(input.dailyDose),
+  };
+  if (fieldErrors.name || fieldErrors.packageSize || fieldErrors.pillsLeft || fieldErrors.dailyDose) {
+    return { ok: false, fieldErrors };
+  }
+  return {
+    ok: true,
+    values: {
+      name: input.name.trim(),
+      // Non-null: validated above.
+      packageSize: parseAmount(input.packageSize) as number,
+      dailyDose: parseAmount(input.dailyDose) as number,
+      pillsLeft: manual ? (parseAmount(input.pillsLeft) as number) : null,
+    },
+  };
+}

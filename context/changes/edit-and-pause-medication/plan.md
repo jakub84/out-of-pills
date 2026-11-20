@@ -371,26 +371,26 @@ Additive migration; existing rows get `paused_on = null` (unpaused) and keep the
 
 #### Automated
 
-- [x] 2.1 Local database rebuilds from all migrations: `npx supabase db reset`
-- [x] 2.2 pgTAP tests pass: `npx supabase test db`
-- [x] 2.3 Generated types start with `export type` and include `paused_on`: `npm run db:types`
-- [x] 2.4 Lint, unit tests and build pass: `npm run lint`, `npm test`, `npm run build`
+- [x] 2.1 Local database rebuilds from all migrations: `npx supabase db reset` — 7945be4
+- [x] 2.2 pgTAP tests pass: `npx supabase test db` — 7945be4
+- [x] 2.3 Generated types start with `export type` and include `paused_on`: `npm run db:types` — 7945be4
+- [x] 2.4 Lint, unit tests and build pass: `npm run lint`, `npm test`, `npm run build` — 7945be4
 
 #### Manual
 
-- [x] 2.5 Existing medications still show the same figures as before the migration
+- [x] 2.5 Existing medications still show the same figures as before the migration — 7945be4
 
 ### Phase 3: Server actions for edit, pause and resume
 
 #### Automated
 
-- [ ] 3.1 Unit tests pass, including the edit validation: `npm test`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Production build passes: `npm run build`
+- [x] 3.1 Unit tests pass, including the edit validation: `npm test`
+- [x] 3.2 Lint passes: `npm run lint`
+- [x] 3.3 Production build passes: `npm run build`
 
 #### Manual
 
-- [ ] 3.4 Restock and correction still save and show their toasts exactly as before
+- [x] 3.4 Restock and correction still save and show their toasts exactly as before
 
 ### Phase 4: UI — edit dialog, pause / resume, paused card and group
 

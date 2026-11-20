@@ -25,6 +25,8 @@ export type StockDialogMedication = {
   /** Stored baseline: tablets counted on `countedOn`; sent back as the expected baseline. */
   pillsCounted: number;
   countedOn: string;
+  /** Stored pause day (null when taken); sent back as part of the expected baseline. */
+  pausedOn: string | null;
 };
 
 export type StockDialogProps = {
@@ -122,6 +124,9 @@ export function BaselineFields({ medication }: { medication: StockDialogMedicati
       <input type="hidden" name="medicationId" value={medication.id} />
       <input type="hidden" name="expectedPillsCounted" value={String(medication.pillsCounted)} />
       <input type="hidden" name="expectedCountedOn" value={medication.countedOn} />
+      <input type="hidden" name="expectedDailyDose" value={String(medication.dailyDose)} />
+      {/* Empty when not paused. */}
+      <input type="hidden" name="expectedPausedOn" value={medication.pausedOn ?? ""} />
     </>
   );
 }
