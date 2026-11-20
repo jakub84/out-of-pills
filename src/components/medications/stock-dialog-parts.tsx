@@ -14,7 +14,7 @@ import type { Stock } from "@/lib/medications/stock";
 import { parseAmount } from "@/lib/medications/validation";
 import { cn } from "@/lib/utils";
 import { urgencyBgClass, urgencyTextClass, urgencyTintClass } from "./urgency";
-import type { GuardSave } from "./use-save-guard";
+import type { GuardSave } from "@/components/dialogs/use-save-guard";
 
 /** What the restock and correction dialogs need about one medication, from the server. */
 export type StockDialogMedication = {
@@ -37,10 +37,6 @@ export type StockDialogProps = {
    */
   today: string;
 };
-
-/** Dialog box shared by the restock and correction dialogs; scrolls on short screens. */
-export const STOCK_DIALOG_CONTENT_CLASS =
-  "max-h-[92dvh] gap-5 overflow-y-auto p-5 sm:max-w-md sm:p-6";
 
 type StockAction = (prev: StockFormState, formData: FormData) => Promise<StockFormState>;
 

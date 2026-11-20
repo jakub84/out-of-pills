@@ -3,7 +3,8 @@
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
 
-import { useSaveGuard, type GuardSave } from "@/components/medications/use-save-guard";
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { useNavigationPending } from "@/components/navigation/navigation-pending";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ export function DeleteProfileDialog({
 
   return (
     <Dialog open={open} onOpenChange={guard.onOpenChange}>
-      <DialogContent className="max-h-[92dvh] gap-5 overflow-y-auto p-5 sm:max-w-md sm:p-6">
+      <DialogContent className={FORM_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening starts without an old error. */}
         <DeleteProfileForm
           profile={profile}
