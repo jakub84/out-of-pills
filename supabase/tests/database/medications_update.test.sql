@@ -276,9 +276,10 @@ select policies_are(
   array[
     'Caregivers can read medications of their profiles',
     'Caregivers can add medications to their profiles',
-    'Caregivers can update stock of their profiles'' medications'
+    'Caregivers can update stock of their profiles'' medications',
+    'Caregivers can delete medications of their profiles'
   ],
-  'medications has select, insert and update policies only'
+  'medications has select, insert, update and delete policies only'
 );
 
 select * from finish();

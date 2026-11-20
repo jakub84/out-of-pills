@@ -101,6 +101,9 @@ isOneToOne: false
 { Args: { "p_avatar_color": string,"p_kind": string,"p_name": string }; Returns: string
                            } |
 { Args: { "p_avatar": string,"p_avatar_color": string,"p_kind": string,"p_name": string }; Returns: string
+                           },
+"delete_profile":
+{ Args: { "p_profile_id": string }; Returns: undefined
                            }
           }
           Enums: {

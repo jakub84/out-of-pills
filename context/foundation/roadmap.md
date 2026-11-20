@@ -49,7 +49,7 @@ People taking many medications only notice they are running out when a medicatio
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
 | S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | done |
 | S-07 | edit-and-pause-medication  | edit a medication's dosage and pause / resume it, with the calculation following from that moment | S-03                 | FR-010, FR-012                 | done |
-| S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | proposed |
+| S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | in-progress |
 | S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
 | S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09, S-11 | FR-020                        | proposed |
 | S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | done |
@@ -191,7 +191,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Covers the NFR "a user can delete their own data"; profile deletion is modelled as the last caregiver detaching so later sharing (FR-016) does not break it.
-- **Status:** proposed
+- **Status:** in-progress
 
 ### S-09: Urgency marker on the profile list
 
