@@ -1,10 +1,10 @@
 ---
 change_id: edit-and-pause-medication
 title: Edit a medication's dosage and pause or resume it
-status: impl_reviewed
+status: archived
 created: 2026-11-20
 updated: 2026-11-20
-archived_at: null
+archived_at: 2026-11-20T12:37:44Z
 ---
 
 ## Notes
