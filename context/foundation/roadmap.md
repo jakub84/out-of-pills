@@ -50,7 +50,7 @@ People taking many medications only notice they are running out when a medicatio
 | S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | done |
 | S-07 | edit-and-pause-medication  | edit a medication's dosage and pause / resume it, with the calculation following from that moment | S-03                 | FR-010, FR-012                 | done |
 | S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | done |
-| S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
+| S-09 | profile-urgency-marker     | see on the profile list which profiles have a medication running out (red marker)  | S-02, S-03                        | FR-019                         | done |
 | S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09, S-11 | FR-020                        | proposed |
 | S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | done |
 
@@ -195,14 +195,14 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ### S-09: Urgency marker on the profile list
 
-- **Outcome:** user can see, on the profile list, each profile's most urgent colour, so an urgent medication in another profile is not missed.
+- **Outcome:** user can see, on the profile list, a red marker on each profile with a medication running out (red or ran out), so an urgent medication in another profile is not missed.
 - **Change ID:** profile-urgency-marker
 - **PRD refs:** FR-019
 - **Prerequisites:** S-02, S-03
 - **Parallel with:** S-04, S-05, S-06, S-07, S-08
 - **Blockers:** —
 - **Unknowns:** —
-- **Risk:** Small slice reusing S-03's urgency logic; must stay consistent with the per-medication colours. S-11 (PR #23) already shows a red dot for profiles with a red or ran-out medication; a yellow dot was tried and removed at the user's request. Still open: whether this slice needs more than the red dot, and the dot lagging past midnight in a long-open tab.
+- **Risk:** Small slice reusing S-03's urgency logic; must stay consistent with the per-medication colours. S-11 (PR #23) already shows a red dot for profiles with a red or ran-out medication; a yellow dot was tried and removed at the user's request. Resolved by the 2026-11-23 frame (`frame.md` in the archived change): red only is enough, FR-019 was reworded to match, and no code change was needed. Known limitation: in a tab left open past Warsaw midnight, the dot can lag until reload or any medication change.
 - **Status:** proposed
 
 ### S-10: Try without signing in (demo mode)
