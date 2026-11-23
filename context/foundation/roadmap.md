@@ -203,7 +203,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Small slice reusing S-03's urgency logic; must stay consistent with the per-medication colours. S-11 (PR #23) already shows a red dot for profiles with a red or ran-out medication; a yellow dot was tried and removed at the user's request. Resolved by the 2026-11-23 frame (`frame.md` in the archived change): red only is enough, FR-019 was reworded to match, and no code change was needed. Known limitation: in a tab left open past Warsaw midnight, the dot can lag until reload or any medication change.
-- **Status:** proposed
+- **Status:** done
 
 ### S-10: Try without signing in (demo mode)
 
@@ -273,3 +273,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **S-11: user can optionally choose a ready-made avatar, from a set that depends on the profile type, when creating a profile; the avatar appears on the profile list and the main screen, and a profile without one keeps showing its first letter.** — Archived 2026-11-18 → `context/archive/2026-11-18-profile-avatars/`. Lesson: —.
 - **S-07: user can edit a medication (including its dosage) and pause / resume it; from that moment the calculation follows the new values, and a paused medication does not decrease.** — Archived 2026-11-20 → `context/archive/2026-11-20-edit-and-pause-medication/`. Lesson: —.
 - **S-08: user can rename a profile, change or remove its avatar, delete a profile together with its medications, and delete a single medication — each deletion after a confirmation.** — Archived 2026-11-23 → `context/archive/2026-11-20-rename-and-delete/`. Lesson: —.
+- **S-09: user can see, on the profile list, a red marker on each profile with a medication running out (red or ran out), so an urgent medication in another profile is not missed.** — Archived 2026-11-23 → `context/archive/2026-11-23-profile-urgency-marker/`. Lesson: —.
