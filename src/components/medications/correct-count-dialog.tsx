@@ -2,6 +2,8 @@
 
 import { useId } from "react";
 
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,12 +24,10 @@ import {
   AmountStepper,
   BaselineFields,
   FieldError,
-  STOCK_DIALOG_CONTENT_CLASS,
   StockLine,
   useStockForm,
   type StockDialogProps,
 } from "./stock-dialog-parts";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 /**
  * "Correct the count" dialog (FR-011): set the tablets left after a recount. Controlled — the
@@ -46,7 +46,7 @@ export function CorrectCountDialog({
 
   return (
     <Dialog open={open} onOpenChange={guard.onOpenChange}>
-      <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
+      <DialogContent className={FORM_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening pre-fills today's expected count. */}
         <CorrectCountForm
           medication={medication}

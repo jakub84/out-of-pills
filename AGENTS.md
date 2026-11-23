@@ -28,6 +28,7 @@ Out of Pills is a web app where caregivers track how many pills are left per pro
 - `src/components/ui/` — shadcn components; change variants there, not at call sites.
 - `src/components/brand/` (logo), `src/components/profiles/` (profile form with avatar picker, `ProfileAvatar` portrait-or-initial display, avatar colours and labels), `src/components/app-shell/` (header, sidebar with the running-out dot and account footer, user menu), `src/components/medications/` (add-medication dialog, overview tiles and cards, add-package dialog, card options menu with the correct-count dialog, urgency classes, header illustration that follows the most urgent medication).
 - `src/components/navigation/` — `PageLoader` and `navigation-pending.tsx`: `useNavigationPending()` (`navigate`), `PendingLink`, `PendingRegion`, and `useSavedFormReset()` for forms that navigate away after saving.
+- `src/components/dialogs/` — shared by every form and confirmation dialog: `useSaveGuard()` (keeps a dialog open while it saves) and `FORM_DIALOG_CONTENT_CLASS` (`DialogContent` sizing).
 - `src/lib/feedback/` — save feedback: `messages.ts` (toast wording), `run-save-action.ts` (error toast for failed requests; rethrows Next.js redirects).
 - `src/app/auth/` — route handlers: `confirm` (email links) and `sign-out` (form POST, so signing out reloads the page and clears client state).
 - `src/lib/auth/dal.ts` — `getCurrentUser()`, the authoritative signed-in check; call it inside `<Suspense>`, never in `use cache`.

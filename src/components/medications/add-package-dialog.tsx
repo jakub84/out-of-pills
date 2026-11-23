@@ -3,6 +3,8 @@
 import { ArrowRight, Plus } from "lucide-react";
 import { useId, useState } from "react";
 
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,13 +39,11 @@ import {
   AmountStepper,
   BaselineFields,
   FieldError,
-  STOCK_DIALOG_CONTENT_CLASS,
   StockSnapshot,
   useStockForm,
   type StockDialogProps,
 } from "./stock-dialog-parts";
 import { ChipGroup } from "./chip-group";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 const PACKAGE_COUNTS = [1, 2, 3] as const;
 /** Pack sizes offered in the dropdown; the remembered size is always added. */
@@ -75,7 +75,7 @@ export function AddPackageDialog({ medication, today }: StockDialogProps) {
           Add package<span className="sr-only"> of {medication.name}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
+      <DialogContent className={FORM_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening pre-fills the package size again. */}
         <AddPackageForm
           medication={medication}

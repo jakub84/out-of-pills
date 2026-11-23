@@ -3,6 +3,8 @@
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
 
+import { FORM_DIALOG_CONTENT_CLASS } from "@/components/dialogs/form-dialog";
+import { useSaveGuard, type GuardSave } from "@/components/dialogs/use-save-guard";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +22,10 @@ import { initialStockFormState, type StockFormState } from "@/lib/medications/fo
 import { computeStock, pauseStock, resumeStock } from "@/lib/medications/stock";
 import {
   BaselineFields,
-  STOCK_DIALOG_CONTENT_CLASS,
   StockLine,
   type StockDialogMedication,
   type StockDialogProps,
 } from "./stock-dialog-parts";
-import { useSaveGuard, type GuardSave } from "./use-save-guard";
 
 /**
  * Pause / resume confirmation (FR-012): pauses an active medication, resumes a paused one, and
@@ -44,7 +44,7 @@ export function PauseMedicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={guard.onOpenChange}>
-      <DialogContent className={STOCK_DIALOG_CONTENT_CLASS}>
+      <DialogContent className={FORM_DIALOG_CONTENT_CLASS}>
         {/* Content unmounts when closed, so every opening starts without an old error. */}
         <PauseMedicationForm
           medication={medication}
