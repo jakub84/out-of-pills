@@ -3,7 +3,7 @@ project: Out of Pills
 version: 1
 status: draft
 created: 2026-11-04
-updated: 2026-11-20
+updated: 2026-11-23
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -49,7 +49,7 @@ People taking many medications only notice they are running out when a medicatio
 | S-05 | irregular-dosage           | define a dosage as an irregular schedule (e.g. every other day, once a week)         | S-03                              | FR-008                         | proposed |
 | S-06 | restock-and-correct        | add a new package in one action and correct the pill count                           | S-03                              | FR-009, FR-011                 | done |
 | S-07 | edit-and-pause-medication  | edit a medication's dosage and pause / resume it, with the calculation following from that moment | S-03                 | FR-010, FR-012                 | done |
-| S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | in-progress |
+| S-08 | rename-and-delete          | rename profiles, change their avatar, and delete profiles and medications after a confirmation | S-02, S-03, S-11          | FR-004, FR-005, FR-013, FR-022 | done |
 | S-09 | profile-urgency-marker     | see on the profile list each profile's most urgent colour                            | S-02, S-03                        | FR-019                         | proposed |
 | S-10 | demo-mode                  | try the app without signing in on pre-filled sample data that is never persisted     | S-05, S-06, S-07, S-08, S-09, S-11 | FR-020                        | proposed |
 | S-11 | profile-avatars            | optionally choose a ready-made avatar, matching the profile type, when creating a profile | S-02                         | FR-021                         | done |
@@ -191,7 +191,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Covers the NFR "a user can delete their own data"; profile deletion is modelled as the last caregiver detaching so later sharing (FR-016) does not break it.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-09: Urgency marker on the profile list
 
@@ -272,3 +272,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **S-06: user can add a new package of a tracked medication in one action (pill count pre-filled, editable before confirming) and correct the current number of pills left.** — Archived 2026-11-18 → `context/archive/2026-11-17-restock-and-correct/`. Lesson: —.
 - **S-11: user can optionally choose a ready-made avatar, from a set that depends on the profile type, when creating a profile; the avatar appears on the profile list and the main screen, and a profile without one keeps showing its first letter.** — Archived 2026-11-18 → `context/archive/2026-11-18-profile-avatars/`. Lesson: —.
 - **S-07: user can edit a medication (including its dosage) and pause / resume it; from that moment the calculation follows the new values, and a paused medication does not decrease.** — Archived 2026-11-20 → `context/archive/2026-11-20-edit-and-pause-medication/`. Lesson: —.
+- **S-08: user can rename a profile, change or remove its avatar, delete a profile together with its medications, and delete a single medication — each deletion after a confirmation.** — Archived 2026-11-23 → `context/archive/2026-11-20-rename-and-delete/`. Lesson: —.

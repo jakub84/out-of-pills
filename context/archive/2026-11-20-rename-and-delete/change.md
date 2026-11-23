@@ -1,10 +1,10 @@
 ---
 change_id: rename-and-delete
 title: Rename and delete
-status: impl_reviewed
+status: archived
 created: 2026-11-20
-updated: 2026-11-20
-archived_at: null
+updated: 2026-11-23
+archived_at: 2026-11-23T15:41:35Z
 ---
 
 ## Notes
