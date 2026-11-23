@@ -85,8 +85,9 @@ MVP flow (v1): 1) user signs up (email + password or Google) → 2) user creates
   > Socrates: Counter-argument considered: "conflicts with later sharing, where removal becomes 'detach yourself'." Resolution: in v1 (single caregiver) deleting with confirmation = the last caregiver detaching; the rule from Access Control is kept so sharing does not break it later.
 - FR-006: User can switch between profiles using the profile list on the main screen. Priority: must-have
   > Socrates: Counter-argument considered: "an urgent medication in another profile is invisible while looking at the current one." Resolution: added FR-019 (urgency marker on the profile list).
-- FR-019: User can see on the profile list the urgency of each profile (colour of its most urgent medication). Priority: must-have
+- FR-019: User can see on the profile list which profiles have a medication running out: a red marker on each profile whose most urgent active medication is red (≤ 14 days) or has run out. Priority: must-have
   > Socrates: Counter-argument considered: "duplicates information." Resolution: no counter-argument accepted; stands as written.
+  > Amended 2026-11-23 (S-09 frame): a yellow marker was tried in S-11 and removed as noise; red only is enough. Paused medications do not count.
 - FR-021: User can optionally choose a ready-made avatar when creating a profile, from a set that depends on the profile type; a profile without an avatar shows the first letter of its name. Priority: must-have
   > Added 2026-11-18 at the user's request. No photo upload: the avatars are generic illustrations, so no personal images are stored.
 - FR-022: User can change or remove a profile's avatar later. Priority: must-have
@@ -138,7 +139,7 @@ Inputs (entered by the user): current number of pills left, pills per package, d
 
 Stock decreases automatically according to the dosage schedule from the moment the stock was entered — the user does not confirm individual doses; deviations are fixed with a stock correction. A paused medication does not decrease. The output is, per medication: pills left, run-out date and days left, plus an urgency level (red ≤ 14 days, yellow ≤ 30 days, green above). The calculation always errs on the early side — the shown run-out date is never later than the real one.
 
-The user encounters the rule on every sign-in: the selected profile's medications are listed from the one running out soonest, with colour-coded urgency, and the profile list shows each profile's most urgent level.
+The user encounters the rule on every sign-in: the selected profile's medications are listed from the one running out soonest, with colour-coded urgency, and the profile list marks in red each profile with a medication running out.
 
 ## Access Control
 
